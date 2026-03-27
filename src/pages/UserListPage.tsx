@@ -1,3 +1,10 @@
+import { UserList } from '@/features/user/components/UserList';
+
 export default function UserListPage() {
-  return <div>User List</div>;
+  return (
+    <>
+      <h1>User List</h1>
+      <UserList />
+    </>
+  );
 }
