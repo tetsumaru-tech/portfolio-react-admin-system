@@ -1,4 +1,4 @@
-import type { YMD } from '../../../types';
+import type { YMD } from '@/types';
 
 export type User = {
   id: number;
@@ -7,4 +7,9 @@ export type User = {
   email: string;
   birthday: YMD;
   createdAt: Date;
+};
+
+export type UserSearchCondition = {
+  name?: string;
+  email?: string;
 };

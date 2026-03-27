@@ -1,6 +1,27 @@
+import type { User } from '@/features/user/types';
 import { users } from '@/features/user/types';
+import type { UserSearchCondition } from '@/features/user/types';
 
-export function UserList() {
+export type UserListProps = {
+  condition: UserSearchCondition;
+};
+
+export function UserList({ props }: { props: UserListProps }) {
+  const filterdUsers = users.filter((user: User) => {
+    if (props.condition.name) {
+      const fullName = user.lastName + user.firstName;
+      if (!fullName.includes(props.condition.name ?? '')) {
+        return false;
+      }
+    }
+    if (props.condition.email) {
+      if (!user.email.includes(props.condition.email ?? '')) {
+        return false;
+      }
+    }
+    return true;
+  });
+
   return (
     <>
       <table>
@@ -13,7 +34,7 @@ export function UserList() {
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => {
+          {filterdUsers.map((user) => {
             return (
               <tr key={user.id}>
                 <td>{user.id}</td>
