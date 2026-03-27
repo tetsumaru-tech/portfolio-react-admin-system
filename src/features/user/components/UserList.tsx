@@ -8,16 +8,12 @@ export type UserListProps = {
 
 export function UserList({ props }: { props: UserListProps }) {
   const filterdUsers = users.filter((user: User) => {
-    if (props.condition.name) {
-      const fullName = user.lastName + user.firstName;
-      if (!fullName.includes(props.condition.name ?? '')) {
-        return false;
-      }
+    const fullName = user.lastName + user.firstName;
+    if (!isMatch(fullName, props.condition.name ?? '')) {
+      return false;
     }
-    if (props.condition.email) {
-      if (!user.email.includes(props.condition.email ?? '')) {
-        return false;
-      }
+    if (!isMatch(user.email, props.condition.email ?? '')) {
+      return false;
     }
     return true;
   });
@@ -54,4 +50,10 @@ export function UserList({ props }: { props: UserListProps }) {
       </table>
     </>
   );
+
+  function isMatch(value: string, searchString: string): boolean {
+    return (
+      !searchString || value.toLowerCase().includes(searchString.toLowerCase())
+    );
+  }
 }
