@@ -3,10 +3,11 @@ import type { UserSearchCondition } from '@/features/user/types';
 export type SearchFormProps = {
   condition: UserSearchCondition;
   onChange: (condition: UserSearchCondition) => void;
+  onSearch: () => void;
 };
 
 export function SearchForm({ props }: { props: SearchFormProps }) {
-  function handleChange(key: string, value: string) {
+  function handleChange(key: string, value: string): void {
     const newCondition = { ...props.condition, [key]: value };
     props.onChange(newCondition);
   }
@@ -36,6 +37,11 @@ export function SearchForm({ props }: { props: SearchFormProps }) {
           </tr>
         </tbody>
       </table>
+      <div className="search-container">
+        <button className="search" onClick={() => props.onSearch()}>
+          検索
+        </button>
+      </div>
     </>
   );
 }

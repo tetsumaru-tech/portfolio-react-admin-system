@@ -1,23 +1,10 @@
 import type { User } from '@/features/user/types';
-import { users } from '@/features/user/types';
-import type { UserSearchCondition } from '@/features/user/types';
 
 export type UserListProps = {
-  condition: UserSearchCondition;
+  users: User[];
 };
 
 export function UserList({ props }: { props: UserListProps }) {
-  const filterdUsers = users.filter((user: User) => {
-    const fullName = user.lastName + user.firstName;
-    if (!isMatch(fullName, props.condition.name ?? '')) {
-      return false;
-    }
-    if (!isMatch(user.email, props.condition.email ?? '')) {
-      return false;
-    }
-    return true;
-  });
-
   return (
     <>
       <table>
@@ -30,7 +17,7 @@ export function UserList({ props }: { props: UserListProps }) {
           </tr>
         </thead>
         <tbody>
-          {filterdUsers.map((user) => {
+          {props.users.map((user) => {
             return (
               <tr key={user.id}>
                 <td>{user.id}</td>
@@ -50,10 +37,4 @@ export function UserList({ props }: { props: UserListProps }) {
       </table>
     </>
   );
-
-  function isMatch(value: string, searchString: string): boolean {
-    return (
-      !searchString || value.toLowerCase().includes(searchString.toLowerCase())
-    );
-  }
 }
