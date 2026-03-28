@@ -6,10 +6,10 @@ export type SearchFormProps = {
   onSearch: () => void;
 };
 
-export function SearchForm({ props }: { props: SearchFormProps }) {
-  function handleChange(key: string, value: string): void {
-    const newCondition = { ...props.condition, [key]: value };
-    props.onChange(newCondition);
+export function SearchForm({ condition, onChange, onSearch }: SearchFormProps) {
+  function handleChange(key: keyof UserSearchCondition, value: string): void {
+    const newCondition = { ...condition, [key]: value };
+    onChange(newCondition);
   }
   return (
     <>
@@ -21,8 +21,13 @@ export function SearchForm({ props }: { props: SearchFormProps }) {
               <input
                 type="text"
                 name="name"
-                value={props.condition.name}
-                onChange={(e) => handleChange(e.target.name, e.target.value)}
+                value={condition.name ?? ''}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleChange(
+                    e.target.name as keyof UserSearchCondition,
+                    e.target.value,
+                  )
+                }
               />
             </td>
             <th>メール</th>
@@ -30,15 +35,20 @@ export function SearchForm({ props }: { props: SearchFormProps }) {
               <input
                 type="text"
                 name="email"
-                value={props.condition.email}
-                onChange={(e) => handleChange(e.target.name, e.target.value)}
+                value={condition.email ?? ''}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleChange(
+                    e.target.name as keyof UserSearchCondition,
+                    e.target.value,
+                  )
+                }
               />
             </td>
           </tr>
         </tbody>
       </table>
       <div className="search-container">
-        <button className="search" onClick={() => props.onSearch()}>
+        <button className="search" onClick={() => onSearch()}>
           検索
         </button>
       </div>

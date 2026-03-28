@@ -4,7 +4,7 @@ export type UserListProps = {
   users: User[];
 };
 
-export function UserList({ props }: { props: UserListProps }) {
+export function UserList({ users }: UserListProps) {
   return (
     <>
       <table>
@@ -17,7 +17,7 @@ export function UserList({ props }: { props: UserListProps }) {
           </tr>
         </thead>
         <tbody>
-          {props.users.map((user) => {
+          {users.map((user) => {
             return (
               <tr key={user.id}>
                 <td>{user.id}</td>
@@ -28,7 +28,7 @@ export function UserList({ props }: { props: UserListProps }) {
                 <td>{user.birthday}</td>
                 <td>
                   <button className="edit">編集</button>
-                  <button className="del">削除</button>
+                  <button className="delete">削除</button>
                 </td>
               </tr>
             );
