@@ -66,3 +66,8 @@ button.delete {
   justify-content: flex-end;
   margin-top: 10px;
 }
+
+button.current {
+   background-color: #3b82f6;
+  color: white; 
+}

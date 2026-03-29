@@ -1,6 +1,6 @@
 import type { User } from '@/features/user/types';
 
-export type UserListProps = {
+type UserListProps = {
   users: User[];
 };
 

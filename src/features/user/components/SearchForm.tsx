@@ -1,6 +1,6 @@
 import type { UserSearchCondition } from '@/features/user/types';
 
-export type SearchFormProps = {
+type SearchFormProps = {
   condition: UserSearchCondition;
   onChange: (condition: UserSearchCondition) => void;
   onSearch: () => void;
