@@ -9,10 +9,10 @@ export default function UserListPage() {
   const [condition, setCondition] = useState<UserSearchCondition>({});
   const [filteredUsers, setFilteredUsers] = useState<User[]>(users);
   const [page, setPage] = useState<number>(1);
-  const perPage = 5; // 1ページ毎の件数
+  const perPage = 4; // 1ページ毎の件数
   const startIndex = (page - 1) * perPage;
   const paginatedUsers = filteredUsers.slice(startIndex, startIndex + perPage);
-  const lastPage = Math.floor(filteredUsers.length / perPage);
+  const lastPage = Math.ceil(filteredUsers.length / perPage);
 
   function handleSearch(): void {
     setFilteredUsers(

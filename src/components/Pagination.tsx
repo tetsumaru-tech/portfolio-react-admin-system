@@ -12,18 +12,19 @@ export function Pagination({
   return (
     <>
       <div>
-        {currentPage !== 1 ? (
+        {currentPage > 1 && (
           <button
-            key="first"
             onClick={() => onPaging(1)}
             style={{
               fontWeight: currentPage === 1 ? 'bold' : 'normal',
             }}
-            className={currentPage === 1 ? 'current' : ''}
           >
             First
           </button>
-        ) : null}
+        )}
+        {currentPage > 1 && (
+          <button onClick={() => onPaging(currentPage - 1)}>Previous</button>
+        )}
         {Array.from({ length: lastPage }, (_, i) => {
           const page = i + 1;
           return (
@@ -41,18 +42,19 @@ export function Pagination({
             </>
           );
         })}
-        {currentPage !== lastPage ? (
+        {currentPage < lastPage && (
+          <button onClick={() => onPaging(currentPage + 1)}>Next</button>
+        )}
+        {currentPage < lastPage && (
           <button
-            key="last"
             onClick={() => onPaging(lastPage)}
             style={{
               fontWeight: currentPage === lastPage ? 'bold' : 'normal',
             }}
-            className={currentPage === lastPage ? 'current' : ''}
           >
             Last
           </button>
-        ) : null}
+        )}
       </div>
     </>
   );
