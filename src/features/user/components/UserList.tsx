@@ -1,4 +1,14 @@
 import type { User } from '@/features/user/types';
+import {
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Button,
+  TableContainer,
+  Paper,
+} from '@mui/material';
 
 type UserListProps = {
   users: User[];
@@ -6,35 +16,54 @@ type UserListProps = {
 
 export function UserList({ users }: UserListProps) {
   return (
-    <>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>氏名</th>
-            <th>メール</th>
-            <th>誕生日</th>
-          </tr>
-        </thead>
-        <tbody>
+    <TableContainer component={Paper}>
+      <Table size="small">
+        <TableHead>
+          <TableRow>
+            <TableCell>ID</TableCell>
+            <TableCell>氏名</TableCell>
+            <TableCell>メール</TableCell>
+            <TableCell>誕生日</TableCell>
+            <TableCell>操作</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {users.map((user) => {
             return (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>
+              <TableRow
+                hover
+                key={user.id}
+                sx={{
+                  cursor: 'pointer',
+                  '&:hover': {
+                    backgroundColor: '#f5f5f5',
+                  },
+                }}
+              >
+                <TableCell>{user.id}</TableCell>
+                <TableCell>
                   {user.lastName} {user.firstName}
-                </td>
-                <td>{user.email}</td>
-                <td>{user.birthday}</td>
-                <td>
-                  <button className="edit">編集</button>
-                  <button className="delete">削除</button>
-                </td>
-              </tr>
+                </TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>{user.birthday}</TableCell>
+                <TableCell>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{ mr: 1 }}
+                    size="small"
+                  >
+                    編集
+                  </Button>
+                  <Button variant="outlined" color="error" size="small">
+                    削除
+                  </Button>
+                </TableCell>
+              </TableRow>
             );
           })}
-        </tbody>
-      </table>
-    </>
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }

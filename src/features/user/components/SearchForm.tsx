@@ -1,4 +1,5 @@
 import type { UserSearchCondition } from '@/features/user/types';
+import { TextField, Button, Stack } from '@mui/material';
 
 type SearchFormProps = {
   condition: UserSearchCondition;
@@ -7,51 +8,21 @@ type SearchFormProps = {
 };
 
 export function SearchForm({ condition, onChange, onSearch }: SearchFormProps) {
-  function handleChange(key: keyof UserSearchCondition, value: string): void {
-    const newCondition = { ...condition, [key]: value };
-    onChange(newCondition);
-  }
   return (
-    <>
-      <table>
-        <tbody>
-          <tr>
-            <th>氏名</th>
-            <td>
-              <input
-                type="text"
-                name="name"
-                value={condition.name ?? ''}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  handleChange(
-                    e.target.name as keyof UserSearchCondition,
-                    e.target.value,
-                  )
-                }
-              />
-            </td>
-            <th>メール</th>
-            <td>
-              <input
-                type="text"
-                name="email"
-                value={condition.email ?? ''}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  handleChange(
-                    e.target.name as keyof UserSearchCondition,
-                    e.target.value,
-                  )
-                }
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div className="search-container">
-        <button className="search" onClick={() => onSearch()}>
-          検索
-        </button>
-      </div>
-    </>
+    <Stack spacing={2}>
+      <TextField
+        label="氏名"
+        value={condition.name ?? ''}
+        onChange={(e) => onChange({ ...condition, name: e.target.value })}
+      />
+      <TextField
+        label="メール"
+        value={condition.email ?? ''}
+        onChange={(e) => onChange({ ...condition, email: e.target.value })}
+      />
+      <Button variant="contained" onClick={onSearch}>
+        検索
+      </Button>
+    </Stack>
   );
 }

@@ -3,7 +3,7 @@ import { users } from '@/features/user/types';
 import { UserList, SearchForm } from '@/features/user/components';
 import type { UserSearchCondition, User } from '@/features/user/types';
 import { isMatch } from '@/utils';
-import { Pagination } from '@/components';
+import { Pagination, Box } from '@mui/material';
 
 export default function UserListPage() {
   const [condition, setCondition] = useState<UserSearchCondition>({});
@@ -46,11 +46,13 @@ export default function UserListPage() {
       <hr />
       <h2>検索結果</h2>
       <UserList users={paginatedUsers} />
-      <Pagination
-        currentPage={page}
-        lastPage={lastPage}
-        onPaging={handlePaging}
-      />
+      <Box display="flex" justifyContent="center" mt={2}>
+        <Pagination
+          count={lastPage}
+          page={page}
+          onChange={(_, value) => handlePaging(value)}
+        />
+      </Box>
     </>
   );
 }
