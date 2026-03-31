@@ -9,12 +9,14 @@ import {
   TableContainer,
   Paper,
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 type UserListProps = {
   users: User[];
 };
 
 export function UserList({ users }: UserListProps) {
+  const navigate = useNavigate();
   return (
     <TableContainer component={Paper}>
       <Table size="small">
@@ -39,6 +41,7 @@ export function UserList({ users }: UserListProps) {
                     backgroundColor: '#f5f5f5',
                   },
                 }}
+                onClick={() => navigate(`/users/${user.id}`)}
               >
                 <TableCell>{user.id}</TableCell>
                 <TableCell>
