@@ -54,3 +54,19 @@ type YYYY = `${number}${number}${number}${number}`;
  * - 妥当性チェックは別途バリデーションで行う
  */
 export type YMD = `${YYYY}-${MM}-${DD}`;
+
+/**
+ * 誕生日から年齢を計算する
+ * @param birthday 誕生日(Y-m-d)
+ * @returns number
+ */
+export function getAge(birthday: YMD): number {
+  const today = new Date();
+  const birthDate = new Date(birthday);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+}

@@ -57,6 +57,7 @@ export function UserList({ users }: UserListProps) {
                     size="small"
                     onClick={(e) => {
                       e.stopPropagation();
+                      navigate(`/users/${user.id}/edit`);
                     }}
                   >
                     編集

@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { users } from '@/features/user/types';
 import { Grid, Typography, Paper, Box, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { getAge } from '@/types';
 
 export default function UserDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -24,7 +25,6 @@ export default function UserDetailPage() {
     borderColor: 'divider',
   };
   const navigate = useNavigate();
-
   return (
     <>
       <Paper sx={{ p: 2 }}>
@@ -36,6 +36,14 @@ export default function UserDetailPage() {
             { label: '名前', value: `${user.lastName} ${user.firstName}` },
             { label: 'メール', value: user.email },
             { label: '誕生日', value: user.birthday },
+            { label: '年齢', value: getAge(user.birthday) },
+            {
+              label: '登録日',
+              value:
+                user.createdAt.toLocaleDateString() +
+                ' ' +
+                user.createdAt.toLocaleTimeString(),
+            },
           ].map((row, i, rows) => (
             <Grid
               container
