@@ -72,7 +72,6 @@ export default function UserDetailPage() {
         <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
           <Button
             variant="outlined"
-            sx={{ mt: 2 }}
             onClick={() => {
               navigate(-1);
             }}
@@ -82,7 +81,6 @@ export default function UserDetailPage() {
           <Button
             variant="contained"
             color="primary"
-            sx={{ mt: 2, ml: 1 }}
             onClick={() => {
               navigate(`/users/${user.id}/edit`);
             }}

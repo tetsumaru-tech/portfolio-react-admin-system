@@ -4,7 +4,7 @@ import { users } from '@/features/user/types';
 import { Grid, Typography, Paper, Box, Button, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-import type { User, UserFormData } from '@/features/user/types';
+import type { UserFormData } from '@/features/user/types';
 
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -38,13 +38,11 @@ export default function UserDetailEdit() {
       alert('すべてのフィールドを入力してください。');
       return;
     }
-    const formData: UserFormData = {
-      lastName: form.lastName,
-      firstName: form.firstName,
-      email: form.email,
-      birthday: form.birthday,
-    };
-    navigate(`/users/${user.id}/confirm`, { state: { formData } });
+    if (!/^\S+@\S+\.\S+$/.test(form.email)) {
+      alert('有効なメールアドレスを入力してください。');
+      return;
+    }
+    navigate(`/users/${user.id}/confirm`, { state: { form } });
   }
 
   const gridItemStyleLabel = {
@@ -66,25 +64,30 @@ export default function UserDetailEdit() {
     type?: 'date';
   };
 
+  const rows: Row[] = [
+    { key: 'lastName', label: '性', value: form.lastName },
+    { key: 'firstName', label: '名', value: form.firstName },
+    { key: 'email', label: 'メール', value: form.email },
+    {
+      key: 'birthday',
+      label: '誕生日',
+      value: form.birthday,
+      type: 'date',
+    },
+  ];
+
   return (
     <>
       <Paper sx={{ p: 2 }}>
         <Typography variant="h6" gutterBottom>
           ユーザー編集
         </Typography>
+        <Typography variant="body2" color="text.secondary">
+          内容を編集して確認へ進んでください
+        </Typography>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <Box border={1} borderColor="divider">
-            {[
-              { key: 'lastName', label: '性', value: form.lastName } as Row,
-              { key: 'firstName', label: '名', value: form.firstName } as Row,
-              { key: 'email', label: 'メール', value: form.email } as Row,
-              {
-                key: 'birthday',
-                label: '誕生日',
-                value: form.birthday,
-                type: 'date',
-              } as Row,
-            ].map((row, i, rows) => (
+            {rows.map((row, i, rows) => (
               <Grid
                 container
                 key={row.key}
@@ -109,6 +112,7 @@ export default function UserDetailEdit() {
                       value={row.value ? dayjs(row.value) : null}
                       format="YYYY-MM-DD"
                       disableFuture
+                      slotProps={{ textField: { fullWidth: true } }}
                       onChange={(newValue) => {
                         handleChange(
                           row.key,
@@ -134,7 +138,6 @@ export default function UserDetailEdit() {
         <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
           <Button
             variant="outlined"
-            sx={{ mt: 2 }}
             onClick={() => navigate(`/users/${user.id}`)}
           >
             戻る
@@ -142,8 +145,12 @@ export default function UserDetailEdit() {
           <Button
             variant="contained"
             color="primary"
-            sx={{ mt: 2, ml: 1 }}
             onClick={() => handleSubmit()}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSubmit();
+              }
+            }}
           >
             確認
           </Button>
