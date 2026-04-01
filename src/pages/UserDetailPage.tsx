@@ -69,25 +69,27 @@ export default function UserDetailPage() {
             </Grid>
           ))}
         </Box>
-        <Button
-          variant="outlined"
-          sx={{ mt: 2 }}
-          onClick={() => {
-            navigate(-1);
-          }}
-        >
-          戻る
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{ mt: 2, ml: 1 }}
-          onClick={() => {
-            navigate(`/users/${user.id}/edit`);
-          }}
-        >
-          編集
-        </Button>
+        <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
+          <Button
+            variant="outlined"
+            sx={{ mt: 2 }}
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            戻る
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ mt: 2, ml: 1 }}
+            onClick={() => {
+              navigate(`/users/${user.id}/edit`);
+            }}
+          >
+            編集
+          </Button>
+        </Box>
       </Paper>
     </>
   );
