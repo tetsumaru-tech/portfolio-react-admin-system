@@ -55,6 +55,9 @@ export function UserList({ users }: UserListProps) {
                     color="primary"
                     sx={{ mr: 1 }}
                     size="small"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
                   >
                     編集
                   </Button>
