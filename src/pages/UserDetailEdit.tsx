@@ -42,7 +42,7 @@ export default function UserDetailEdit() {
       alert('有効なメールアドレスを入力してください。');
       return;
     }
-    navigate(`/users/${user.id}/confirm`, { state: { form } });
+    navigate(`/users/${userId}/confirm`, { state: { form } });
   }
 
   const gridItemStyleLabel = {
@@ -85,76 +85,79 @@ export default function UserDetailEdit() {
         <Typography variant="body2" color="text.secondary">
           内容を編集して確認へ進んでください
         </Typography>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <Box border={1} borderColor="divider">
-            {rows.map((row, i, rows) => (
-              <Grid
-                container
-                key={row.key}
-                sx={{
-                  '&:hover': {
-                    backgroundColor: 'action.hover',
-                  },
-                }}
-              >
-                <Grid size={{ xs: 12, md: 3 }} sx={gridItemStyleLabel}>
-                  <Typography variant="subtitle2">{row.label}</Typography>
-                </Grid>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit();
+          }}
+        >
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <Box border={1} borderColor="divider">
+              {rows.map((row, i, rows) => (
                 <Grid
-                  size={{ xs: 12, md: 9 }}
+                  container
+                  key={row.key}
                   sx={{
-                    ...gridItemStyleValue,
-                    borderBottom: i === rows.length - 1 ? 0 : 1,
+                    '&:hover': {
+                      backgroundColor: 'action.hover',
+                    },
                   }}
                 >
-                  {row['type'] === 'date' ? (
-                    <DatePicker
-                      value={row.value ? dayjs(row.value) : null}
-                      format="YYYY-MM-DD"
-                      disableFuture
-                      slotProps={{ textField: { fullWidth: true } }}
-                      onChange={(newValue) => {
-                        handleChange(
-                          row.key,
-                          newValue ? newValue.format('YYYY-MM-DD') : '',
-                        );
-                      }}
-                    />
-                  ) : (
-                    <TextField
-                      fullWidth
-                      value={row.value}
-                      onChange={(e) => {
-                        handleChange(row.key, e.target.value);
-                      }}
-                    />
-                  )}
+                  <Grid size={{ xs: 12, md: 3 }} sx={gridItemStyleLabel}>
+                    <Typography variant="subtitle2">{row.label}</Typography>
+                  </Grid>
+                  <Grid
+                    size={{ xs: 12, md: 9 }}
+                    sx={{
+                      ...gridItemStyleValue,
+                      borderBottom: i === rows.length - 1 ? 0 : 1,
+                    }}
+                  >
+                    {row.type === 'date' ? (
+                      <DatePicker
+                        value={row.value ? dayjs(row.value) : null}
+                        format="YYYY-MM-DD"
+                        disableFuture
+                        slotProps={{ textField: { fullWidth: true } }}
+                        onChange={(newValue) => {
+                          handleChange(
+                            row.key,
+                            newValue ? newValue.format('YYYY-MM-DD') : '',
+                          );
+                        }}
+                      />
+                    ) : (
+                      <TextField
+                        fullWidth
+                        value={row.value}
+                        onChange={(e) => {
+                          handleChange(row.key, e.target.value);
+                        }}
+                      />
+                    )}
+                  </Grid>
                 </Grid>
-              </Grid>
-            ))}
-          </Box>
-        </LocalizationProvider>
+              ))}
+            </Box>
+          </LocalizationProvider>
 
-        <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
-          <Button
-            variant="outlined"
-            onClick={() => navigate(`/users/${user.id}`)}
-          >
-            戻る
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => handleSubmit()}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                handleSubmit();
-              }
-            }}
-          >
-            確認
-          </Button>
-        </Box>
+          <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
+            <Button
+              variant="outlined"
+              onClick={() => navigate(`/users/${userId}`)}
+            >
+              戻る
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleSubmit()}
+              type="submit"
+            >
+              確認
+            </Button>
+          </Box>
+        </form>
       </Paper>
     </>
   );
