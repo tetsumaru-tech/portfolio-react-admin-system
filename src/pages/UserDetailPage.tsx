@@ -4,7 +4,7 @@ import { Grid, Typography, Paper, Box, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { getAge } from '@/types';
 
-export default function UserDetailPage() {
+export function UserDetailPage() {
   const { id } = useParams<{ id: string }>();
   const userId = Number(id);
 

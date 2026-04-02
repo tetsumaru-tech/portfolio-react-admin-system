@@ -11,7 +11,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 
-export default function UserDetailEdit() {
+export function UserDetailEditPage() {
   const { id } = useParams<{ id: string }>();
   const userId = Number(id);
 
@@ -149,10 +149,7 @@ export default function UserDetailEdit() {
           </LocalizationProvider>
 
           <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
-            <Button
-              variant="outlined"
-              onClick={() => navigate(`/users/${userId}`)}
-            >
+            <Button variant="outlined" onClick={() => navigate(-1)}>
               戻る
             </Button>
             <Button

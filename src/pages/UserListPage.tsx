@@ -5,7 +5,7 @@ import type { UserSearchCondition, User } from '@/features/user/types';
 import { isMatch } from '@/utils';
 import { Pagination, Box } from '@mui/material';
 
-export default function UserListPage() {
+export function UserListPage() {
   const [condition, setCondition] = useState<UserSearchCondition>({});
   const [filteredUsers, setFilteredUsers] = useState<User[]>(users);
   const [page, setPage] = useState<number>(1);
