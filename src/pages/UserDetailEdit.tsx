@@ -61,13 +61,14 @@ export default function UserDetailEdit() {
     key: keyof UserFormData;
     label: string;
     value: string;
+    maxLength?: number;
     type?: 'date';
   };
 
   const rows: Row[] = [
-    { key: 'lastName', label: '性', value: form.lastName },
-    { key: 'firstName', label: '名', value: form.firstName },
-    { key: 'email', label: 'メール', value: form.email },
+    { key: 'lastName', label: '性', value: form.lastName, maxLength: 10 },
+    { key: 'firstName', label: '名', value: form.firstName, maxLength: 10 },
+    { key: 'email', label: 'メール', value: form.email, maxLength: 100 },
     {
       key: 'birthday',
       label: '誕生日',
@@ -133,6 +134,12 @@ export default function UserDetailEdit() {
                         onChange={(e) => {
                           handleChange(row.key, e.target.value);
                         }}
+                        slotProps={{
+                          htmlInput: {
+                            maxLength: row.maxLength ?? 8,
+                          },
+                        }}
+                        helperText={`${row.value.length}/${row.maxLength}`}
                       />
                     )}
                   </Grid>
