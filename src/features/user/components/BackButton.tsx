@@ -11,7 +11,8 @@ export function BackButton(props: Props) {
     <Button
       variant="outlined"
       sx={{ minWidth: 120 }}
-      onClick={props.onClick ?? (() => navigate(-1))}
+      onClick={() => navigate(-1)}
+      {...props}
     >
       {props.children ?? '戻る'}
     </Button>

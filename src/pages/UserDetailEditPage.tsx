@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, useLocation } from 'react-router-dom';
 import { users } from '@/features/user/types';
-import { Grid, Typography, Paper, Box, Button, TextField } from '@mui/material';
+import { Typography, Paper, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 import type { UserFormData } from '@/features/user/types';
@@ -24,12 +24,14 @@ export function UserDetailEditPage() {
   const { id } = useParams<{ id: string }>();
   const userId = Number(id);
 
+  const location = useLocation();
+
   const user = users.find((u) => u.id === userId);
   if (!user) {
     return <div>ユーザーが見つかりません。</div>;
   }
 
-  const [form, setForm] = useState<UserFormData>({
+  const [formData, setFormData] = useState<UserFormData>({
     lastName: user.lastName,
     firstName: user.firstName,
     email: user.email,
@@ -38,20 +40,32 @@ export function UserDetailEditPage() {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (location.state) {
+      const formData = location.state?.formData as UserFormData;
+      setFormData(formData);
+    }
+  }, [location.state]);
+
   function handleChange(field: keyof UserFormData, value: string): void {
-    setForm((prev) => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   }
 
   function handleSubmit(): void {
-    if (!form.lastName || !form.firstName || !form.email || !form.birthday) {
+    if (
+      !formData.lastName ||
+      !formData.firstName ||
+      !formData.email ||
+      !formData.birthday
+    ) {
       alert('すべてのフィールドを入力してください。');
       return;
     }
-    if (!/^\S+@\S+\.\S+$/.test(form.email)) {
+    if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
       alert('有効なメールアドレスを入力してください。');
       return;
     }
-    navigate(`/users/${userId}/confirm`, { state: { form } });
+    navigate(`/users/${userId}/confirm`, { state: { formData } });
   }
 
   type Row = {
@@ -63,13 +77,13 @@ export function UserDetailEditPage() {
   };
 
   const rows: Row[] = [
-    { key: 'lastName', label: '性', value: form.lastName, maxLength: 10 },
-    { key: 'firstName', label: '名', value: form.firstName, maxLength: 10 },
-    { key: 'email', label: 'メール', value: form.email, maxLength: 100 },
+    { key: 'lastName', label: '性', value: formData.lastName, maxLength: 10 },
+    { key: 'firstName', label: '名', value: formData.firstName, maxLength: 10 },
+    { key: 'email', label: 'メール', value: formData.email, maxLength: 100 },
     {
       key: 'birthday',
       label: '誕生日',
-      value: form.birthday,
+      value: formData.birthday,
       type: 'date',
     },
   ];
@@ -132,7 +146,11 @@ export function UserDetailEditPage() {
             </LocalizationProvider>
           </FormSection>
           <ButtonSection>
-            <BackButton />
+            <BackButton
+              onClick={() => {
+                navigate(`/`);
+              }}
+            />
             <AppButton
               color="primary"
               onClick={() => handleSubmit()}
