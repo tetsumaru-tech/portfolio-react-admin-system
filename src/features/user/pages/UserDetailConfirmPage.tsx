@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { Typography, Paper } from '@mui/material';
+import { Typography, Paper, Alert } from '@mui/material';
 import { getAge } from '@/types';
-import { UserApi } from '@/features/user';
+import { userApi } from '@/features/user';
 import type { UserFormData } from '@/features/user/types';
 import {
   FormSection,
@@ -19,26 +19,44 @@ export function UserDetailConfirmPage() {
   const userId = Number(id);
 
   const location = useLocation();
-  const formData = location.state.formData as UserFormData;
-
   const navigate = useNavigate();
 
+  const formData = location.state?.formData as UserFormData;
+  if (!formData) {
+    navigate(`/users/${userId}/edit`, { replace: true });
+    return null;
+  }
+
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      const res = await UserApi.create(formData);
+      const res = await userApi.create(formData);
       sessionStorage.removeItem('userFormData');
       navigate(`/users/${userId}`, {
         state: { message: 'ユーザー情報を更新しました。' },
       });
     } catch (e) {
-      console.error('Error updating user:', e);
+      setError('ユーザー情報の更新に失敗しました。');
     } finally {
       setLoading(false);
     }
   };
+
+  const rows = useMemo(
+    () => [
+      {
+        label: '名前',
+        value: `${formData.lastName} ${formData.firstName}`,
+      },
+      { label: 'メール', value: formData.email },
+      { label: '誕生日', value: formData.birthday },
+      { label: '年齢', value: getAge(formData.birthday) },
+    ],
+    [formData],
+  );
 
   return (
     <>
@@ -46,16 +64,14 @@ export function UserDetailConfirmPage() {
         <Typography variant="h6" gutterBottom>
           ユーザー確認
         </Typography>
+
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        )}
         <FormSection>
-          {[
-            {
-              label: '名前',
-              value: `${formData.lastName} ${formData.firstName}`,
-            },
-            { label: 'メール', value: formData.email },
-            { label: '誕生日', value: formData.birthday },
-            { label: '年齢', value: getAge(formData.birthday) },
-          ].map((row, i, rows) => (
+          {rows.map((row, i, rows) => (
             <FormRowContainer key={row.label}>
               <FormRow label={row.label} isLast={i === rows.length - 1}>
                 <Typography>{row.value}</Typography>
@@ -65,13 +81,7 @@ export function UserDetailConfirmPage() {
         </FormSection>
         <ButtonSection>
           <BackButton />
-          <AppButton
-            color="primary"
-            onClick={() => {
-              handleSubmit();
-            }}
-            type="submit"
-          >
+          <AppButton color="primary" onClick={handleSubmit} disabled={loading}>
             {loading ? '登録中...' : '登録'}
           </AppButton>
         </ButtonSection>
