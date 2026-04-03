@@ -4,7 +4,7 @@ import {
   UserDetailPage,
   UserDetailEditPage,
   UserDetailConfirmPage,
-} from '@/pages';
+} from '@/features/user/pages';
 
 export default function App() {
   return (
