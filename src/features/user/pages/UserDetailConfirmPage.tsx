@@ -1,8 +1,9 @@
+import { useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Typography, Paper } from '@mui/material';
 import { getAge } from '@/types';
-import { useNavigate } from 'react-router-dom';
-
+import { UserApi } from '@/features/user';
 import type { UserFormData } from '@/features/user/types';
 import {
   FormSection,
@@ -22,12 +23,22 @@ export function UserDetailConfirmPage() {
 
   const navigate = useNavigate();
 
-  function handleSubmit(): void {
-    sessionStorage.removeItem('userFormData');
-    navigate(`/users/${userId}`, {
-      state: { message: 'ユーザー情報を更新しました。' },
-    });
-  }
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
+      const res = await UserApi.create(formData);
+      sessionStorage.removeItem('userFormData');
+      navigate(`/users/${userId}`, {
+        state: { message: 'ユーザー情報を更新しました。' },
+      });
+    } catch (e) {
+      console.error('Error updating user:', e);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -61,7 +72,7 @@ export function UserDetailConfirmPage() {
             }}
             type="submit"
           >
-            登録
+            {loading ? '登録中...' : '登録'}
           </AppButton>
         </ButtonSection>
       </Paper>
