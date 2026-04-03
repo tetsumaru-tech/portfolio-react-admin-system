@@ -31,21 +31,24 @@ export function UserDetailEditPage() {
     return <div>ユーザーが見つかりません。</div>;
   }
 
-  const [formData, setFormData] = useState<UserFormData>({
-    lastName: user.lastName,
-    firstName: user.firstName,
-    email: user.email,
-    birthday: user.birthday,
-  });
+  const saved = sessionStorage.getItem('userFormData');
+
+  const [formData, setFormData] = useState<UserFormData>(
+    saved
+      ? JSON.parse(saved)
+      : {
+          lastName: user.lastName,
+          firstName: user.firstName,
+          email: user.email,
+          birthday: user.birthday,
+        },
+  );
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (location.state) {
-      const formData = location.state?.formData as UserFormData;
-      setFormData(formData);
-    }
-  }, [location.state]);
+    sessionStorage.setItem('userFormData', JSON.stringify(formData));
+  }, [formData]);
 
   function handleChange(field: keyof UserFormData, value: string): void {
     setFormData((prev) => ({ ...prev, [field]: value }));

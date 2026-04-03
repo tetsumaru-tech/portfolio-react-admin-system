@@ -22,6 +22,13 @@ export function UserDetailConfirmPage() {
 
   const navigate = useNavigate();
 
+  function handleSubmit(): void {
+    sessionStorage.removeItem('userFormData');
+    navigate(`/users/${userId}`, {
+      state: { message: 'ユーザー情報を更新しました。' },
+    });
+  }
+
   return (
     <>
       <Paper sx={{ p: 2 }}>
@@ -46,14 +53,14 @@ export function UserDetailConfirmPage() {
           ))}
         </FormSection>
         <ButtonSection>
-          <BackButton
+          <BackButton />
+          <AppButton
+            color="primary"
             onClick={() => {
-              navigate(`/users/${userId}/edit`, {
-                state: { formData: formData },
-              });
+              handleSubmit();
             }}
-          />
-          <AppButton color="primary" onClick={() => {}} type="submit">
+            type="submit"
+          >
             登録
           </AppButton>
         </ButtonSection>
