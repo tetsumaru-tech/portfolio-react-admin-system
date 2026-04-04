@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Paper, Alert } from '@mui/material';
@@ -17,23 +17,27 @@ import {
 export function UserDetailConfirmPage() {
   const { id } = useParams<{ id: string }>();
   const userId = Number(id);
+  if (!userId) return null;
 
   const location = useLocation();
   const navigate = useNavigate();
 
   const formData = location.state?.formData as UserFormData;
-  if (!formData) {
-    navigate(`/users/${userId}/edit`, { replace: true });
-    return null;
-  }
+  useEffect(() => {
+    if (!formData) {
+      navigate(`/users/${userId}/edit`, { replace: true });
+    }
+  }, [formData, navigate, userId]);
+  if (!formData) return null;
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async () => {
     try {
+      setError(null);
       setLoading(true);
-      const res = await userApi.create(formData);
+      await userApi.create(formData);
       sessionStorage.removeItem('userFormData');
       navigate(`/users/${userId}`, {
         state: { message: 'ユーザー情報を更新しました。' },
