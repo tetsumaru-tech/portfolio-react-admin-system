@@ -24,16 +24,19 @@ export function UserDetailConfirmPage() {
 
   const formData = location.state?.formData as UserFormData;
   useEffect(() => {
-    if (!formData) {
+    if (formData === undefined) {
       navigate(`/users/${userId}/edit`, { replace: true });
     }
   }, [formData, navigate, userId]);
-  if (!formData) return null;
+  if (!formData || typeof formData !== 'object') {
+    return null;
+  }
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async () => {
+    if (loading) return; // 多重クリック防止
     try {
       setError(null);
       setLoading(true);
@@ -84,7 +87,7 @@ export function UserDetailConfirmPage() {
           ))}
         </FormSection>
         <ButtonSection>
-          <BackButton />
+          <BackButton disabled={loading} />
           <AppButton color="primary" onClick={handleSubmit} disabled={loading}>
             {loading ? '登録中...' : '登録'}
           </AppButton>
