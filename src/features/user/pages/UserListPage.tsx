@@ -1,11 +1,26 @@
-import { useState } from 'react';
-import { users } from '@/features/user/types';
-import { UserList, SearchForm } from '@/features/user/components';
+import { useEffect, useState } from 'react';
+import { ErrorMessage } from '@/components';
+import { UserList, SearchForm, AppButton } from '@/features/user/components';
 import type { UserSearchCondition, User } from '@/features/user/types';
 import { isMatch } from '@/utils';
 import { Pagination, Box } from '@mui/material';
+import { userApi } from '@/features/user';
+import { useNavigate } from 'react-router-dom';
 
 export function UserListPage() {
+  const [users, setUsers] = useState<User[]>([]);
+  useEffect(() => {
+    const fetch = async () => {
+      const data = await userApi.getList();
+      setUsers(data);
+    };
+    fetch();
+  }, []);
+
+  useEffect(() => {
+    setFilteredUsers(users);
+  }, [users]);
+
   const [condition, setCondition] = useState<UserSearchCondition>({});
   const [filteredUsers, setFilteredUsers] = useState<User[]>(users);
   const [page, setPage] = useState<number>(1);
@@ -13,6 +28,9 @@ export function UserListPage() {
   const startIndex = (page - 1) * perPage;
   const paginatedUsers = filteredUsers.slice(startIndex, startIndex + perPage);
   const lastPage = Math.ceil(filteredUsers.length / perPage);
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   function handleSearch(): void {
     setFilteredUsers(
@@ -34,9 +52,12 @@ export function UserListPage() {
     setPage(page);
   }
 
+  const navigate = useNavigate();
+
   return (
     <>
       <h1>User List</h1>
+      <ErrorMessage message={error} />
       <h2>検索条件</h2>
       <SearchForm
         condition={condition}
@@ -45,7 +66,22 @@ export function UserListPage() {
       />
       <hr />
       <h2>検索結果</h2>
-      <UserList users={paginatedUsers} />
+      <AppButton
+        variant="contained"
+        color="primary"
+        onClick={() => {
+          navigate('/users/new');
+        }}
+        sx={{ mb: 2 }}
+      >
+        新規作成
+      </AppButton>
+      <UserList
+        users={paginatedUsers}
+        loading={loading}
+        setLoading={setLoading}
+        setError={setError}
+      />
       <Box display="flex" justifyContent="center" mt={2}>
         <Pagination
           count={lastPage}

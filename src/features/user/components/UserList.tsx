@@ -10,13 +10,37 @@ import {
   Paper,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { userApi } from '../api';
 
 type UserListProps = {
   users: User[];
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
+  setError: (error: string | null) => void;
 };
 
-export function UserList({ users }: UserListProps) {
+export function UserList({
+  users,
+  loading,
+  setLoading,
+  setError,
+}: UserListProps) {
   const navigate = useNavigate();
+  const handleDelete = async (userId: Number) => {
+    if (loading) return; // 多重クリック防止
+    try {
+      setError(null);
+      setLoading(true);
+      if (confirm('削除しますか？')) {
+        await userApi.delete(userId);
+        navigate(0); // 画面をリロードして最新のユーザーリストを表示
+      }
+    } catch (e) {
+      setError('ユーザー情報の削除に失敗しました。');
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <TableContainer component={Paper}>
       <Table size="small">
@@ -59,10 +83,20 @@ export function UserList({ users }: UserListProps) {
                       e.stopPropagation();
                       navigate(`/users/${user.id}/edit`);
                     }}
+                    disabled={loading}
                   >
                     編集
                   </Button>
-                  <Button variant="outlined" color="error" size="small">
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    size="small"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDelete(Number(user.id));
+                    }}
+                    disabled={loading}
+                  >
                     削除
                   </Button>
                 </TableCell>

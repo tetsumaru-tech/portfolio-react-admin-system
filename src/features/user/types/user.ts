@@ -1,7 +1,7 @@
 import type { YMD } from '@/types';
 
 export type User = {
-  id: number;
+  id: number | null;
   lastName: string;
   firstName: string;
   email: string;

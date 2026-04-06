@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { users } from '@/features/user/types';
+import type { User } from '@/features/user/types';
 import { Typography, Paper, TextField } from '@mui/material';
+import { userApi } from '@/features/user';
 import { useNavigate } from 'react-router-dom';
 
 import type { UserFormData } from '@/features/user/types';
@@ -22,27 +24,32 @@ import {
 
 export function UserDetailEditPage() {
   const { id } = useParams<{ id: string }>();
-  const userId = Number(id);
+  const userId = Number(id ?? '');
+  const isAdd = userId === 0;
 
-  const location = useLocation();
+  const [formData, setFormData] = useState<UserFormData>({
+    id: null,
+    lastName: '',
+    firstName: '',
+    email: '',
+    birthday: '2000-01-01',
+  });
 
-  const user = users.find((u) => u.id === userId);
-  if (!user) {
-    return <div>ユーザーが見つかりません。</div>;
-  }
-
-  const saved = sessionStorage.getItem('userFormData');
-
-  const [formData, setFormData] = useState<UserFormData>(
-    saved
-      ? JSON.parse(saved)
-      : {
-          lastName: user.lastName,
-          firstName: user.firstName,
-          email: user.email,
-          birthday: user.birthday,
-        },
-  );
+  useEffect(() => {
+    const fetch = async () => {
+      const data = await userApi.getUser(userId);
+      if (data) {
+        setFormData({
+          id: data.id,
+          lastName: data.lastName,
+          firstName: data.firstName,
+          email: data.email,
+          birthday: data.birthday,
+        });
+      }
+    };
+    fetch();
+  }, [userId]);
 
   const navigate = useNavigate();
 
@@ -68,7 +75,11 @@ export function UserDetailEditPage() {
       alert('有効なメールアドレスを入力してください。');
       return;
     }
-    navigate(`/users/${userId}/confirm`, { state: { formData } });
+    if (isAdd) {
+      navigate(`/users/new/confirm`, { state: { formData } });
+    } else {
+      navigate(`/users/${userId}/confirm`, { state: { formData } });
+    }
   }
 
   type Row = {
@@ -95,7 +106,7 @@ export function UserDetailEditPage() {
     <>
       <Paper sx={{ p: 2 }}>
         <Typography variant="h6" gutterBottom>
-          ユーザー編集
+          {isAdd ? 'ユーザー作成' : 'ユーザー編集'}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           内容を編集して確認へ進んでください

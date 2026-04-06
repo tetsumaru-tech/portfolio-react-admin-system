@@ -17,8 +17,6 @@ import {
 export function UserDetailConfirmPage() {
   const { id } = useParams<{ id: string }>();
   const userId = Number(id);
-  if (!userId) return null;
-
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -31,6 +29,7 @@ export function UserDetailConfirmPage() {
   if (!formData || typeof formData !== 'object') {
     return null;
   }
+  const isAdd = formData.id === null;
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -40,9 +39,11 @@ export function UserDetailConfirmPage() {
     try {
       setError(null);
       setLoading(true);
-      await userApi.create(formData);
+      isAdd
+        ? await userApi.create(formData)
+        : await userApi.update(userId, formData);
       sessionStorage.removeItem('userFormData');
-      navigate(`/users/${userId}`, {
+      navigate(`/users`, {
         state: { message: 'ユーザー情報を更新しました。' },
       });
     } catch (e) {

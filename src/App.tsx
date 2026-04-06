@@ -11,7 +11,9 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<UserListPage />} />
+        <Route path="/users" element={<UserListPage />} />
         <Route path="/users/:id" element={<UserDetailPage />} />
+        <Route path="/users/new" element={<UserDetailEditPage />} />
         <Route path="/users/:id/edit" element={<UserDetailEditPage />} />
         <Route path="/users/:id/confirm" element={<UserDetailConfirmPage />} />
       </Routes>
