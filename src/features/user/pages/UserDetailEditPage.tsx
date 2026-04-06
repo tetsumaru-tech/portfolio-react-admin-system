@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
-import { users } from '@/features/user/types';
-import type { User } from '@/features/user/types';
+import { useParams } from 'react-router-dom';
 import { Typography, Paper, TextField } from '@mui/material';
-import { userApi } from '@/features/user';
+import { userApi, USER_FORM_STORAGE_KEY } from '@/features/user';
 import { useNavigate } from 'react-router-dom';
 
 import type { UserFormData } from '@/features/user/types';
@@ -27,15 +25,30 @@ export function UserDetailEditPage() {
   const userId = Number(id ?? '');
   const isAdd = userId === 0;
 
-  const [formData, setFormData] = useState<UserFormData>({
-    id: null,
-    lastName: '',
-    firstName: '',
-    email: '',
-    birthday: '2000-01-01',
-  });
+  const getInitialFormData = (): UserFormData => {
+    const saved = sessionStorage.getItem(USER_FORM_STORAGE_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      console.log('isAdd:' + isAdd, parsed.id, userId);
+      if (parsed.id === null) {
+        sessionStorage.removeItem(USER_FORM_STORAGE_KEY);
+        return parsed;
+      }
+      if (!isAdd && parsed.id === userId) return parsed;
+    }
+    return {
+      id: null,
+      lastName: '',
+      firstName: '',
+      email: '',
+      birthday: '2000-01-01',
+    };
+  };
+  const [formData, setFormData] = useState<UserFormData>(getInitialFormData);
 
   useEffect(() => {
+    const saved = sessionStorage.getItem(USER_FORM_STORAGE_KEY);
+    if (saved) return;
     const fetch = async () => {
       const data = await userApi.getUser(userId);
       if (data) {
@@ -54,7 +67,7 @@ export function UserDetailEditPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    sessionStorage.setItem('userFormData', JSON.stringify(formData));
+    sessionStorage.setItem(USER_FORM_STORAGE_KEY, JSON.stringify(formData));
   }, [formData]);
 
   function handleChange(field: keyof UserFormData, value: string): void {

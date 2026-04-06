@@ -1,7 +1,7 @@
 import type { User, UserFormData } from '@/features/user/types';
 import { users } from '@/features/user/types';
 
-const STORAGE_KEY = 'users';
+export const USER_STORAGE_KEY = 'users';
 
 const getUserById = (id: Number) => {
   const users = getUsers();
@@ -9,12 +9,12 @@ const getUserById = (id: Number) => {
 };
 
 const getUsers = () => {
-  const data = localStorage.getItem(STORAGE_KEY);
+  const data = localStorage.getItem(USER_STORAGE_KEY);
   return data ? (JSON.parse(data) as User[]) : users;
 };
 
 const saveUsers = (users: User[]) => {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+  localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(users));
 };
 
 export const userApi = {

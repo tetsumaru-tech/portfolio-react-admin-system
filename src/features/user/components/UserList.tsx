@@ -10,7 +10,7 @@ import {
   Paper,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { userApi } from '../api';
+import { userApi } from '@/features/user';
 
 type UserListProps = {
   users: User[];

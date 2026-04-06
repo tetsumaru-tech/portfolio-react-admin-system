@@ -3,7 +3,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Paper, Alert } from '@mui/material';
 import { getAge } from '@/types';
-import { userApi } from '@/features/user';
+import { userApi, USER_FORM_STORAGE_KEY } from '@/features/user';
 import type { UserFormData } from '@/features/user/types';
 import {
   FormSection,
@@ -42,7 +42,7 @@ export function UserDetailConfirmPage() {
       isAdd
         ? await userApi.create(formData)
         : await userApi.update(userId, formData);
-      sessionStorage.removeItem('userFormData');
+      sessionStorage.removeItem(USER_FORM_STORAGE_KEY);
       navigate(`/users`, {
         state: { message: 'ユーザー情報を更新しました。' },
       });
