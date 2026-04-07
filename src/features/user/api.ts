@@ -1,4 +1,9 @@
-import type { User, UserFormData } from '@/features/user/types';
+import type {
+  User,
+  UserFormData,
+  CreateUserInput,
+  UpdateUserInput,
+} from '@/features/user/types';
 import { users } from '@/features/user/types';
 
 export const USER_STORAGE_KEY = 'users';
@@ -26,7 +31,7 @@ export const userApi = {
     return getUsers();
   },
 
-  create: async (data: UserFormData): Promise<User> => {
+  create: async (data: CreateUserInput): Promise<User> => {
     await new Promise((r) => setTimeout(r, 300)); // 疑似通信
     const users = getUsers();
     const newUser: User = {
@@ -41,7 +46,7 @@ export const userApi = {
     return newUser;
   },
 
-  update: async (id: Number, data: UserFormData): Promise<void> => {
+  update: async (id: Number, data: UpdateUserInput): Promise<void> => {
     const users = getUsers();
     const updated = users.map((u: User) =>
       u.id === id ? { ...u, ...data, UpdatedAt: new Date() } : u,
