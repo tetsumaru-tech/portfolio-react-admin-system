@@ -5,6 +5,7 @@ import { Typography, Paper, Alert } from '@mui/material';
 import { getAge } from '@/types';
 import { userApi, USER_FORM_STORAGE_KEY } from '@/features/user';
 import type { UserFormData } from '@/features/user/types';
+
 import {
   FormSection,
   FormRowContainer,
@@ -20,15 +21,15 @@ export function UserDetailConfirmPage() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const formData = location.state?.formData as UserFormData;
+  const formData = location.state?.formData;
+  if (!formData || typeof formData !== 'object') {
+    return null;
+  }
   useEffect(() => {
     if (formData === undefined) {
       navigate(`/users/${userId}/edit`, { replace: true });
     }
   }, [formData, navigate, userId]);
-  if (!formData || typeof formData !== 'object') {
-    return null;
-  }
   const isAdd = formData.id === null;
 
   const [loading, setLoading] = useState(false);
@@ -44,10 +45,18 @@ export function UserDetailConfirmPage() {
         : await userApi.update(userId, formData);
       sessionStorage.removeItem(USER_FORM_STORAGE_KEY);
       navigate(`/users`, {
-        state: { message: 'ユーザー情報を更新しました。' },
+        state: {
+          message: isAdd
+            ? 'ユーザーを登録しました'
+            : 'ユーザー情報を更新しました。',
+        },
       });
     } catch (e) {
-      setError('ユーザー情報の更新に失敗しました。');
+      setError(
+        isAdd
+          ? 'ユーザー情報の登録に失敗しました。'
+          : 'ユーザー情報の更新に失敗しました。',
+      );
     } finally {
       setLoading(false);
     }

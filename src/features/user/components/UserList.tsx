@@ -10,7 +10,7 @@ import {
   Paper,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { userApi } from '@/features/user';
+import { userApi, USER_FORM_STORAGE_KEY } from '@/features/user';
 
 type UserListProps = {
   users: User[];
@@ -81,6 +81,7 @@ export function UserList({
                     size="small"
                     onClick={(e) => {
                       e.stopPropagation();
+                      sessionStorage.removeItem(USER_FORM_STORAGE_KEY);
                       navigate(`/users/${user.id}/edit`);
                     }}
                     disabled={loading}

@@ -3,14 +3,19 @@ import { users } from '@/features/user/types';
 
 export const USER_STORAGE_KEY = 'users';
 
-const getUserById = (id: Number) => {
+const getUserById = (id: Number): User | undefined => {
   const users = getUsers();
   return users.find((user) => user.id === id);
 };
 
 const getUsers = () => {
   const data = localStorage.getItem(USER_STORAGE_KEY);
-  return data ? (JSON.parse(data) as User[]) : users;
+  return data
+    ? (JSON.parse(data) as User[]).map((u) => {
+        u.createdAt = new Date(u.createdAt);
+        return u;
+      })
+    : users;
 };
 
 const saveUsers = (users: User[]) => {

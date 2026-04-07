@@ -4,7 +4,7 @@ import { UserList, SearchForm, AppButton } from '@/features/user/components';
 import type { UserSearchCondition, User } from '@/features/user/types';
 import { isMatch } from '@/utils';
 import { Pagination, Box } from '@mui/material';
-import { userApi } from '@/features/user';
+import { userApi, USER_FORM_STORAGE_KEY } from '@/features/user';
 import { useNavigate } from 'react-router-dom';
 
 export function UserListPage() {
@@ -70,6 +70,7 @@ export function UserListPage() {
         variant="contained"
         color="primary"
         onClick={() => {
+          sessionStorage.removeItem(USER_FORM_STORAGE_KEY);
           navigate('/users/new');
         }}
         sx={{ mb: 2 }}

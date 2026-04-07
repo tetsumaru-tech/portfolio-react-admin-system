@@ -1,8 +1,12 @@
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { users } from '@/features/user/types';
+// import { users } from '@/features/user/types';
 import { Grid, Typography, Paper, Box, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { getAge } from '@/types';
+import { userApi, USER_FORM_STORAGE_KEY } from '@/features/user';
+import type { User } from '@/features/user/types';
+
 import {
   FormSection,
   FormRowContainer,
@@ -15,11 +19,14 @@ import {
 export function UserDetailPage() {
   const { id } = useParams<{ id: string }>();
   const userId = Number(id);
-
-  const user = users.find((u) => u.id === userId);
-  if (!user) {
-    return <div>ユーザーが見つかりません。</div>;
-  }
+  const [user, setUser] = useState<User | undefined>(undefined);
+  useEffect(() => {
+    const fetch = async () => {
+      const data = await userApi.getUser(userId);
+      setUser(data);
+    };
+    fetch();
+  }, [userId]);
 
   const navigate = useNavigate();
   return (
@@ -29,32 +36,35 @@ export function UserDetailPage() {
           ユーザー詳細
         </Typography>
         <FormSection>
-          {[
-            { label: '名前', value: `${user.lastName} ${user.firstName}` },
-            { label: 'メール', value: user.email },
-            { label: '誕生日', value: user.birthday },
-            { label: '年齢', value: getAge(user.birthday) },
-            {
-              label: '登録日',
-              value:
-                user.createdAt.toLocaleDateString() +
-                ' ' +
-                user.createdAt.toLocaleTimeString(),
-            },
-          ].map((row, i, rows) => (
-            <FormRowContainer key={row.label}>
-              <FormRow label={row.label} isLast={i === rows.length - 1}>
-                <Typography>{row.value}</Typography>
-              </FormRow>
-            </FormRowContainer>
-          ))}
+          {user
+            ? [
+                { label: '名前', value: `${user.lastName} ${user.firstName}` },
+                { label: 'メール', value: user.email },
+                { label: '誕生日', value: user.birthday },
+                { label: '年齢', value: getAge(user.birthday) },
+                {
+                  label: '登録日',
+                  value:
+                    user.createdAt.toLocaleDateString() +
+                    ' ' +
+                    user.createdAt.toLocaleTimeString(),
+                },
+              ].map((row, i, rows) => (
+                <FormRowContainer key={row.label}>
+                  <FormRow label={row.label} isLast={i === rows.length - 1}>
+                    <Typography>{row.value}</Typography>
+                  </FormRow>
+                </FormRowContainer>
+              ))
+            : ''}
         </FormSection>
         <ButtonSection>
           <BackButton />
           <AppButton
             color="primary"
             onClick={() => {
-              navigate(`/users/${user.id}/edit`);
+              sessionStorage.removeItem(USER_FORM_STORAGE_KEY);
+              navigate(`/users/${userId}/edit`);
             }}
           >
             編集

@@ -29,9 +29,7 @@ export function UserDetailEditPage() {
     const saved = sessionStorage.getItem(USER_FORM_STORAGE_KEY);
     if (saved) {
       const parsed = JSON.parse(saved);
-      console.log('isAdd:' + isAdd, parsed.id, userId);
       if (parsed.id === null) {
-        sessionStorage.removeItem(USER_FORM_STORAGE_KEY);
         return parsed;
       }
       if (!isAdd && parsed.id === userId) return parsed;
@@ -42,6 +40,7 @@ export function UserDetailEditPage() {
       firstName: '',
       email: '',
       birthday: '2000-01-01',
+      createdAt: new Date(),
     };
   };
   const [formData, setFormData] = useState<UserFormData>(getInitialFormData);
@@ -58,6 +57,7 @@ export function UserDetailEditPage() {
           firstName: data.firstName,
           email: data.email,
           birthday: data.birthday,
+          createdAt: data.createdAt,
         });
       }
     };
@@ -173,11 +173,7 @@ export function UserDetailEditPage() {
             </LocalizationProvider>
           </FormSection>
           <ButtonSection>
-            <BackButton
-              onClick={() => {
-                navigate(`/`);
-              }}
-            />
+            <BackButton />
             <AppButton
               color="primary"
               onClick={() => handleSubmit()}
