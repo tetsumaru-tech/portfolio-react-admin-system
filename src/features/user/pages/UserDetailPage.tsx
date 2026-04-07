@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 // import { users } from '@/features/user/types';
-import { Grid, Typography, Paper, Box, Button } from '@mui/material';
+import { Typography, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { getAge } from '@/types';
 import { userApi, USER_FORM_STORAGE_KEY } from '@/features/user';
@@ -42,13 +42,6 @@ export function UserDetailPage() {
                 { label: 'メール', value: user.email },
                 { label: '誕生日', value: user.birthday },
                 { label: '年齢', value: getAge(user.birthday) },
-                {
-                  label: '登録日',
-                  value:
-                    user.createdAt.toLocaleDateString() +
-                    ' ' +
-                    user.createdAt.toLocaleTimeString(),
-                },
               ].map((row, i, rows) => (
                 <FormRowContainer key={row.label}>
                   <FormRow label={row.label} isLast={i === rows.length - 1}>

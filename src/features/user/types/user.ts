@@ -7,6 +7,7 @@ export type User = {
   email: string;
   birthday: YMD;
   createdAt: Date;
+  UpdatedAt: Date;
 };
 
 export type UserSearchCondition = {

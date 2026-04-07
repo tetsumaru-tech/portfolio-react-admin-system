@@ -10,12 +10,7 @@ const getUserById = (id: Number): User | undefined => {
 
 const getUsers = () => {
   const data = localStorage.getItem(USER_STORAGE_KEY);
-  return data
-    ? (JSON.parse(data) as User[]).map((u) => {
-        u.createdAt = new Date(u.createdAt);
-        return u;
-      })
-    : users;
+  return data ? (JSON.parse(data) as User[]) : users;
 };
 
 const saveUsers = (users: User[]) => {
@@ -38,6 +33,7 @@ export const userApi = {
       ...data,
       id: users.length > 0 ? Number(users[users.length - 1].id) + 1 : 1,
       createdAt: new Date(),
+      UpdatedAt: new Date(),
     };
 
     const updated = [...users, newUser];
@@ -48,7 +44,7 @@ export const userApi = {
   update: async (id: Number, data: UserFormData): Promise<void> => {
     const users = getUsers();
     const updated = users.map((u: User) =>
-      u.id === id ? { ...u, ...data } : u,
+      u.id === id ? { ...u, ...data, UpdatedAt: new Date() } : u,
     );
     saveUsers(updated);
   },

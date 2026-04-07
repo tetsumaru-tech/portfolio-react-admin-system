@@ -40,7 +40,6 @@ export function UserDetailEditPage() {
       firstName: '',
       email: '',
       birthday: '2000-01-01',
-      createdAt: new Date(),
     };
   };
   const [formData, setFormData] = useState<UserFormData>(getInitialFormData);
@@ -57,7 +56,6 @@ export function UserDetailEditPage() {
           firstName: data.firstName,
           email: data.email,
           birthday: data.birthday,
-          createdAt: data.createdAt,
         });
       }
     };
