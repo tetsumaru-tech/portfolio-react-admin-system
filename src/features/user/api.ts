@@ -1,6 +1,5 @@
 import type {
   User,
-  UserFormData,
   CreateUserInput,
   UpdateUserInput,
 } from '@/features/user/types';
@@ -8,14 +7,23 @@ import { users } from '@/features/user/types';
 
 export const USER_STORAGE_KEY = 'users';
 
-const getUserById = (id: Number): User | undefined => {
+const getUserById = (id: number): User | undefined => {
   const users = getUsers();
   return users.find((user) => user.id === id);
 };
 
 const getUsers = () => {
   const data = localStorage.getItem(USER_STORAGE_KEY);
-  return data ? (JSON.parse(data) as User[]) : users;
+  return data ? parseUsers(data) : users;
+};
+
+const parseUsers = (data: string): User[] => {
+  const parsed = JSON.parse(data);
+  return parsed.map((u: any) => ({
+    ...u,
+    createdAt: new Date(u.createdAt),
+    updateAt: new Date(u.updateAt),
+  }));
 };
 
 const saveUsers = (users: User[]) => {
@@ -23,7 +31,7 @@ const saveUsers = (users: User[]) => {
 };
 
 export const userApi = {
-  getUser: async (id: Number): Promise<User | undefined> => {
+  getUser: async (id: number): Promise<User | undefined> => {
     return getUserById(id);
   },
 
@@ -38,7 +46,7 @@ export const userApi = {
       ...data,
       id: users.length > 0 ? Number(users[users.length - 1].id) + 1 : 1,
       createdAt: new Date(),
-      UpdatedAt: new Date(),
+      updatedAt: new Date(),
     };
 
     const updated = [...users, newUser];
@@ -46,15 +54,15 @@ export const userApi = {
     return newUser;
   },
 
-  update: async (id: Number, data: UpdateUserInput): Promise<void> => {
+  update: async (id: number, data: UpdateUserInput): Promise<void> => {
     const users = getUsers();
     const updated = users.map((u: User) =>
-      u.id === id ? { ...u, ...data, UpdatedAt: new Date() } : u,
+      u.id === id ? { ...u, ...data, updatedAt: new Date() } : u,
     );
     saveUsers(updated);
   },
 
-  delete: async (id: Number): Promise<void> => {
+  delete: async (id: number): Promise<void> => {
     const users = getUsers();
     const updated = users.filter((u: User) => u.id !== id);
     saveUsers(updated);

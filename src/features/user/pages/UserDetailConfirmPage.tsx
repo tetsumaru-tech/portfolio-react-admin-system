@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { Typography, Paper, Alert } from '@mui/material';
 import { getAge } from '@/types';
 import { userApi, USER_FORM_STORAGE_KEY } from '@/features/user';
-import type { UserFormData } from '@/features/user/types';
 
 import {
   FormSection,

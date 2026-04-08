@@ -26,7 +26,7 @@ export function UserList({
   setError,
 }: UserListProps) {
   const navigate = useNavigate();
-  const handleDelete = async (userId: Number) => {
+  const handleDelete = async (userId: number) => {
     if (loading) return; // 多重クリック防止
     try {
       setError(null);
