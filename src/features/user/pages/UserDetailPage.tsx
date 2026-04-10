@@ -4,7 +4,8 @@ import { useParams } from 'react-router-dom';
 import { Typography, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { getAge } from '@/types';
-import { userApi, USER_FORM_STORAGE_KEY } from '@/features/user';
+import { USER_FORM_STORAGE_KEY } from '@/features/user';
+import { userApi } from '@/features/user/api';
 import type { User } from '@/features/user/types';
 
 import {

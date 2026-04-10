@@ -3,7 +3,10 @@ import { useParams, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { Typography, Paper, Alert } from '@mui/material';
 import { getAge } from '@/types';
-import { userApi, USER_FORM_STORAGE_KEY } from '@/features/user';
+import { USER_FORM_STORAGE_KEY } from '@/features/user';
+import { userApi, userMapper } from '@/features/user/api';
+import type { UserFormData } from '@/features/user/types';
+import type { YMD } from '@/types';
 
 import {
   FormSection,
@@ -19,11 +22,15 @@ export function UserDetailConfirmPage() {
   const userId = Number(id);
   const location = useLocation();
   const navigate = useNavigate();
-
-  const formData = location.state?.formData;
+  console.log('confirm page', location.state);
+  const formData: UserFormData = userMapper.fromStorage(
+    location.state?.formData,
+  );
   if (!formData || typeof formData !== 'object') {
     return null;
   }
+  console.log('confirm page formData', formData);
+
   useEffect(() => {
     if (formData === undefined) {
       navigate(`/users/${userId}/edit`, { replace: true });
@@ -40,8 +47,8 @@ export function UserDetailConfirmPage() {
       setError(null);
       setLoading(true);
       isAdd
-        ? await userApi.create(formData)
-        : await userApi.update(userId, formData);
+        ? await userApi.create(userMapper.toCreateInput(formData))
+        : await userApi.update(userId, userMapper.toUpdateInput(formData));
       sessionStorage.removeItem(USER_FORM_STORAGE_KEY);
       navigate(`/users`, {
         state: {
@@ -60,7 +67,6 @@ export function UserDetailConfirmPage() {
       setLoading(false);
     }
   };
-
   const rows = useMemo(
     () => [
       {
@@ -68,8 +74,16 @@ export function UserDetailConfirmPage() {
         value: `${formData.lastName} ${formData.firstName}`,
       },
       { label: 'メール', value: formData.email },
-      { label: '誕生日', value: formData.birthday },
-      { label: '年齢', value: getAge(formData.birthday) },
+      {
+        label: '誕生日',
+        value: formData.birthday.format('YYYY-MM-DD'),
+      },
+      {
+        label: '年齢',
+        value: formData.birthday
+          ? getAge(formData.birthday.format('YYYY-MM-DD') as YMD)
+          : '',
+      },
     ],
     [formData],
   );

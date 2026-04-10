@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Typography, Paper, TextField } from '@mui/material';
-import { userApi, USER_FORM_STORAGE_KEY } from '@/features/user';
+import { USER_FORM_STORAGE_KEY } from '@/features/user';
+import { userApi, userMapper } from '@/features/user/api';
 import { useNavigate } from 'react-router-dom';
 
 import type { UserFormData } from '@/features/user/types';
@@ -10,6 +11,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
+import type { Dayjs } from 'dayjs';
 
 import {
   FormSection,
@@ -30,33 +32,38 @@ export function UserDetailEditPage() {
     if (saved) {
       const parsed = JSON.parse(saved);
       if (parsed.id === null) {
-        return parsed;
+        return userMapper.fromStorage(parsed);
       }
-      if (!isAdd && parsed.id === userId) return parsed;
+      if (!isAdd && parsed.id === userId) return userMapper.fromStorage(parsed);
     }
     return {
       id: null,
       lastName: '',
       firstName: '',
       email: '',
-      birthday: '2000-01-01',
+      birthday: dayjs('2000-01-01'),
     };
   };
   const [formData, setFormData] = useState<UserFormData>(getInitialFormData);
 
   useEffect(() => {
     const saved = sessionStorage.getItem(USER_FORM_STORAGE_KEY);
-    if (saved) return;
+    if (saved) {
+      setFormData(userMapper.fromStorage(JSON.parse(saved)));
+      return;
+    }
     const fetch = async () => {
       const data = await userApi.getUser(userId);
       if (data) {
-        setFormData({
-          id: data.id,
-          lastName: data.lastName,
-          firstName: data.firstName,
-          email: data.email,
-          birthday: data.birthday,
-        });
+        setFormData(
+          userMapper.fromStorage({
+            id: data.id,
+            lastName: data.lastName,
+            firstName: data.firstName,
+            email: data.email,
+            birthday: data.birthday,
+          }),
+        );
       }
     };
     fetch();
@@ -65,11 +72,19 @@ export function UserDetailEditPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    sessionStorage.setItem(USER_FORM_STORAGE_KEY, JSON.stringify(formData));
+    sessionStorage.setItem(
+      USER_FORM_STORAGE_KEY,
+      JSON.stringify(userMapper.toStorage(formData)),
+    );
   }, [formData]);
 
   function handleChange(field: keyof UserFormData, value: string): void {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setFormData((prev) =>
+      userMapper.fromStorage({
+        ...prev,
+        [field]: value,
+      }),
+    );
   }
 
   function handleSubmit(): void {
@@ -87,16 +102,22 @@ export function UserDetailEditPage() {
       return;
     }
     if (isAdd) {
-      navigate(`/users/new/confirm`, { state: { formData } });
+      navigate(`/users/new/confirm`, {
+        state: { formData: userMapper.toStorage(formData) },
+      });
     } else {
-      navigate(`/users/${userId}/confirm`, { state: { formData } });
+          navigate(`/users/${userId}/confirm`, {
+        state: {
+          formData: userMapper.toStorage(formData),
+        },
+      });
     }
   }
 
   type Row = {
     key: keyof UserFormData;
     label: string;
-    value: string;
+    value: string | Dayjs | null;
     maxLength?: number;
     type?: 'date';
   };
@@ -160,7 +181,7 @@ export function UserDetailEditPage() {
                                 maxLength: row.maxLength ?? 8,
                               },
                             }}
-                            helperText={`${row.value.length}/${row.maxLength}`}
+                            helperText={`${String(row.value).length}/${row.maxLength}`}
                           />
                         )}
                       </Typography>
@@ -172,11 +193,7 @@ export function UserDetailEditPage() {
           </FormSection>
           <ButtonSection>
             <BackButton />
-            <AppButton
-              color="primary"
-              onClick={() => handleSubmit()}
-              type="submit"
-            >
+            <AppButton color="primary" onClick={handleSubmit} type="button">
               確認
             </AppButton>
           </ButtonSection>

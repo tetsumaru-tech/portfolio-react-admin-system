@@ -3,6 +3,7 @@ import type {
   CreateUserInput,
   UpdateUserInput,
 } from '@/features/user/types';
+import type { YMD } from '@/types';
 import { users } from '@/features/user/types';
 
 export const USER_STORAGE_KEY = 'users';
@@ -45,6 +46,7 @@ export const userApi = {
     const newUser: User = {
       ...data,
       id: users.length > 0 ? Number(users[users.length - 1].id) + 1 : 1,
+      birthday: data.birthday as YMD,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -57,7 +59,14 @@ export const userApi = {
   update: async (id: number, data: UpdateUserInput): Promise<void> => {
     const users = getUsers();
     const updated = users.map((u: User) =>
-      u.id === id ? { ...u, ...data, updatedAt: new Date() } : u,
+      u.id === id
+        ? {
+            ...u,
+            ...data,
+            birthday: data.birthday as YMD,
+            updatedAt: new Date(),
+          }
+        : u,
     );
     saveUsers(updated);
   },

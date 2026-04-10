@@ -4,7 +4,8 @@ import { UserList, SearchForm, AppButton } from '@/features/user/components';
 import type { UserSearchCondition, User } from '@/features/user/types';
 import { isMatch } from '@/utils';
 import { Pagination, Box } from '@mui/material';
-import { userApi, USER_FORM_STORAGE_KEY } from '@/features/user';
+import { USER_FORM_STORAGE_KEY } from '@/features/user';
+import { userApi } from '@/features/user/api';
 import { useNavigate } from 'react-router-dom';
 
 export function UserListPage() {
