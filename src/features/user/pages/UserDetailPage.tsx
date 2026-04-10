@@ -1,13 +1,10 @@
+import { Typography, Paper } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-// import { users } from '@/features/user/types';
-import { Typography, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { getAge } from '@/types';
+
 import { USER_FORM_STORAGE_KEY } from '@/features/user';
 import { userApi } from '@/features/user/api';
-import type { User } from '@/features/user/types';
-
 import {
   FormSection,
   FormRowContainer,
@@ -16,6 +13,8 @@ import {
   AppButton,
   BackButton,
 } from '@/features/user/components';
+import type { User } from '@/features/user/types';
+import { getAge } from '@/types';
 
 export function UserDetailPage() {
   const { id } = useParams<{ id: string }>();

@@ -1,11 +1,19 @@
+type UserStorage = {
+  id: number | null;
+  lastName: string;
+  firstName: string;
+  email: string;
+  birthday: string;
+};
+
+import dayjs from 'dayjs';
+
 import type {
   User,
   UserFormData,
   CreateUserInput,
   UpdateUserInput,
 } from '@/features/user/types';
-
-import dayjs from 'dayjs';
 
 export const userMapper = {
   // UI → Create
@@ -42,12 +50,32 @@ export const userMapper = {
     };
   },
   // Storage → UI
-  fromStorage(data: any): UserFormData {
-    console.log('fromStorage birthday:', data.birthday);
-    console.log('fromStorage birthday isDayjs:', dayjs.isDayjs(data.birthday));
+  fromStorage(data: unknown): UserFormData {
+    if (!isUserStorage(data)) {
+      throw new Error('Invalid storage data');
+    }
     return {
       ...data,
-      birthday: data.birthday ? dayjs(data.birthday) : null,
+      birthday: data.birthday ? dayjs(data.birthday) : dayjs('2000-01-01'),
     };
   },
 };
+
+function isUserStorage(data: unknown): data is UserStorage {
+  if (typeof data !== 'object' || data === null) return false;
+
+  const d = data as Record<string, unknown>;
+
+  return (
+    'id' in d &&
+    (typeof d.id === 'number' || d.id === null) &&
+    'lastName' in d &&
+    typeof d.lastName === 'string' &&
+    'firstName' in d &&
+    typeof d.firstName === 'string' &&
+    'email' in d &&
+    typeof d.email === 'string' &&
+    'birthday' in d &&
+    (typeof d.birthday === 'string' || d.birthday === null)
+  );
+}

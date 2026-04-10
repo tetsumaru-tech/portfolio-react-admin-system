@@ -1,12 +1,13 @@
+import { Pagination, Box } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { ErrorMessage } from '@/components';
+import { USER_FORM_STORAGE_KEY } from '@/features/user';
+import { userApi } from '@/features/user/api';
 import { UserList, SearchForm, AppButton } from '@/features/user/components';
 import type { UserSearchCondition, User } from '@/features/user/types';
 import { isMatch } from '@/utils';
-import { Pagination, Box } from '@mui/material';
-import { USER_FORM_STORAGE_KEY } from '@/features/user';
-import { userApi } from '@/features/user/api';
-import { useNavigate } from 'react-router-dom';
 
 export function UserListPage() {
   const [users, setUsers] = useState<User[]>([]);
@@ -18,12 +19,13 @@ export function UserListPage() {
     fetch();
   }, []);
 
+  const [filteredUsers, setFilteredUsers] = useState<User[]>(users);
+
   useEffect(() => {
     setFilteredUsers(users);
   }, [users]);
 
   const [condition, setCondition] = useState<UserSearchCondition>({});
-  const [filteredUsers, setFilteredUsers] = useState<User[]>(users);
   const [page, setPage] = useState<number>(1);
   const perPage = 4; // 1ページ毎の件数
   const startIndex = (page - 1) * perPage;

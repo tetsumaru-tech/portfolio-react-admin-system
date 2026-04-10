@@ -1,4 +1,3 @@
-import type { User } from '@/features/user/types';
 import {
   Table,
   TableHead,
@@ -10,8 +9,10 @@ import {
   Paper,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+
 import { USER_FORM_STORAGE_KEY } from '@/features/user';
 import { userApi } from '@/features/user/api';
+import type { User } from '@/features/user/types';
 
 type UserListProps = {
   users: User[];
@@ -36,7 +37,7 @@ export function UserList({
         await userApi.delete(userId);
         navigate(0); // 画面をリロードして最新のユーザーリストを表示
       }
-    } catch (e) {
+    } catch {
       setError('ユーザー情報の削除に失敗しました。');
     } finally {
       setLoading(false);

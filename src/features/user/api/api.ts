@@ -3,8 +3,8 @@ import type {
   CreateUserInput,
   UpdateUserInput,
 } from '@/features/user/types';
-import type { YMD } from '@/types';
 import { users } from '@/features/user/types';
+import type { YMD } from '@/types';
 
 export const USER_STORAGE_KEY = 'users';
 
@@ -20,10 +20,10 @@ const getUsers = () => {
 
 const parseUsers = (data: string): User[] => {
   const parsed = JSON.parse(data);
-  return parsed.map((u: any) => ({
+  return parsed.map((u: User) => ({
     ...u,
     createdAt: new Date(u.createdAt),
-    updateAt: new Date(u.updateAt),
+    updatedAt: new Date(u.updatedAt),
   }));
 };
 

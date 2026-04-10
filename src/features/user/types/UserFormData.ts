@@ -1,5 +1,6 @@
-import type { User } from '@/features/user/types';
 import type { Dayjs } from 'dayjs';
+
+import type { User } from '@/features/user/types';
 
 export type UserFormData = Omit<
   User,

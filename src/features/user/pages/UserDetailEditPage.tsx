@@ -1,18 +1,15 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { Typography, Paper, TextField } from '@mui/material';
-import { USER_FORM_STORAGE_KEY } from '@/features/user';
-import { userApi, userMapper } from '@/features/user/api';
-import { useNavigate } from 'react-router-dom';
-
-import type { UserFormData } from '@/features/user/types';
-
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import type { Dayjs } from 'dayjs';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
+import { USER_FORM_STORAGE_KEY } from '@/features/user';
+import { userApi, userMapper } from '@/features/user/api';
 import {
   FormSection,
   FormRowContainer,
@@ -21,6 +18,7 @@ import {
   AppButton,
   BackButton,
 } from '@/features/user/components';
+import type { UserFormData } from '@/features/user/types';
 
 export function UserDetailEditPage() {
   const { id } = useParams<{ id: string }>();
@@ -48,10 +46,7 @@ export function UserDetailEditPage() {
 
   useEffect(() => {
     const saved = sessionStorage.getItem(USER_FORM_STORAGE_KEY);
-    if (saved) {
-      setFormData(userMapper.fromStorage(JSON.parse(saved)));
-      return;
-    }
+    if (saved) return;
     const fetch = async () => {
       const data = await userApi.getUser(userId);
       if (data) {
@@ -106,7 +101,7 @@ export function UserDetailEditPage() {
         state: { formData: userMapper.toStorage(formData) },
       });
     } else {
-          navigate(`/users/${userId}/confirm`, {
+      navigate(`/users/${userId}/confirm`, {
         state: {
           formData: userMapper.toStorage(formData),
         },
