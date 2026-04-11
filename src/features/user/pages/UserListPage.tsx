@@ -1,53 +1,66 @@
 import { Pagination, Box } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { ErrorMessage } from '@/components';
 import { USER_FORM_STORAGE_KEY } from '@/features/user';
 import { userApi } from '@/features/user/api';
 import { UserList, SearchForm, AppButton } from '@/features/user/components';
-import type { UserSearchCondition, User } from '@/features/user/types';
+import type { UserSearchCondition } from '@/features/user/types';
 import { isMatch } from '@/utils';
 
 export function UserListPage() {
-  const [users, setUsers] = useState<User[]>([]);
-  useEffect(() => {
-    const fetch = async () => {
-      const data = await userApi.getList();
-      setUsers(data);
-    };
-    fetch();
-  }, []);
+  const navigate = useNavigate();
 
-  const [filteredUsers, setFilteredUsers] = useState<User[]>(users);
+  // React Query
+  const {
+    data: users = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ['users'],
+    queryFn: userApi.getList,
+  });
 
-  useEffect(() => {
-    setFilteredUsers(users);
-  }, [users]);
-
+  // 入力用
   const [condition, setCondition] = useState<UserSearchCondition>({});
+  // 検索実行用
+  const [searchCondition, setSearchCondition] = useState<UserSearchCondition>(
+    {},
+  ); // 検索実行時の条件を保持
+
   const [page, setPage] = useState<number>(1);
   const perPage = 4; // 1ページ毎の件数
-  const startIndex = (page - 1) * perPage;
-  const paginatedUsers = filteredUsers.slice(startIndex, startIndex + perPage);
+
+  // フィルタ
+  const filteredUsers = useMemo(() => {
+    return users.filter((user) => {
+      const fullName = (user.lastName + user.firstName).trim();
+      if (!isMatch(fullName, searchCondition.name ?? '')) {
+        return false;
+      }
+      if (!isMatch(user.email, searchCondition.email ?? '')) {
+        return false;
+      }
+      return true;
+    });
+  }, [users, searchCondition]);
+
+  // ページング計算
+  const paginatedUsers = useMemo(() => {
+    const startIndex = (page - 1) * perPage;
+    return filteredUsers.slice(startIndex, startIndex + perPage);
+  }, [filteredUsers, page]);
+
   const lastPage = Math.ceil(filteredUsers.length / perPage);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // 検索実行
   function handleSearch(): void {
-    setFilteredUsers(
-      users.filter((user) => {
-        const fullName = (user.lastName + user.firstName).trim();
-        if (!isMatch(fullName, condition.name ?? '')) {
-          return false;
-        }
-        if (!isMatch(user.email, condition.email ?? '')) {
-          return false;
-        }
-        return true;
-      }),
-    );
+    setSearchCondition(condition);
     setPage(1);
   }
 
@@ -55,7 +68,8 @@ export function UserListPage() {
     setPage(page);
   }
 
-  const navigate = useNavigate();
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error...</div>;
 
   return (
     <>
