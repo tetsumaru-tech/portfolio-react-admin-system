@@ -2,9 +2,11 @@ import type {
   User,
   CreateUserInput,
   UpdateUserInput,
+  UserSearchCondition,
 } from '@/features/user/types';
 import { users } from '@/features/user/types';
 import type { YMD } from '@/types';
+import { isMatch } from '@/utils';
 
 export const USER_STORAGE_KEY = 'users';
 
@@ -36,8 +38,21 @@ export const userApi = {
     return getUserById(id);
   },
 
-  getList: async (): Promise<User[]> => {
-    return getUsers();
+  getList: async (condition?: UserSearchCondition): Promise<User[]> => {
+    const users = getUsers();
+    if (!condition) return users;
+
+    return users.filter((user) => {
+      const fullName = (user.lastName + user.firstName).trim();
+
+      if (!isMatch(fullName, condition.name ?? '')) {
+        return false;
+      }
+      if (!isMatch(user.email, condition.email ?? '')) {
+        return false;
+      }
+      return true;
+    });
   },
 
   create: async (data: CreateUserInput): Promise<User> => {
