@@ -1,7 +1,6 @@
 import { Typography, Paper } from '@mui/material';
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import { USER_FORM_STORAGE_KEY } from '@/features/user';
 import { userApi } from '@/features/user/api';
@@ -13,22 +12,20 @@ import {
   AppButton,
   BackButton,
 } from '@/features/user/components';
-import type { User } from '@/features/user/types';
 import { getAge } from '@/types';
 
 export function UserDetailPage() {
   const { id } = useParams<{ id: string }>();
   const userId = Number(id);
-  const [user, setUser] = useState<User | undefined>(undefined);
-  useEffect(() => {
-    const fetch = async () => {
-      const data = await userApi.getUser(userId);
-      setUser(data);
-    };
-    fetch();
-  }, [userId]);
 
   const navigate = useNavigate();
+
+  // React Query
+  const { data: user } = useQuery({
+    queryKey: ['user', userId],
+    queryFn: () => userApi.getUser(userId),
+  });
+
   return (
     <>
       <Paper sx={{ p: 2 }}>

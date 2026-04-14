@@ -40,8 +40,6 @@ export const userMapper = {
   }),
   // UI → Storage
   toStorage(form: UserFormData) {
-    console.log('toStorage birthday:', form.birthday);
-    console.log('toStorage birthday isDayjs:', dayjs.isDayjs(form.birthday));
     return {
       ...form,
       birthday: form.birthday

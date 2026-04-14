@@ -1,9 +1,9 @@
 import { Pagination, Box } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-import { ErrorMessage } from '@/components';
+import { SuccessMessage } from '@/components';
 import { USER_FORM_STORAGE_KEY } from '@/features/user';
 import { userApi } from '@/features/user/api';
 import { UserList, SearchForm, AppButton } from '@/features/user/components';
@@ -11,6 +11,7 @@ import type { UserSearchCondition } from '@/features/user/types';
 
 export function UserListPage() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   // 入力用
   const [condition, setCondition] = useState<UserSearchCondition>({});
@@ -40,10 +41,6 @@ export function UserListPage() {
 
   const lastPage = Math.ceil(users.length / perPage);
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  // 検索実行
   function handleSearch(): void {
     setSearchCondition(condition);
     setPage(1);
@@ -59,7 +56,7 @@ export function UserListPage() {
   return (
     <>
       <h1>User List</h1>
-      <ErrorMessage message={error} />
+      <SuccessMessage message={location.state?.message} />
       <h2>検索条件</h2>
       <SearchForm
         condition={condition}
@@ -79,12 +76,7 @@ export function UserListPage() {
       >
         新規作成
       </AppButton>
-      <UserList
-        users={paginatedUsers}
-        loading={loading}
-        setLoading={setLoading}
-        setError={setError}
-      />
+      <UserList users={paginatedUsers} />
       <Box display="flex" justifyContent="center" mt={2}>
         <Pagination
           count={lastPage}

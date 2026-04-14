@@ -1,8 +1,10 @@
 import { Typography, Paper, Alert } from '@mui/material';
-import { useState, useMemo } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMemo } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
+import { ErrorMessage } from '@/components';
 import { USER_FORM_STORAGE_KEY } from '@/features/user';
 import { userApi, userMapper } from '@/features/user/api';
 import {
@@ -26,40 +28,32 @@ export function UserDetailConfirmPage() {
     ? userMapper.fromStorage(location.state.formData)
     : null;
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
   const isAdd = formData?.id === null;
 
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: async (data: UserFormData) =>
+      isAdd
+        ? userApi.create(userMapper.toCreateInput(data))
+        : userApi.update(userId, userMapper.toUpdateInput(data)),
+    onSuccess: () => {
+      sessionStorage.removeItem(USER_FORM_STORAGE_KEY);
+
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+
+      navigate(`/users`, {
+        state: {
+          message: isAdd
+            ? 'ユーザーを登録しました'
+            : 'ユーザー情報を更新しました。',
+        },
+      });
+    },
+  });
+
   const handleSubmit = async () => {
-    if (loading) return; // 多重クリック防止
-    try {
-      setError(null);
-      setLoading(true);
-      if (formData) {
-        if (isAdd) {
-          await userApi.create(userMapper.toCreateInput(formData));
-        } else {
-          await userApi.update(userId, userMapper.toUpdateInput(formData));
-        }
-        sessionStorage.removeItem(USER_FORM_STORAGE_KEY);
-        navigate(`/users`, {
-          state: {
-            message: isAdd
-              ? 'ユーザーを登録しました'
-              : 'ユーザー情報を更新しました。',
-          },
-        });
-      }
-    } catch {
-      setError(
-        isAdd
-          ? 'ユーザー情報の登録に失敗しました。'
-          : 'ユーザー情報の更新に失敗しました。',
-      );
-    } finally {
-      setLoading(false);
-    }
+    if (!formData) return;
+    mutation.mutate(formData);
   };
   const rows = useMemo(() => {
     if (!formData) return [];
@@ -93,10 +87,14 @@ export function UserDetailConfirmPage() {
           ユーザー確認
         </Typography>
 
-        {error && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {error}
-          </Alert>
+        {mutation.isError && (
+          <ErrorMessage
+            message={
+              isAdd
+                ? 'ユーザーの登録に失敗しました。'
+                : 'ユーザー情報の更新に失敗しました。'
+            }
+          />
         )}
         <FormSection>
           {rows.map((row, i, rows) => (
@@ -108,9 +106,13 @@ export function UserDetailConfirmPage() {
           ))}
         </FormSection>
         <ButtonSection>
-          <BackButton disabled={loading} />
-          <AppButton color="primary" onClick={handleSubmit} disabled={loading}>
-            {loading ? '登録中...' : '登録'}
+          <BackButton disabled={mutation.isPending} />
+          <AppButton
+            color="primary"
+            onClick={handleSubmit}
+            disabled={mutation.isPending}
+          >
+            {mutation.isPending ? '登録中...' : '登録'}
           </AppButton>
         </ButtonSection>
       </Paper>

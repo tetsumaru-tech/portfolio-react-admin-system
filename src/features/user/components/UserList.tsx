@@ -8,6 +8,7 @@ import {
   TableContainer,
   Paper,
 } from '@mui/material';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { USER_FORM_STORAGE_KEY } from '@/features/user';
@@ -16,33 +17,25 @@ import type { User } from '@/features/user/types';
 
 type UserListProps = {
   users: User[];
-  loading: boolean;
-  setLoading: (loading: boolean) => void;
-  setError: (error: string | null) => void;
 };
 
-export function UserList({
-  users,
-  loading,
-  setLoading,
-  setError,
-}: UserListProps) {
+export function UserList({ users }: UserListProps) {
   const navigate = useNavigate();
-  const handleDelete = async (userId: number) => {
-    if (loading) return; // 多重クリック防止
-    try {
-      setError(null);
-      setLoading(true);
-      if (confirm('削除しますか？')) {
-        await userApi.delete(userId);
-        navigate(0); // 画面をリロードして最新のユーザーリストを表示
-      }
-    } catch {
-      setError('ユーザー情報の削除に失敗しました。');
-    } finally {
-      setLoading(false);
-    }
-  };
+
+  const queryClient = useQueryClient();
+  const deleteMutation = useMutation({
+    // 検索実行
+    mutationFn: userApi.delete,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+      navigate(`/users`, {
+        state: {
+          message: 'ユーザーを削除しました。',
+        },
+      });
+    },
+  });
+
   return (
     <TableContainer component={Paper}>
       <Table size="small">
@@ -86,7 +79,7 @@ export function UserList({
                       sessionStorage.removeItem(USER_FORM_STORAGE_KEY);
                       navigate(`/users/${user.id}/edit`);
                     }}
-                    disabled={loading}
+                    disabled={deleteMutation.isPending}
                   >
                     編集
                   </Button>
@@ -96,9 +89,10 @@ export function UserList({
                     size="small"
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleDelete(Number(user.id));
+                      if (!confirm('削除しますか？')) return;
+                      deleteMutation.mutate(Number(user.id));
                     }}
-                    disabled={loading}
+                    disabled={deleteMutation.isPending}
                   >
                     削除
                   </Button>

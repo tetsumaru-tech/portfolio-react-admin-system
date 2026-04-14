@@ -74,12 +74,14 @@ export function UserDetailEditPage() {
   }, [formData]);
 
   function handleChange(field: keyof UserFormData, value: string): void {
-    setFormData((prev) =>
-      userMapper.fromStorage({
+    setFormData((prev) => {
+      const updated = userMapper.fromStorage({
         ...prev,
+        birthday: prev.birthday ? prev.birthday.format('YYYY-MM-DD') : null,
         [field]: value,
-      }),
-    );
+      });
+      return updated;
+    });
   }
 
   function handleSubmit(): void {
