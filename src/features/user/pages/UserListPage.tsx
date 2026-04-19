@@ -21,14 +21,12 @@ export function UserListPage() {
   ); // 検索実行時の条件を保持
 
   // React Query
-  const {
-    data: users = [],
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ['users', searchCondition],
     queryFn: () => userApi.getList(searchCondition),
   });
+
+  const users = data?.data ?? [];
 
   const [page, setPage] = useState<number>(1);
   const perPage = 4; // 1ページ毎の件数

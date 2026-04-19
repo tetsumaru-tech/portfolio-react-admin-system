@@ -34,8 +34,8 @@ export function UserDetailConfirmPage() {
   const mutation = useMutation({
     mutationFn: async (data: UserFormData) =>
       isAdd
-        ? userApi.create(userMapper.toCreateInput(data))
-        : userApi.update(userId, userMapper.toUpdateInput(data)),
+        ? userApi.createUser(userMapper.toCreateInput(data))
+        : userApi.updateUser(userId, userMapper.toUpdateInput(data)),
     onSuccess: () => {
       sessionStorage.removeItem(USER_FORM_STORAGE_KEY);
 

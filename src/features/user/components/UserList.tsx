@@ -25,7 +25,7 @@ export function UserList({ users }: UserListProps) {
   const queryClient = useQueryClient();
   const deleteMutation = useMutation({
     // 検索実行
-    mutationFn: userApi.delete,
+    mutationFn: userApi.deleteUser,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       navigate(`/users`, {

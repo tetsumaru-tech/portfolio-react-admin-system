@@ -48,7 +48,7 @@ export function UserDetailEditPage() {
     const saved = sessionStorage.getItem(USER_FORM_STORAGE_KEY);
     if (saved) return;
     const fetch = async () => {
-      const data = await userApi.getUser(userId);
+      const data = await userApi.fetchUser(userId);
       if (data) {
         setFormData(
           userMapper.fromStorage({
