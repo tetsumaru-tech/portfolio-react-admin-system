@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Route;
 
 const USER_LIST = [
@@ -30,16 +30,19 @@ Route::get('/users/{id}', function ($id) {
 })->where('id', '[0-9]+');
 
 // create
-Route::post('/users', function (Request $request) {
+Route::post('/users', function (UserRequest $request) {
+    $request->validated();
+
     return ['id' => 3, 'lastName' => $request->input('lastName'), 'firstName' => $request->input('firstName'), 'email' => $request->input('email'), 'birthday' => $request->input('birthday'), 'createdAt' => now()->toIso8601String()];
 });
 
 // update
-Route::put('/users/{id}', function (Request $request, $id) {
+Route::put('/users/{id}', function (UserRequest $request, $id) {
     $user = collect(USER_LIST)->firstWhere('id', $id);
     if (! $user) {
         return response()->json(['error' => 'User not found'], 404);
     }
+    // $request->validated();
 
     $updatedUser = array_merge($user, $request->all(), ['updatedAt' => now()->toIso8601String()]);
 
