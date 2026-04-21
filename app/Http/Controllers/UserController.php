@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
+use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
 {
@@ -20,40 +21,40 @@ class UserController extends Controller
 
     ];
 
-    public function index()
+    public function index(): JsonResponse
     {
-        return self::USER_LIST;
+        return response()->json(self::USER_LIST);
     }
 
-    public function show(int $id)
+    public function show(int $id): JsonResponse
     {
         $user = collect(self::USER_LIST)->firstWhere('id', $id);
 
-        return $user ? $user : response()->json(['error' => 'User not found'], 404);
+        return $user ? response()->json($user) : response()->json(['error' => 'User not found'], 404);
     }
 
-    public function store(UserRequest $request)
+    public function store(UserRequest $request): JsonResponse
     {
-        $request->validated();
+        $data = $request->validated();
 
-        return ['id' => 11, 'lastName' => $request->input('lastName'), 'firstName' => $request->input('firstName'), 'email' => $request->input('email'), 'birthday' => $request->input('birthday'), 'createdAt' => now()->toIso8601String()];
+        return response()->json(['id' => 11, ...$data, 'createdAt' => now()->toIso8601String()]);
     }
 
-    public function update(UserRequest $request, int $id)
+    public function update(UserRequest $request, int $id): JsonResponse
     {
         $user = collect(self::USER_LIST)->firstWhere('id', $id);
         if (! $user) {
             return response()->json(['error' => 'User not found'], 404);
         }
-        $request->validated();
+        $data = $request->validated();
 
-        $updatedUser = array_merge($user, $request->all(), ['updatedAt' => now()->toIso8601String()]);
+        $updatedUser = [...$user, ...$data, 'updatedAt' => now()->toIso8601String()];
 
         return response()->json($updatedUser);
     }
 
-    public function destroy(int $id)
+    public function destroy(int $id): JsonResponse
     {
-        return ['message' => "User with id $id deleted"];
+        return response()->json(['message' => "User with id $id deleted"]);
     }
 }
