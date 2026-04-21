@@ -45,7 +45,10 @@ export const userApi = {
   updateUser: async (id: number, data: UpdateUserInput): Promise<User> => {
     const res = await fetch(`http://127.0.0.1:8000/api/users/${id}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
       body: JSON.stringify(data),
     });
 

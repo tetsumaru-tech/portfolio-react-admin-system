@@ -26,18 +26,17 @@ export function UserListPage() {
     queryFn: () => userApi.getList(searchCondition),
   });
 
-  const users = data?.data ?? [];
-
   const [page, setPage] = useState<number>(1);
   const perPage = 4; // 1ページ毎の件数
 
   // ページング計算
   const paginatedUsers = useMemo(() => {
+    const users = data?.data ?? [];
     const startIndex = (page - 1) * perPage;
     return users.slice(startIndex, startIndex + perPage);
-  }, [users, page]);
+  }, [data, page]);
 
-  const lastPage = Math.ceil(users.length / perPage);
+  const lastPage = Math.ceil((data?.data.length ?? 0) / perPage);
 
   function handleSearch(): void {
     setSearchCondition(condition);

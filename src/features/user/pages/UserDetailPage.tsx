@@ -23,7 +23,7 @@ export function UserDetailPage() {
   // React Query
   const { data: user } = useQuery({
     queryKey: ['user', userId],
-    queryFn: () => userApi.getUser(userId),
+    queryFn: () => userApi.fetchUser(userId),
   });
 
   return (
