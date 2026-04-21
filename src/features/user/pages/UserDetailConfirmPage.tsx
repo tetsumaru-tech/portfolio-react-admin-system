@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-import { ErrorMessage } from '@/components';
+import { ErrorMessage, useToast } from '@/components';
 import { USER_FORM_STORAGE_KEY } from '@/features/user';
 import { userApi, userMapper } from '@/features/user/api';
 import {
@@ -27,6 +27,7 @@ export function UserDetailConfirmPage() {
   const formData: UserFormData | null = location.state?.formData
     ? userMapper.fromStorage(location.state.formData)
     : null;
+  const { showToast } = useToast();
 
   const isAdd = formData?.id === null;
 
@@ -41,13 +42,10 @@ export function UserDetailConfirmPage() {
 
       queryClient.invalidateQueries({ queryKey: ['users'] });
 
-      navigate(`/users`, {
-        state: {
-          message: isAdd
-            ? 'ユーザーを登録しました'
-            : 'ユーザー情報を更新しました。',
-        },
-      });
+      showToast(
+        isAdd ? 'ユーザーを登録しました' : 'ユーザー情報を更新しました。',
+      );
+      navigate(`/users`);
     },
   });
 

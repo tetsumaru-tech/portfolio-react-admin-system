@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useState, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-import { SuccessMessage } from '@/components';
 import { USER_FORM_STORAGE_KEY } from '@/features/user';
 import { userApi } from '@/features/user/api';
 import { UserList, SearchForm, AppButton } from '@/features/user/components';
@@ -53,7 +52,6 @@ export function UserListPage() {
   return (
     <>
       <h1>User List</h1>
-      <SuccessMessage message={location.state?.message} />
       <h2>検索条件</h2>
       <SearchForm
         condition={condition}

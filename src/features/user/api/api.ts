@@ -35,9 +35,8 @@ export const userApi = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
-    console.log(res);
     if (!res.ok) {
-      throw new Error('Failed to delete user');
+      throw new Error('Failed to create user');
     }
     return res.json();
   },
@@ -52,20 +51,18 @@ export const userApi = {
       body: JSON.stringify(data),
     });
 
-    console.log(res);
     if (!res.ok) {
       throw new Error('Failed to update user');
     }
     return res.json();
   },
 
-  deleteUser: async (id: number): Promise<{ message: string }> => {
+  deleteUser: async (id: number): Promise<void> => {
     const res = await fetch(`http://127.0.0.1:8000/api/users/${id}`, {
       method: 'DELETE',
     });
     if (!res.ok) {
-      throw new Error('Faild to delete user');
+      throw new Error('Failed to delete user');
     }
-    return res.json();
   },
 };

@@ -11,6 +11,7 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
+import { useToast } from '@/components';
 import { USER_FORM_STORAGE_KEY } from '@/features/user';
 import { userApi } from '@/features/user/api';
 import type { User } from '@/features/user/types';
@@ -21,18 +22,18 @@ type UserListProps = {
 
 export function UserList({ users }: UserListProps) {
   const navigate = useNavigate();
-
+  const { showToast } = useToast();
   const queryClient = useQueryClient();
   const deleteMutation = useMutation({
     // 検索実行
     mutationFn: userApi.deleteUser,
     onSuccess: () => {
+      showToast('ユーザーを削除しました。');
       queryClient.invalidateQueries({ queryKey: ['users'] });
-      navigate(`/users`, {
-        state: {
-          message: 'ユーザーを削除しました。',
-        },
-      });
+      navigate(`/users`);
+    },
+    onError: () => {
+      showToast('ユーザーの削除に失敗しました。', 'error');
     },
   });
 
