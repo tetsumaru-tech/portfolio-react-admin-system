@@ -37,7 +37,7 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
-        return response()->json(['id' => 11, ...$data, 'createdAt' => now()->toIso8601String()]);
+        return response()->json(['id' => 11, ...$data, 'createdAt' => now()->toIso8601String()], 201);
     }
 
     public function update(UserRequest $request, int $id): JsonResponse
