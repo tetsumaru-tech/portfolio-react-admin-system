@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
@@ -53,8 +54,8 @@ class UserController extends Controller
         return response()->json($updatedUser);
     }
 
-    public function destroy(int $id): JsonResponse
+    public function destroy(int $id): Response
     {
-        return response()->json(['message' => "User with id $id deleted"]);
+        return response()->noContent();
     }
 }
