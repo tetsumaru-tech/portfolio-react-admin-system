@@ -1,7 +1,7 @@
 import { Pagination, Box } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useState, useMemo } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { USER_FORM_STORAGE_KEY } from '@/features/user';
 import { userApi } from '@/features/user/api';
@@ -10,7 +10,6 @@ import type { UserSearchCondition } from '@/features/user/types';
 
 export function UserListPage() {
   const navigate = useNavigate();
-  const location = useLocation();
 
   // 入力用
   const [condition, setCondition] = useState<UserSearchCondition>({});

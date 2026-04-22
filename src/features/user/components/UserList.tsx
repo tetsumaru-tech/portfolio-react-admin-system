@@ -28,7 +28,9 @@ export function UserList({ users }: UserListProps) {
     // 検索実行
     mutationFn: userApi.deleteUser,
     onSuccess: () => {
-      showToast('ユーザーを削除しました。');
+      showToast('ユーザーを削除しました。1');
+      showToast('ユーザーを削除しました。2');
+      showToast('ユーザーを削除しました。3');
       queryClient.invalidateQueries({ queryKey: ['users'] });
       navigate(`/users`);
     },
