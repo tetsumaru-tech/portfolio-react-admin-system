@@ -28,14 +28,15 @@ export function UserList({ users }: UserListProps) {
     // 検索実行
     mutationFn: userApi.deleteUser,
     onSuccess: () => {
-      showToast('ユーザーを削除しました。1');
-      showToast('ユーザーを削除しました。2');
-      showToast('ユーザーを削除しました。3');
+      showToast('ユーザーを削除しました。');
       queryClient.invalidateQueries({ queryKey: ['users'] });
       navigate(`/users`);
     },
-    onError: () => {
-      showToast('ユーザーの削除に失敗しました。', 'error');
+    onError: (error: unknown) => {
+      showToast(
+        error instanceof Error ? error.message : 'An error occurred',
+        'error',
+      );
     },
   });
 

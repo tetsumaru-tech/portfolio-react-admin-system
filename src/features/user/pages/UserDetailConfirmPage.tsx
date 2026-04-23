@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-import { ErrorMessage, useToast } from '@/components';
+import { useToast } from '@/components';
 import { USER_FORM_STORAGE_KEY } from '@/features/user';
 import { userApi, userMapper } from '@/features/user/api';
 import {
@@ -18,6 +18,7 @@ import {
 import type { UserFormData } from '@/features/user/types';
 import type { YMD } from '@/types';
 import { getAge } from '@/types';
+import { isApiError } from '@/utils';
 
 export function UserDetailConfirmPage() {
   const { id } = useParams<{ id: string }>();
@@ -46,6 +47,23 @@ export function UserDetailConfirmPage() {
         isAdd ? 'ユーザーを登録しました' : 'ユーザー情報を更新しました。',
       );
       navigate(`/users`);
+    },
+    onError: (error: unknown) => {
+      if (isApiError(error)) {
+        if (error.status === 422 && error.errors) {
+          navigate(`/users/${userId}/edit`, {
+            state: {
+              errors: error.errors,
+              formData: location.state?.formData,
+            },
+            replace: true,
+          });
+        } else {
+          showToast(error.message, 'error');
+        }
+      } else {
+        showToast('予期しないエラーです', 'error');
+      }
     },
   });
 
@@ -84,16 +102,6 @@ export function UserDetailConfirmPage() {
         <Typography variant="h6" gutterBottom>
           ユーザー確認
         </Typography>
-
-        {mutation.isError && (
-          <ErrorMessage
-            message={
-              isAdd
-                ? 'ユーザーの登録に失敗しました。'
-                : 'ユーザー情報の更新に失敗しました。'
-            }
-          />
-        )}
         <FormSection>
           {rows.map((row, i, rows) => (
             <FormRowContainer key={row.label}>

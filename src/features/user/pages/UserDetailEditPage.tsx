@@ -5,7 +5,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import type { Dayjs } from 'dayjs';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
 import { USER_FORM_STORAGE_KEY } from '@/features/user';
@@ -19,11 +19,14 @@ import {
   BackButton,
 } from '@/features/user/components';
 import type { UserFormData } from '@/features/user/types';
+import type { ValidationErrors } from '@/types';
 
 export function UserDetailEditPage() {
   const { id } = useParams<{ id: string }>();
   const userId = Number(id ?? '');
   const isAdd = userId === 0;
+  const location = useLocation();
+  const [formErrors] = useState<ValidationErrors>(location.state?.errors ?? {});
 
   const getInitialFormData = (): UserFormData => {
     const saved = sessionStorage.getItem(USER_FORM_STORAGE_KEY);
@@ -178,7 +181,13 @@ export function UserDetailEditPage() {
                                 maxLength: row.maxLength ?? 8,
                               },
                             }}
-                            helperText={`${String(row.value).length}/${row.maxLength}`}
+                            error={!!formErrors[row.key]}
+                            helperText={
+                              `${String(row.value).length}/${row.maxLength}` +
+                              (formErrors[row.key]?.[0]
+                                ? ` (${formErrors[row.key]?.[0]})`
+                                : '')
+                            }
                           />
                         )}
                       </Typography>
