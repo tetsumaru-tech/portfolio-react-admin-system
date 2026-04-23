@@ -31,7 +31,7 @@ class UserController extends Controller
     {
         $user = collect(self::USER_LIST)->firstWhere('id', $id);
 
-        return $user ? response()->json($user) : response()->json(['error' => 'User not found'], 404);
+        return $user ? response()->json($user) : response()->json(['message' => 'ユーザーが見つかりません'], 404);
     }
 
     public function store(UserRequest $request): JsonResponse
@@ -45,7 +45,7 @@ class UserController extends Controller
     {
         $user = collect(self::USER_LIST)->firstWhere('id', $id);
         if (! $user) {
-            return response()->json(['error' => 'User not found'], 404);
+            return response()->json(['message' => 'ユーザーが見つかりません'], 404);
         }
         $data = $request->validated();
 
