@@ -15,6 +15,7 @@ import { useToast } from '@/components';
 import { USER_FORM_STORAGE_KEY } from '@/features/user';
 import { userApi } from '@/features/user/api';
 import type { User } from '@/features/user/types';
+import { isApiError, getApiError } from '@/utils';
 
 type UserListProps = {
   users: User[];
@@ -33,10 +34,14 @@ export function UserList({ users }: UserListProps) {
       navigate(`/users`);
     },
     onError: (error: unknown) => {
-      showToast(
-        error instanceof Error ? error.message : 'An error occurred',
-        'error',
-      );
+      if (isApiError(error)) {
+        const err = getApiError(error);
+        if (err) {
+          showToast(err.message, 'error');
+        }
+      } else {
+        showToast('予期しないエラーです', 'error');
+      }
     },
   });
 

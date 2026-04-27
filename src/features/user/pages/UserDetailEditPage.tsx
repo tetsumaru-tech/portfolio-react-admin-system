@@ -26,7 +26,6 @@ export function UserDetailEditPage() {
   const userId = Number(id ?? '');
   const isAdd = userId === 0;
   const location = useLocation();
-  const [formErrors] = useState<ValidationErrors>(location.state?.errors ?? {});
 
   const getInitialFormData = (): UserFormData => {
     const saved = sessionStorage.getItem(USER_FORM_STORAGE_KEY);
@@ -46,6 +45,9 @@ export function UserDetailEditPage() {
     };
   };
   const [formData, setFormData] = useState<UserFormData>(getInitialFormData);
+  const [formErrors, setFormErrors] = useState<ValidationErrors>(
+    location.state?.errors ?? {},
+  );
 
   useEffect(() => {
     const saved = sessionStorage.getItem(USER_FORM_STORAGE_KEY);
@@ -161,7 +163,13 @@ export function UserDetailEditPage() {
                             value={row.value ? dayjs(row.value) : null}
                             format="YYYY-MM-DD"
                             disableFuture
-                            slotProps={{ textField: { fullWidth: true } }}
+                            slotProps={{
+                              textField: {
+                                fullWidth: true,
+                                error: !!formErrors.birthday,
+                                helperText: formErrors.birthday?.[0],
+                              },
+                            }}
                             onChange={(newValue) => {
                               handleChange(
                                 row.key,

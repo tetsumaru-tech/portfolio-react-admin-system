@@ -4,6 +4,7 @@ import type {
   UpdateUserInput,
   UserSearchCondition,
 } from '@/features/user/types';
+import { ApiError } from '@/utils';
 
 export type GetListResponse = {
   data: User[];
@@ -16,7 +17,11 @@ export const userApi = {
     const res = await fetch('http://127.0.0.1:8000/api/users');
     if (!res.ok) {
       const errorData = await res.json();
-      throw new Error(errorData.message || 'エラーが発生しました');
+      throw new ApiError(
+        errorData.message || 'エラーが発生しました',
+        res.status,
+        errorData.errors,
+      );
     }
     const users = await res.json();
     return { data: users };
@@ -26,7 +31,11 @@ export const userApi = {
     const res = await fetch(`http://127.0.0.1:8000/api/users/${id}`);
     if (!res.ok) {
       const errorData = await res.json();
-      throw new Error(errorData.message || 'エラーが発生しました');
+      throw new ApiError(
+        errorData.message || 'エラーが発生しました',
+        res.status,
+        errorData.errors,
+      );
     }
     return res.json();
   },
@@ -39,7 +48,11 @@ export const userApi = {
     });
     if (!res.ok) {
       const errorData = await res.json();
-      throw new Error(errorData.message || 'エラーが発生しました');
+      throw new ApiError(
+        errorData.message || 'エラーが発生しました',
+        res.status,
+        errorData.errors,
+      );
     }
     return res.json();
   },
@@ -56,10 +69,11 @@ export const userApi = {
 
     if (!res.ok) {
       const errorData = await res.json();
-      const error = new Error(errorData.message || 'エラーが発生しました');
-      (error as any).status = res.status;
-      (error as any).errors = errorData.errors;
-      throw error;
+      throw new ApiError(
+        errorData.message || 'エラーが発生しました',
+        res.status,
+        errorData.errors,
+      );
     }
     return res.json();
   },
@@ -70,7 +84,11 @@ export const userApi = {
     });
     if (!res.ok) {
       const errorData = await res.json();
-      throw new Error(errorData.message || 'エラーが発生しました');
+      throw new ApiError(
+        errorData.message || 'エラーが発生しました',
+        res.status,
+        errorData.errors,
+      );
     }
   },
 };

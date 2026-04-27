@@ -1,10 +1,12 @@
-import type { ApiError } from '@/types';
+import { ApiError } from '@/utils';
 
-export function isApiError(error: unknown): error is ApiError {
-  return (
-    typeof error === 'object' &&
-    error !== null &&
-    'status' in error &&
-    'message' in error
-  );
+export function getApiError(error: unknown): ApiError | null {
+  if (error instanceof ApiError) {
+    return error;
+  }
+  return null;
+}
+
+export function isApiError(error: unknown): boolean {
+  return error instanceof ApiError;
 }

@@ -18,7 +18,7 @@ import {
 import type { UserFormData } from '@/features/user/types';
 import type { YMD } from '@/types';
 import { getAge } from '@/types';
-import { isApiError } from '@/utils';
+import { isApiError, getApiError } from '@/utils';
 
 export function UserDetailConfirmPage() {
   const { id } = useParams<{ id: string }>();
@@ -50,16 +50,19 @@ export function UserDetailConfirmPage() {
     },
     onError: (error: unknown) => {
       if (isApiError(error)) {
-        if (error.status === 422 && error.errors) {
-          navigate(`/users/${userId}/edit`, {
-            state: {
-              errors: error.errors,
-              formData: location.state?.formData,
-            },
-            replace: true,
-          });
-        } else {
-          showToast(error.message, 'error');
+        const err = getApiError(error);
+        if (err) {
+          if (err.status === 422 && err.errors) {
+            navigate(`/users/${userId}/edit`, {
+              state: {
+                formData,
+                errors: err.errors,
+              },
+              replace: false,
+            });
+          } else {
+            showToast(err.message, 'error');
+          }
         }
       } else {
         showToast('予期しないエラーです', 'error');
