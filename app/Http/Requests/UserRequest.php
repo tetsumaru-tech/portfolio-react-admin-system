@@ -24,8 +24,8 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         $roles = [
-            'lastName' => 'sometimes|required|string|max:5',
-            'firstName' => 'sometimes|required|string|max:50',
+            'lastName' => 'sometimes|required|string|max:8',
+            'firstName' => 'sometimes|required|string|max:8',
             'email' => 'sometimes|required|email|max:255',
             'birthday' => 'nullable|date|before:today',
         ];

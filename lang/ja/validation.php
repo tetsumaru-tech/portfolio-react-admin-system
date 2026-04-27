@@ -287,4 +287,9 @@ return [
         'lastName' => '姓',
         'firstName' => '名',
     ],
+    'custom' => [
+        'birthday' => [
+            'before' => '誕生日は今日より前の日付を指定してください。',
+        ],
+    ],
 ];
