@@ -5,8 +5,8 @@ import { ToastProvider } from './components';
 import {
   UserListPage,
   UserDetailPage,
-  UserDetailEditPage,
-  UserDetailConfirmPage,
+  UserEditPage,
+  UserConfirmPage,
 } from '@/features/user/pages';
 
 export default function App() {
@@ -17,12 +17,9 @@ export default function App() {
           <Route path="/" element={<UserListPage />} />
           <Route path="/users" element={<UserListPage />} />
           <Route path="/users/:id" element={<UserDetailPage />} />
-          <Route path="/users/new" element={<UserDetailEditPage />} />
-          <Route path="/users/:id/edit" element={<UserDetailEditPage />} />
-          <Route
-            path="/users/:id/confirm"
-            element={<UserDetailConfirmPage />}
-          />
+          <Route path="/users/new" element={<UserEditPage />} />
+          <Route path="/users/:id/edit" element={<UserEditPage />} />
+          <Route path="/users/:id/confirm" element={<UserConfirmPage />} />
         </Routes>
       </BrowserRouter>
     </ToastProvider>

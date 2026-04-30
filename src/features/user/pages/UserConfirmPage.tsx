@@ -20,7 +20,7 @@ import type { YMD } from '@/types';
 import { getAge } from '@/types';
 import { isApiError, getApiError } from '@/utils';
 
-export function UserDetailConfirmPage() {
+export function UserConfirmPage() {
   const { id } = useParams<{ id: string }>();
   const userId = Number(id);
   const location = useLocation();

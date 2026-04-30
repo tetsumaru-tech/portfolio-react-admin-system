@@ -4,9 +4,16 @@ type Props = {
   label: string;
   children: React.ReactNode;
   isLast?: boolean;
+  required?: boolean;
 };
 
-export function FormRow({ label, children, isLast = false }: Props) {
+export function FormRow({
+  label,
+  children,
+  isLast = false,
+  required = false,
+}: Props) {
+  console.log(required);
   return (
     <>
       <Grid
@@ -18,7 +25,10 @@ export function FormRow({ label, children, isLast = false }: Props) {
           borderColor: 'divider',
         }}
       >
-        <Typography variant="subtitle2">{label}</Typography>
+        <Typography variant="subtitle2">
+          {label}
+          {required && ' 【必須】'}
+        </Typography>
       </Grid>
       <Grid
         size={{ xs: 12, md: 9 }}
