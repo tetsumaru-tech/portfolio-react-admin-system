@@ -13,7 +13,6 @@ export function FormRow({
   isLast = false,
   required = false,
 }: Props) {
-  console.log(required);
   return (
     <>
       <Grid

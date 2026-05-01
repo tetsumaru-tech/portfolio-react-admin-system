@@ -1,7 +1,6 @@
-import { Grid, TextField, Button, Paper } from '@mui/material';
+import { Grid, Paper } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -13,6 +12,8 @@ import {
   FormSection,
   FormRowContainer,
   FormRow,
+  FormTextField,
+  FormDatePicker,
   ButtonSection,
   AppButton,
   BackButton,
@@ -138,86 +139,6 @@ export function UserEditPage() {
     },
   ];
 
-  // return (
-  //   <form onSubmit={handleSubmit(onSubmit)}>
-  //     <Paper sx={{ p: 2 }}>
-  //       <Typography variant="h6" gutterBottom>
-  //         {isAdd ? 'ユーザー作成' : 'ユーザー編集'}
-  //       </Typography>
-  //       <Typography variant="body2" color="text.secondary">
-  //         内容を編集して確認へ進んでください
-  //       </Typography>
-  //       <form
-  //         onSubmit={(e) => {
-  //           e.preventDefault();
-  //           handleSubmit();
-  //         }}
-  //       >
-  //         <FormSection>
-  //           <LocalizationProvider dateAdapter={AdapterDayjs}>
-  //             <FormSection>
-  //               {rows.map((row, i, rows) => (
-  //                 <FormRowContainer key={row.key}>
-  //                   <FormRow label={row.label} isLast={i === rows.length - 1}>
-  //                     <Typography variant="subtitle2">
-  //                       {row.type === 'date' ? (
-  //                         <DatePicker
-  //                           value={row.value ? dayjs(row.value) : null}
-  //                           format="YYYY-MM-DD"
-  //                           disableFuture
-  //                           slotProps={{
-  //                             textField: {
-  //                               fullWidth: true,
-  //                               error: !!formErrors.birthday,
-  //                               helperText: formErrors.birthday?.[0],
-  //                             },
-  //                           }}
-  //                           onChange={(newValue) => {
-  //                             handleChange(
-  //                               row.key,
-  //                               newValue ? newValue.format('YYYY-MM-DD') : '',
-  //                             );
-  //                           }}
-  //                         />
-  //                       ) : (
-  //                         <TextField
-  //                           fullWidth
-  //                           value={row.value}
-  //                           onChange={(e) => {
-  //                             handleChange(row.key, e.target.value);
-  //                           }}
-  //                           slotProps={{
-  //                             htmlInput: {
-  //                               maxLength: row.maxLength ?? 8,
-  //                             },
-  //                           }}
-  //                           error={!!formErrors[row.key]}
-  //                           helperText={
-  //                             `${String(row.value).length}/${row.maxLength}` +
-  //                             (formErrors[row.key]?.[0]
-  //                               ? ` (${formErrors[row.key]?.[0]})`
-  //                               : '')
-  //                           }
-  //                         />
-  //                       )}
-  //                     </Typography>
-  //                   </FormRow>
-  //                 </FormRowContainer>
-  //               ))}
-  //             </FormSection>
-  //           </LocalizationProvider>
-  //         </FormSection>
-  //         <ButtonSection>
-  //           <BackButton />
-  //           <AppButton color="primary" onClick={handleSubmit} type="button">
-  //             確認
-  //           </AppButton>
-  //         </ButtonSection>
-  //       </form>
-  //     </Paper>
-  //   </form>
-  // );
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Paper
@@ -239,44 +160,19 @@ export function UserEditPage() {
                     required={row.required}
                   >
                     {row.type === 'date' ? (
-                      <Controller
+                      <FormDatePicker<UserFormData>
                         name={row.key}
                         control={control}
-                        rules={{ required: row.label + 'は必須です' }}
-                        render={({ field }) => (
-                          <DatePicker
-                            value={field.value ? dayjs(field.value) : null}
-                            format="YYYY-MM-DD"
-                            disableFuture
-                            onChange={(date) =>
-                              field.onChange(
-                                date ? date.format('YYYY-MM-DD') : '',
-                              )
-                            }
-                            slotProps={{
-                              textField: {
-                                fullWidth: true,
-                                error: !!errors[row.key],
-                                helperText: errors[row.key]?.message,
-                              },
-                            }}
-                          />
-                        )}
+                        errors={errors}
+                        label={row.label}
                       />
                     ) : (
-                      <Controller
+                      <FormTextField<UserFormData>
                         name={row.key}
                         control={control}
-                        rules={{ required: row.label + 'は必須です' }}
-                        render={({ field }) => (
-                          <TextField
-                            {...field}
-                            label={row.label}
-                            fullWidth
-                            error={!!errors[row.key]}
-                            helperText={errors[row.key]?.message}
-                          />
-                        )}
+                        errors={errors}
+                        label={row.label}
+                        maxLength={row.maxLength}
                       />
                     )}
                   </FormRow>
