@@ -4,6 +4,7 @@ import {
   type Control,
   type FieldErrors,
   type Path,
+  type RegisterOptions,
 } from 'react-hook-form';
 
 type Props<T extends Record<string, any>> = {
@@ -12,6 +13,7 @@ type Props<T extends Record<string, any>> = {
   errors: FieldErrors<T>;
   label: string;
   maxLength?: number;
+  rules?: RegisterOptions<T, Path<T>>;
 };
 
 export function FormTextField<T extends Record<string, any>>({
@@ -20,14 +22,13 @@ export function FormTextField<T extends Record<string, any>>({
   errors,
   label,
   maxLength,
+  rules,
 }: Props<T>) {
   return (
     <Controller
       name={name}
       control={control}
-      rules={{
-        required: `${label}は必須です`,
-      }}
+      rules={rules}
       render={({ field }) => (
         <TextField
           {...field}
@@ -41,7 +42,7 @@ export function FormTextField<T extends Record<string, any>>({
           error={!!errors[name]}
           helperText={
             (errors[name]?.message as string) ||
-            (maxLength
+            (rules?.maxLength
               ? `${String(field.value ?? '').length}/${maxLength}`
               : '')
           }

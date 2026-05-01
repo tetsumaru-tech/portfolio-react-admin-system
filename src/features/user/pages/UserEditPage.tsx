@@ -2,7 +2,7 @@ import { Grid, Paper } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, type RegisterOptions } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
@@ -121,21 +121,49 @@ export function UserEditPage() {
   type Row = {
     key: keyof UserFormData;
     label: string;
-    // value: string | Dayjs | null;
     maxLength?: number;
-    type?: 'date';
-    required: boolean;
+    type?: 'text' | 'date' | 'select';
+    rules?: RegisterOptions<UserFormData>;
   };
 
   const rows: Row[] = [
-    { key: 'lastName', label: '性', maxLength: 10, required: true },
-    { key: 'firstName', label: '名', maxLength: 10, required: true },
-    { key: 'email', label: 'メール', maxLength: 100, required: true },
+    {
+      key: 'lastName',
+      label: '性',
+      maxLength: 10,
+      rules: {
+        required: '姓は必須です',
+        maxLength: { value: 10, message: '性は10文字以内です' },
+      },
+    },
+    {
+      key: 'firstName',
+      label: '名',
+      maxLength: 10,
+      rules: {
+        required: '名は必須です',
+        maxLength: { value: 10, message: '名は10文字以内です' },
+      },
+    },
+    {
+      key: 'email',
+      label: 'メール',
+      maxLength: 100,
+      rules: {
+        required: 'メールは必須です',
+        pattern: {
+          value: /^\S+@\S+\.\S+$/,
+          message: 'メール形式が不正です',
+        },
+      },
+    },
     {
       key: 'birthday',
       label: '誕生日',
       type: 'date',
-      required: true,
+      rules: {
+        required: '誕生日は必須です',
+      },
     },
   ];
 
@@ -157,7 +185,7 @@ export function UserEditPage() {
                   <FormRow
                     label={row.label}
                     isLast={i === rows.length - 1}
-                    required={row.required}
+                    required={!!row.rules?.required}
                   >
                     {row.type === 'date' ? (
                       <FormDatePicker<UserFormData>
@@ -165,6 +193,7 @@ export function UserEditPage() {
                         control={control}
                         errors={errors}
                         label={row.label}
+                        rules={row.rules}
                       />
                     ) : (
                       <FormTextField<UserFormData>
@@ -173,6 +202,7 @@ export function UserEditPage() {
                         errors={errors}
                         label={row.label}
                         maxLength={row.maxLength}
+                        rules={row.rules}
                       />
                     )}
                   </FormRow>
