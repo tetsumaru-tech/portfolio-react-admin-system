@@ -1,19 +1,20 @@
+import {
+  type User,
+  type UserFormData,
+  type CreateUserInput,
+  type UpdateUserInput,
+  type Gender,
+  GENDERS,
+} from '@/features/user/types';
+
 type UserStorage = {
   id: number | null;
   lastName: string;
   firstName: string;
   email: string;
   birthday: string;
+  gender: Gender;
 };
-
-import dayjs from 'dayjs';
-
-import type {
-  User,
-  UserFormData,
-  CreateUserInput,
-  UpdateUserInput,
-} from '@/features/user/types';
 
 export const userMapper = {
   // UI → Create
@@ -21,40 +22,49 @@ export const userMapper = {
     lastName: data.lastName,
     firstName: data.firstName,
     email: data.email,
-    birthday: data.birthday?.format('YYYY-MM-DD') ?? '1970-01-01',
+    gender: data.gender,
+    birthday: data.birthday ?? '', // ← string統一
   }),
+
   // UI → Update
   toUpdateInput: (data: UserFormData): UpdateUserInput => ({
     lastName: data.lastName,
     firstName: data.firstName,
     email: data.email,
-    birthday: data.birthday?.format('YYYY-MM-DD') ?? '1970-01-01',
+    gender: data.gender,
+    birthday: data.birthday ?? '', // ← string統一
   }),
-  // API → UI
-  toFromData: (user: User): UserFormData => ({
+
+  // API → Form
+  fromApi: (user: User): UserFormData => ({
     id: user.id,
     lastName: user.lastName,
     firstName: user.firstName,
     email: user.email,
-    birthday: dayjs(user.birthday),
+    gender: user.gender,
+    birthday: user.birthday ?? '', // ← string統一
   }),
+
   // UI → Storage
   toStorage(form: UserFormData) {
     return {
       ...form,
-      birthday: form.birthday
-        ? form.birthday.format('YYYY-MM-DD')
-        : form.birthday,
+      birthday: form.birthday ?? '',
     };
   },
+
   // Storage → UI
   fromStorage(data: unknown): UserFormData {
     if (!isUserStorage(data)) {
       throw new Error('Invalid storage data');
     }
     return {
-      ...data,
-      birthday: data.birthday ? dayjs(data.birthday) : dayjs('2000-01-01'),
+      id: data.id,
+      lastName: data.lastName,
+      firstName: data.firstName,
+      email: data.email,
+      gender: data.gender,
+      birthday: data.birthday,
     };
   },
 };
@@ -63,7 +73,6 @@ function isUserStorage(data: unknown): data is UserStorage {
   if (typeof data !== 'object' || data === null) return false;
 
   const d = data as Record<string, unknown>;
-
   return (
     'id' in d &&
     (typeof d.id === 'number' || d.id === null) &&
@@ -73,6 +82,9 @@ function isUserStorage(data: unknown): data is UserStorage {
     typeof d.firstName === 'string' &&
     'email' in d &&
     typeof d.email === 'string' &&
+    'gender' in d &&
+    typeof d.gender === 'string' &&
+    GENDERS.includes(d.gender as Gender) &&
     'birthday' in d &&
     (typeof d.birthday === 'string' || d.birthday === null)
   );

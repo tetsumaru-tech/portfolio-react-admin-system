@@ -2,7 +2,6 @@ import { Typography, Paper } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { USER_FORM_STORAGE_KEY } from '@/features/user';
 import { userApi } from '@/features/user/api';
 import {
   FormSection,
@@ -53,7 +52,6 @@ export function UserDetailPage() {
           <AppButton
             color="primary"
             onClick={() => {
-              sessionStorage.removeItem(USER_FORM_STORAGE_KEY);
               navigate(`/users/${userId}/edit`);
             }}
           >

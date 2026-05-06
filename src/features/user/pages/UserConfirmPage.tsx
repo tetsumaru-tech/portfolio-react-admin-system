@@ -1,11 +1,11 @@
 import { Typography, Paper } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 import { useToast } from '@/components';
-import { USER_FORM_STORAGE_KEY } from '@/features/user';
 import { userApi, userMapper } from '@/features/user/api';
 import {
   FormSection,
@@ -18,7 +18,7 @@ import {
 import type { UserFormData } from '@/features/user/types';
 import type { YMD } from '@/types';
 import { getAge } from '@/types';
-import { isApiError, getApiError } from '@/utils';
+import { isApiError, getApiError, formatGender } from '@/utils';
 
 export function UserConfirmPage() {
   const { id } = useParams<{ id: string }>();
@@ -39,8 +39,6 @@ export function UserConfirmPage() {
         ? userApi.createUser(userMapper.toCreateInput(data))
         : userApi.updateUser(userId, userMapper.toUpdateInput(data)),
     onSuccess: () => {
-      sessionStorage.removeItem(USER_FORM_STORAGE_KEY);
-
       queryClient.invalidateQueries({ queryKey: ['users'] });
 
       showToast(
@@ -82,15 +80,16 @@ export function UserConfirmPage() {
         value: `${formData.lastName} ${formData.firstName}`,
       },
       { label: 'メール', value: formData.email },
+      { label: '性別', value: formatGender(formData.gender) },
       {
         label: '誕生日',
-        value: formData.birthday ? formData.birthday.format('YYYY-MM-DD') : '',
+        value: formData.birthday
+          ? dayjs(formData.birthday).format('YYYY-MM-DD')
+          : '',
       },
       {
         label: '年齢',
-        value: formData.birthday
-          ? getAge(formData.birthday.format('YYYY-MM-DD') as YMD)
-          : '',
+        value: formData.birthday ? getAge(formData.birthday as YMD) : '',
       },
     ];
   }, [formData]);
@@ -115,7 +114,16 @@ export function UserConfirmPage() {
           ))}
         </FormSection>
         <ButtonSection>
-          <BackButton disabled={mutation.isPending} />
+          <BackButton
+            disabled={mutation.isPending}
+            onClick={() => {
+              navigate(`/users/${userId}/edit`, {
+                state: {
+                  formData: userMapper.toStorage(location.state?.formData),
+                },
+              });
+            }}
+          />
           <AppButton
             color="primary"
             onClick={handleSubmit}

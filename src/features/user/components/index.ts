@@ -6,6 +6,7 @@ export * from './form/FormRow';
 export * from './form/FormRow';
 export * from './form/FormTextField';
 export * from './form/FormDatePicker';
+export * from './form/FormSelect';
 export * from './ButtonSection';
 export * from './AppButton';
 export * from './BackButton';

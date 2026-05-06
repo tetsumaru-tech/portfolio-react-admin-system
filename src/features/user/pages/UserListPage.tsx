@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { USER_FORM_STORAGE_KEY } from '@/features/user';
 import { userApi } from '@/features/user/api';
 import { UserList, SearchForm, AppButton } from '@/features/user/components';
 import type { UserSearchCondition } from '@/features/user/types';
@@ -63,7 +62,6 @@ export function UserListPage() {
         variant="contained"
         color="primary"
         onClick={() => {
-          sessionStorage.removeItem(USER_FORM_STORAGE_KEY);
           navigate('/users/new');
         }}
         sx={{ mb: 2 }}

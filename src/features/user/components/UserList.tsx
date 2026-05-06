@@ -12,7 +12,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 import { useToast } from '@/components';
-import { USER_FORM_STORAGE_KEY } from '@/features/user';
 import { userApi } from '@/features/user/api';
 import type { User } from '@/features/user/types';
 import { isApiError, getApiError } from '@/utils';
@@ -85,7 +84,6 @@ export function UserList({ users }: UserListProps) {
                     size="small"
                     onClick={(e) => {
                       e.stopPropagation();
-                      sessionStorage.removeItem(USER_FORM_STORAGE_KEY);
                       navigate(`/users/${user.id}/edit`);
                     }}
                     disabled={deleteMutation.isPending}
