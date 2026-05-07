@@ -11,4 +11,6 @@ export type Row = {
   type?: 'text' | 'date' | 'select';
   rules?: RegisterOptions<UserFormData>;
   options?: SelectOption<string>[];
+  confirmValue?: (data: UserFormData) => string;
+  showInConfirm?: boolean;
 };

@@ -3,7 +3,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import { useForm, type RegisterOptions } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
@@ -20,8 +20,7 @@ import {
   BackButton,
 } from '@/features/user/components';
 import { userFormRows } from '@/features/user/constants';
-import { type UserFormData, genderOptions } from '@/features/user/types';
-import type { SelectOption } from '@/types';
+import { type UserFormData } from '@/features/user/types';
 
 export function UserEditPage() {
   const { id } = useParams<{ id: string }>();

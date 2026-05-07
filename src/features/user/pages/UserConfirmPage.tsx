@@ -1,6 +1,5 @@
 import { Typography, Paper } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -15,10 +14,10 @@ import {
   AppButton,
   BackButton,
 } from '@/features/user/components';
+import { userFormRows } from '@/features/user/constants';
 import type { UserFormData } from '@/features/user/types';
-import type { YMD } from '@/types';
-import { getAge } from '@/types';
-import { isApiError, getApiError, formatGender } from '@/utils';
+import { isApiError, getApiError } from '@/utils';
+import { formatFieldValue } from '@/utils/formatFieldValue';
 
 export function UserConfirmPage() {
   const { id } = useParams<{ id: string }>();
@@ -74,24 +73,14 @@ export function UserConfirmPage() {
   };
   const rows = useMemo(() => {
     if (!formData) return [];
-    return [
-      {
-        label: '名前',
-        value: `${formData.lastName} ${formData.firstName}`,
-      },
-      { label: 'メール', value: formData.email },
-      { label: '性別', value: formatGender(formData.gender) },
-      {
-        label: '誕生日',
-        value: formData.birthday
-          ? dayjs(formData.birthday).format('YYYY-MM-DD')
-          : '',
-      },
-      {
-        label: '年齢',
-        value: formData.birthday ? getAge(formData.birthday as YMD) : '',
-      },
-    ];
+    return userFormRows
+      .filter((row) => row.showInConfirm !== false)
+      .map((row) => ({
+        label: row.label,
+        value: row.confirmValue
+          ? row.confirmValue(formData)
+          : formatFieldValue(row, formData[row.key]),
+      }));
   }, [formData]);
 
   if (!formData || typeof formData !== 'object') {

@@ -9,6 +9,7 @@ export const userFormRows: Row[] = [
       required: '姓は必須です',
       maxLength: { value: 10, message: '性は10文字以内です' },
     },
+    confirmValue: (data) => `${data.lastName} ${data.firstName}`,
   },
   {
     key: 'firstName',
@@ -18,6 +19,7 @@ export const userFormRows: Row[] = [
       required: '名は必須です',
       maxLength: { value: 10, message: '名は10文字以内です' },
     },
+    showInConfirm: false,
   },
   {
     key: 'email',
