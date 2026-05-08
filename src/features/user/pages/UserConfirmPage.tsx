@@ -37,7 +37,8 @@ export function UserConfirmPage() {
       isAdd
         ? userApi.createUser(userMapper.toCreateInput(data))
         : userApi.updateUser(userId, userMapper.toUpdateInput(data)),
-    onSuccess: () => {
+    onSuccess: (updataUser) => {
+      queryClient.setQueryData(['user', updataUser.id], updataUser);
       queryClient.invalidateQueries({ queryKey: ['users'] });
 
       showToast(
