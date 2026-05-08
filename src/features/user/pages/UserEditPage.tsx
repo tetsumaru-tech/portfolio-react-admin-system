@@ -21,6 +21,7 @@ import {
 } from '@/features/user/components';
 import { userFormRows } from '@/features/user/constants';
 import { type UserFormData } from '@/features/user/types';
+import { applyServerErrors } from '@/utils';
 
 export function UserEditPage() {
   const { id } = useParams<{ id: string }>();
@@ -34,6 +35,7 @@ export function UserEditPage() {
     formState: { errors },
     reset,
     register,
+    setError,
   } = useForm<UserFormData>({
     defaultValues: {
       id: userId,
@@ -54,13 +56,14 @@ export function UserEditPage() {
   useEffect(() => {
     if (location.state?.formData) {
       reset(userMapper.fromStorage(location.state.formData));
+      applyServerErrors(location.state?.errors, setError);
       return;
     }
 
     if (isSuccess && data) {
       reset(userMapper.fromApi(data));
     }
-  }, [location.state, isSuccess, data, reset]);
+  }, [location.state, isSuccess, data, reset, setError]);
 
   const navigate = useNavigate();
 

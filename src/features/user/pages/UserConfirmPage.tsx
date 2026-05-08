@@ -16,7 +16,7 @@ import {
 } from '@/features/user/components';
 import { userFormRows } from '@/features/user/constants';
 import type { UserFormData } from '@/features/user/types';
-import { isApiError, getApiError } from '@/utils';
+import { isApiError, getApiError, getApiErrorMessage } from '@/utils';
 import { formatFieldValue } from '@/utils/formatFieldValue';
 
 export function UserConfirmPage() {
@@ -58,13 +58,11 @@ export function UserConfirmPage() {
               },
               replace: false,
             });
-          } else {
-            showToast(err.message, 'error');
+            return;
           }
         }
-      } else {
-        showToast('予期しないエラーです', 'error');
       }
+      showToast(getApiErrorMessage(error), 'error');
     },
   });
 

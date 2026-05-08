@@ -14,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/components';
 import { userApi } from '@/features/user/api';
 import type { User } from '@/features/user/types';
-import { isApiError, getApiError } from '@/utils';
+import { getApiErrorMessage } from '@/utils';
 
 type UserListProps = {
   users: User[];
@@ -33,14 +33,7 @@ export function UserList({ users }: UserListProps) {
       navigate(`/users`);
     },
     onError: (error: unknown) => {
-      if (isApiError(error)) {
-        const err = getApiError(error);
-        if (err) {
-          showToast(err.message, 'error');
-        }
-      } else {
-        showToast('予期しないエラーです', 'error');
-      }
+      showToast(getApiErrorMessage(error), 'error');
     },
   });
 
