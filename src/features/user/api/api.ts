@@ -9,6 +9,7 @@ import { ApiError } from '@/utils';
 export type GetListResponse = {
   data: User[];
 };
+const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 export const userApi = {
   getList: async (
@@ -66,6 +67,7 @@ export const userApi = {
       },
       body: JSON.stringify(data),
     });
+    await sleep(1000);
 
     if (!res.ok) {
       const errorData = await res.json();

@@ -1,4 +1,4 @@
-import { Typography, Paper } from '@mui/material';
+import { Typography, Paper, CircularProgress } from '@mui/material';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
@@ -119,7 +119,7 @@ export function UserConfirmPage() {
             onClick={handleSubmit}
             disabled={mutation.isPending}
           >
-            {mutation.isPending ? '登録中...' : '登録'}
+            {mutation.isPending ? <CircularProgress size={20} /> : '登録'}
           </AppButton>
         </ButtonSection>
       </Paper>
