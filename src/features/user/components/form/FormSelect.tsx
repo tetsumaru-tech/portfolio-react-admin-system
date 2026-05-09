@@ -44,7 +44,7 @@ export function FormSelect<T extends Record<string, any>>({
           helperText={
             (errors[name]?.message as string) ||
             (rules?.maxLength
-              ? `${String(field.value ?? '').length}/${maxLength}`
+              ? `${String(field.value ?? '').length}/${rules.maxLength}`
               : '')
           }
         >
