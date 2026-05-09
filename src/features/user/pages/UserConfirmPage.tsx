@@ -1,10 +1,8 @@
 import { Typography, Paper, CircularProgress } from '@mui/material';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-import { useToast } from '@/components';
 import { userApi, userMapper } from '@/features/user/api';
 import {
   FormSection,
@@ -16,7 +14,7 @@ import {
 } from '@/features/user/components';
 import { userFormRows } from '@/features/user/constants';
 import type { UserFormData } from '@/features/user/types';
-import { isApiError, getApiError, getApiErrorMessage } from '@/utils';
+import { useApiMutation } from '@/hooks';
 import { formatFieldValue } from '@/utils/formatFieldValue';
 
 export function UserConfirmPage() {
@@ -27,42 +25,29 @@ export function UserConfirmPage() {
   const formData: UserFormData | null = location.state?.formData
     ? userMapper.fromStorage(location.state.formData)
     : null;
-  const { showToast } = useToast();
 
   const isAdd = formData?.id === null;
 
-  const queryClient = useQueryClient();
-  const mutation = useMutation({
+  const mutation = useApiMutation({
     mutationFn: async (data: UserFormData) =>
       isAdd
         ? userApi.createUser(userMapper.toCreateInput(data))
         : userApi.updateUser(userId, userMapper.toUpdateInput(data)),
-    onSuccess: (updataUser) => {
-      queryClient.setQueryData(['user', updataUser.id], updataUser);
-      queryClient.invalidateQueries({ queryKey: ['users'] });
-
-      showToast(
-        isAdd ? 'ユーザーを登録しました' : 'ユーザー情報を更新しました。',
-      );
+    successMessage: isAdd
+      ? 'ユーザーを登録しました'
+      : 'ユーザー情報を更新しました。',
+    invalidateKeys: [['users']],
+    onSuccess: () => {
       navigate(`/users`);
     },
-    onError: (error: unknown) => {
-      if (isApiError(error)) {
-        const err = getApiError(error);
-        if (err) {
-          if (err.status === 422 && err.errors) {
-            navigate(`/users/${userId}/edit`, {
-              state: {
-                formData,
-                errors: err.errors,
-              },
-              replace: false,
-            });
-            return;
-          }
-        }
-      }
-      showToast(getApiErrorMessage(error), 'error');
+    onValidationError: (errors) => {
+      navigate(`/users/${userId}/edit`, {
+        state: {
+          formData,
+          errors,
+        },
+        replace: false,
+      });
     },
   });
 
