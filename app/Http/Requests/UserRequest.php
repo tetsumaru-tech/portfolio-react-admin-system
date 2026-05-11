@@ -4,12 +4,11 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Log;
 
 class UserRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
+     * ユーザーがこのリクエストを実行する権限があるか判定する。
      */
     public function authorize(): bool
     {
@@ -17,13 +16,13 @@ class UserRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * リクエストに適用されるバリデーションルールを取得する。
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
-        $roles = [
+        $rules = [
             'lastName' => 'sometimes|required|string|max:8',
             'firstName' => 'sometimes|required|string|max:8',
             'email' => 'sometimes|required|email|max:255',
@@ -31,12 +30,11 @@ class UserRequest extends FormRequest
         ];
 
         if ($this->isMethod('post')) {
-            $roles['lastName'] = 'required|string|max:5';
-            $roles['firstName'] = 'required|string|max:50';
-            $roles['email'] = 'required|email|max:255|unique:users,email';
+            $rules['lastName'] = 'required|string|max:5';
+            $rules['firstName'] = 'required|string|max:50';
+            $rules['email'] = 'required|email|max:255|unique:users,email';
         }
-        Log::debug('Validation rules: ', $roles);
 
-        return $roles;
+        return $rules;
     }
 }
