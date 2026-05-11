@@ -8,6 +8,7 @@ import {
   UserEditPage,
   UserConfirmPage,
 } from '@/features/user/pages';
+console.log(import.meta.env);
 
 export default function App() {
   return (

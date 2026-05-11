@@ -1,3 +1,4 @@
+import { API_BASE_URL } from '@/config/api';
 import type {
   User,
   CreateUserInput,
@@ -22,9 +23,7 @@ export const userApi = {
     if (condition?.email) {
       params.set('email', condition.email);
     }
-    const res = await fetch(
-      `http://127.0.0.1:8000/api/users?${params.toString()}`,
-    );
+    const res = await fetch(`${API_BASE_URL}/users?${params.toString()}`);
     if (!res.ok) {
       const errorData = await res.json();
       throw new ApiError(
@@ -38,7 +37,7 @@ export const userApi = {
   },
 
   fetchUser: async (id: number): Promise<User> => {
-    const res = await fetch(`http://127.0.0.1:8000/api/users/${id}`);
+    const res = await fetch(`${API_BASE_URL}/users/${id}`);
     if (!res.ok) {
       const errorData = await res.json();
       throw new ApiError(
@@ -51,7 +50,7 @@ export const userApi = {
   },
 
   createUser: async (data: CreateUserInput): Promise<User> => {
-    const res = await fetch('http://127.0.0.1:8000/api/users', {
+    const res = await fetch(`${API_BASE_URL}/users`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -68,7 +67,7 @@ export const userApi = {
   },
 
   updateUser: async (id: number, data: UpdateUserInput): Promise<User> => {
-    const res = await fetch(`http://127.0.0.1:8000/api/users/${id}`, {
+    const res = await fetch(`${API_BASE_URL}/users/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -90,7 +89,7 @@ export const userApi = {
   },
 
   deleteUser: async (id: number): Promise<void> => {
-    const res = await fetch(`http://127.0.0.1:8000/api/users/${id}`, {
+    const res = await fetch(`${API_BASE_URL}/users/${id}`, {
       method: 'DELETE',
     });
     if (!res.ok) {
