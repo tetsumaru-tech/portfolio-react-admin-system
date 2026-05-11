@@ -15,7 +15,16 @@ export const userApi = {
   getList: async (
     condition?: UserSearchCondition,
   ): Promise<GetListResponse> => {
-    const res = await fetch('http://127.0.0.1:8000/api/users');
+    const params = new URLSearchParams();
+    if (condition?.name) {
+      params.set('name', condition.name);
+    }
+    if (condition?.email) {
+      params.set('email', condition.email);
+    }
+    const res = await fetch(
+      `http://127.0.0.1:8000/api/users?${params.toString()}`,
+    );
     if (!res.ok) {
       const errorData = await res.json();
       throw new ApiError(
