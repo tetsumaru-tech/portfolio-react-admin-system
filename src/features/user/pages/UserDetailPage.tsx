@@ -1,8 +1,7 @@
 import { Typography, Paper } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
 import { useParams, useNavigate } from 'react-router-dom';
 
-import { userApi } from '@/features/user/api';
+import { useUserDetailQuery } from '@/features/user/api';
 import {
   FormSection,
   FormRowContainer,
@@ -20,10 +19,7 @@ export function UserDetailPage() {
   const navigate = useNavigate();
 
   // React Query
-  const { data: user } = useQuery({
-    queryKey: ['user', userId],
-    queryFn: () => userApi.fetchUser(userId),
-  });
+  const { data: user } = useUserDetailQuery(userId);
 
   return (
     <>

@@ -1,9 +1,8 @@
 import { Pagination, Box } from '@mui/material';
-import { useQuery } from '@tanstack/react-query';
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { userApi } from '@/features/user/api';
+import { useUsersQuery } from '@/features/user/api';
 import { UserList, SearchForm, AppButton } from '@/features/user/components';
 import type { UserSearchCondition } from '@/features/user/types';
 
@@ -18,10 +17,7 @@ export function UserListPage() {
   ); // 検索実行時の条件を保持
 
   // React Query
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ['users', searchCondition],
-    queryFn: () => userApi.getList(searchCondition),
-  });
+  const { data, isLoading, isError } = useUsersQuery(searchCondition);
 
   const [page, setPage] = useState<number>(1);
   const perPage = 4; // 1ページ毎の件数

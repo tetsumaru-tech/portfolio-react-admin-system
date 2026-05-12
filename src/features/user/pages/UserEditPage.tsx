@@ -1,13 +1,13 @@
 import { Grid, Paper } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
-import { userApi, userMapper } from '@/features/user/api';
+import { useUserDetailQuery } from '@/features/user/api';
+import { userMapper } from '@/features/user/api';
 import {
   FormSection,
   FormRowContainer,
@@ -47,11 +47,7 @@ export function UserEditPage() {
     },
   });
 
-  const { data, isSuccess } = useQuery({
-    queryKey: ['user', userId],
-    queryFn: () => userApi.fetchUser(userId),
-    enabled: !!userId,
-  });
+  const { data, isSuccess } = useUserDetailQuery(userId);
 
   useEffect(() => {
     if (location.state?.formData) {
