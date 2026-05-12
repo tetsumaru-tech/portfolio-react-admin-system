@@ -25,13 +25,10 @@ class UserRequest extends FormRequest
         $rules = [
             'lastName' => 'sometimes|required|string|max:8',
             'firstName' => 'sometimes|required|string|max:8',
-            'email' => 'sometimes|required|email|max:255',
             'birthday' => 'nullable|date|before:today',
         ];
 
         if ($this->isMethod('post')) {
-            $rules['lastName'] = 'required|string|max:5';
-            $rules['firstName'] = 'required|string|max:50';
             $rules['email'] = 'required|email|max:255|unique:users,email';
         }
 
