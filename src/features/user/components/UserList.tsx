@@ -8,34 +8,22 @@ import {
   TableContainer,
   Paper,
 } from '@mui/material';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
-import { useToast } from '@/components';
-import { userApi } from '@/features/user/api';
+import { useDeleteUserMutation } from '@/features/user/api';
 import type { User } from '@/features/user/types';
-import { getApiErrorMessage } from '@/utils';
 
 type UserListProps = {
   users: User[];
 };
 
+/**
+ * ユーザー一覧を表示するコンポーネント
+ * @param users ユーザー配列
+ */
 export function UserList({ users }: UserListProps) {
   const navigate = useNavigate();
-  const { showToast } = useToast();
-  const queryClient = useQueryClient();
-  const deleteMutation = useMutation({
-    // 検索実行
-    mutationFn: userApi.deleteUser,
-    onSuccess: () => {
-      showToast('ユーザーを削除しました。');
-      queryClient.invalidateQueries({ queryKey: ['users'] });
-      navigate(`/users`);
-    },
-    onError: (error: unknown) => {
-      showToast(getApiErrorMessage(error), 'error');
-    },
-  });
+  const deleteMutation = useDeleteUserMutation();
 
   return (
     <TableContainer component={Paper}>

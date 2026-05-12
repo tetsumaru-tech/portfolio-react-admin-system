@@ -3,7 +3,11 @@ import { useMemo } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
-import { userApi, userMapper } from '@/features/user/api';
+import { userMapper } from '@/features/user/api';
+import {
+  useCreateUserMutation,
+  useUpdateUserMutation,
+} from '@/features/user/api';
 import {
   FormSection,
   FormRowContainer,
@@ -14,9 +18,15 @@ import {
 } from '@/features/user/components';
 import { userFormRows } from '@/features/user/constants';
 import type { UserFormData } from '@/features/user/types';
-import { useApiMutation } from '@/hooks';
 import { formatFieldValue } from '@/utils/formatFieldValue';
 
+/**
+ * ユーザー確認ページコンポーネント
+ *
+ * ユーザー入力内容を表示し、登録または更新を確定します。
+ *
+ * @returns ユーザー確認ページの JSX
+ */
 export function UserConfirmPage() {
   const { id } = useParams<{ id: string }>();
   const userId = Number(id);
@@ -26,34 +36,17 @@ export function UserConfirmPage() {
     ? userMapper.fromStorage(location.state.formData)
     : null;
 
-  const isAdd = formData?.id === null;
+  const isAdd =
+    formData?.id === null || formData?.id === undefined || formData?.id === 0;
 
-  const mutation = useApiMutation({
-    mutationFn: async (data: UserFormData) =>
-      isAdd
-        ? userApi.createUser(userMapper.toCreateInput(data))
-        : userApi.updateUser(userId, userMapper.toUpdateInput(data)),
-    successMessage: isAdd
-      ? 'ユーザーを登録しました'
-      : 'ユーザー情報を更新しました。',
-    invalidateKeys: [['users']],
-    onSuccess: () => {
-      navigate(`/users`);
-    },
-    onValidationError: (errors) => {
-      navigate(`/users/${userId}/edit`, {
-        state: {
-          formData,
-          errors,
-        },
-        replace: false,
-      });
-    },
-  });
+  const createUserMutation = useCreateUserMutation();
+  const updateUserMutation = useUpdateUserMutation();
+  const mutation = isAdd ? createUserMutation : updateUserMutation;
 
   const handleSubmit = async () => {
     if (!formData) return;
-    mutation.mutate(formData);
+    await mutation.mutateAsync(formData);
+    navigate(`/users`);
   };
   const rows = useMemo(() => {
     if (!formData) return [];

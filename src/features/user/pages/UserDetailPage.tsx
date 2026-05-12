@@ -12,6 +12,11 @@ import {
 } from '@/features/user/components';
 import { getAge } from '@/types';
 
+/**
+ * ユーザー詳細ページのコンポーネント。
+ * URL のパラメーターからユーザー ID を取得し、
+ * 該当ユーザーの詳細情報を表示します。
+ */
 export function UserDetailPage() {
   const { id } = useParams<{ id: string }>();
   const userId = Number(id);
