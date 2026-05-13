@@ -4,6 +4,10 @@ import { useNavigate } from 'react-router-dom';
 
 type Props = ButtonProps;
 
+/**
+ * 前のページに戻るボタンコンポーネント
+ * @param props MUI Button のプロパティ
+ */
 export function BackButton(props: Props) {
   const navigate = useNavigate();
 

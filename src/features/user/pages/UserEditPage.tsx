@@ -23,6 +23,9 @@ import { userFormRows } from '@/features/user/constants';
 import { type UserFormData } from '@/features/user/types';
 import { applyServerErrors } from '@/utils';
 
+/**
+ * ユーザー編集ページコンポーネント
+ */
 export function UserEditPage() {
   const { id } = useParams<{ id: string }>();
   const userId = Number(id ?? '');

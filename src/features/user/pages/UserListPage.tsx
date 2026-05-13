@@ -6,6 +6,9 @@ import { useUsersQuery } from '@/features/user/api';
 import { UserList, SearchForm, AppButton } from '@/features/user/components';
 import type { UserSearchCondition } from '@/features/user/types';
 
+/**
+ * ユーザーリストページコンポーネント
+ */
 export function UserListPage() {
   const navigate = useNavigate();
 
@@ -31,11 +34,18 @@ export function UserListPage() {
 
   const lastPage = Math.ceil((data?.data.length ?? 0) / perPage);
 
+  /**
+   * 検索を実行する
+   */
   function handleSearch(): void {
     setSearchCondition(condition);
     setPage(1);
   }
 
+  /**
+   * ページングを処理する
+   * @param page ページ番号
+   */
   function handlePaging(page: number): void {
     setPage(page);
   }

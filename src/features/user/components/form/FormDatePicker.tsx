@@ -16,7 +16,11 @@ type Props<T extends Record<string, any>> = {
   rules?: RegisterOptions<T, Path<T>>;
 };
 
-export function FormDatePicker<T extends Record<string, any>>({
+/**
+ * 日付入力用の DatePicker コンポーネント
+ * React Hook Form の Controller でフォームと連携します。
+ */
+export function FormDatePicker<T extends Record<string, unknown>>({
   name,
   control,
   errors,

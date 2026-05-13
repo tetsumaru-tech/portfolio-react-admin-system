@@ -16,6 +16,17 @@ type Props<T extends Record<string, any>> = {
   rules?: RegisterOptions<T, Path<T>>;
 };
 
+/**
+ * テキスト入力用のフォームフィールドコンポーネント
+ * React Hook Form の Controller でフォームと連携します。
+ * @template T フォームデータの型
+ * @param name フィールド名
+ * @param control React Hook Form のコントロール
+ * @param errors フィールドエラー
+ * @param label ラベル
+ * @param maxLength 最大文字数（オプション）
+ * @param rules バリデーションルール（オプション）
+ */
 export function FormTextField<T extends Record<string, any>>({
   name,
   control,

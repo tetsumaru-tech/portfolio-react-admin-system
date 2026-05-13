@@ -21,6 +21,17 @@ type Props<T extends Record<string, any>> = {
   rules?: RegisterOptions<T, Path<T>>;
 };
 
+/**
+ * 選択可能なオプションを持つフォームセレクトコンポーネント。
+ * @template T - フォームデータの型
+ * @param props - コンポーネントのプロパティ
+ * @param props.name - フィールド名
+ * @param props.control - React Hook Formのコントロール
+ * @param props.errors - フィールドエラー
+ * @param props.label - ラベル
+ * @param props.options - 選択肢のオプション配列
+ * @param props.rules - バリデーションルール
+ */
 export function FormSelect<T extends Record<string, any>>({
   name,
   control,

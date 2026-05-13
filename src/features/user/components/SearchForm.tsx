@@ -8,6 +8,12 @@ type SearchFormProps = {
   onSearch: () => void;
 };
 
+/**
+ * ユーザー検索フォームコンポーネント
+ * @param condition 現在の検索条件
+ * @param onChange 検索条件変更時のコールバック
+ * @param onSearch 検索実行時のコールバック
+ */
 export function SearchForm({ condition, onChange, onSearch }: SearchFormProps) {
   return (
     <Stack spacing={2}>

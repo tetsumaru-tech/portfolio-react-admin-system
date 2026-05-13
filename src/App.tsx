@@ -10,6 +10,10 @@ import {
 } from '@/features/user/pages';
 console.log(import.meta.env);
 
+/**
+ * アプリケーションのルーティングとトースト提供を設定するコンポーネントです。
+ * 各ページコンポーネントへのパスを定義します。
+ */
 export default function App() {
   return (
     <ToastProvider>

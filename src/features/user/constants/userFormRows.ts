@@ -1,5 +1,8 @@
 import { genderOptions, type Row } from '@/features/user/types';
 
+/**
+ * ユーザーフォームの行定義
+ */
 export const userFormRows: Row[] = [
   {
     key: 'lastName',

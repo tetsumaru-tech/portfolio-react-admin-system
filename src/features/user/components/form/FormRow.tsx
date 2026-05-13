@@ -7,6 +7,14 @@ type Props = {
   required?: boolean;
 };
 
+/**
+ * フォームの1行を表示するコンポーネント
+ *
+ * @param props.label ラベル
+ * @param props.children 行内のコンテンツ
+ * @param props.isLast 最後の行かどうか
+ * @param props.required 必須かどうか
+ */
 export function FormRow({
   label,
   children,

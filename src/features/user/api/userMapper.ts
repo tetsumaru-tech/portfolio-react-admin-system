@@ -7,6 +7,9 @@ import {
   GENDERS,
 } from '@/features/user/types';
 
+/**
+ * ストレージに保存するユーザー情報の型
+ */
 type UserStorage = {
   id: number | null;
   lastName: string;
@@ -16,8 +19,15 @@ type UserStorage = {
   gender: Gender;
 };
 
+/**
+ * ユーザー関連のデータ変換関数を提供するオブジェクト
+ */
 export const userMapper = {
-  // UI → Create
+  /**
+   * フォームデータをユーザー作成入力に変換する
+   * @param data フォームデータ
+   * @returns ユーザー作成入力
+   */
   toCreateInput: (data: UserFormData): CreateUserInput => ({
     lastName: data.lastName,
     firstName: data.firstName,
@@ -26,7 +36,11 @@ export const userMapper = {
     birthday: data.birthday ?? '', // ← string統一
   }),
 
-  // UI → Update
+  /**
+   * フォームデータをユーザー更新入力に変換する
+   * @param data フォームデータ
+   * @returns ユーザー更新入力
+   */
   toUpdateInput: (data: UserFormData): UpdateUserInput => ({
     lastName: data.lastName,
     firstName: data.firstName,
@@ -35,7 +49,11 @@ export const userMapper = {
     birthday: data.birthday ?? '', // ← string統一
   }),
 
-  // API → Form
+  /**
+   * APIレスポンスをフォームデータに変換する
+   * @param user APIから取得したユーザー情報
+   * @returns フォームデータ
+   */
   fromApi: (user: User): UserFormData => ({
     id: user.id,
     lastName: user.lastName,
@@ -45,7 +63,11 @@ export const userMapper = {
     birthday: user.birthday ?? '', // ← string統一
   }),
 
-  // UI → Storage
+  /**
+   * フォームデータをストレージ形式に変換する
+   * @param form フォームデータ
+   * @returns ストレージ形式のデータ
+   */
   toStorage(form: UserFormData) {
     return {
       ...form,
@@ -53,7 +75,11 @@ export const userMapper = {
     };
   },
 
-  // Storage → UI
+  /**
+   * ストレージデータをフォームデータに変換する
+   * @param data ストレージから取得したデータ
+   * @returns フォームデータ
+   */
   fromStorage(data: unknown): UserFormData {
     if (!isUserStorage(data)) {
       throw new Error('Invalid storage data');
@@ -69,6 +95,11 @@ export const userMapper = {
   },
 };
 
+/**
+ * 指定されたデータがUserStorage型かどうかをチェックする
+ * @param data チェックするデータ
+ * @returns UserStorage型の場合はtrue、そうでない場合はfalse
+ */
 function isUserStorage(data: unknown): data is UserStorage {
   if (typeof data !== 'object' || data === null) return false;
 
