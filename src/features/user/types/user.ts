@@ -8,6 +8,9 @@ export const genderOptions: SelectOption<Gender>[] = [
   { value: 'female', label: '女性' },
 ];
 
+/**
+ * ユーザー情報のサーバー型定義
+ */
 export type User = {
   id: number | null;
   lastName: string;
