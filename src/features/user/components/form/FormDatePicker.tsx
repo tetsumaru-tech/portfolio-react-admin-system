@@ -35,7 +35,7 @@ export function FormDatePicker<T extends Record<string, unknown>>({
       render={({ field }) => (
         <DatePicker
           label={label}
-          value={field.value ? dayjs(field.value) : null}
+          value={toDayjs(field.value)}
           maxDate={dayjs()}
           format="YYYY-MM-DD"
           onChange={(date) =>
@@ -53,3 +53,7 @@ export function FormDatePicker<T extends Record<string, unknown>>({
     />
   );
 }
+
+const toDayjs = (value: unknown): dayjs.Dayjs | null => {
+  return typeof value === 'string' ? dayjs(value) : null;
+};

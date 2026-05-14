@@ -1,15 +1,7 @@
-import type { User, Gender } from '@/features/user/types';
+import { z } from 'zod';
 
-export type UserFormData = Omit<
-  User,
-  'createdAt' | 'updatedAt' | 'birthday'
-> & { birthday: string; gender: Gender };
+import { userSchema } from '@/features/user/schema';
 
-export type CreateUserInput = Omit<
-  User,
-  'id' | 'createdAt' | 'updatedAt' | 'birthday'
-> & { birthday: string };
-
-export type UpdateUserInput = Partial<
-  Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'birthday'>
-> & { birthday: string };
+export type UserFormData = z.infer<typeof userSchema>;
+export type CreateUserInput = Omit<UserFormData, 'id'>;
+export type UpdateUserInput = Partial<Omit<UserFormData, 'id'>>;

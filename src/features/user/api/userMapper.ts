@@ -33,7 +33,7 @@ export const userMapper = {
     firstName: data.firstName,
     email: data.email,
     gender: data.gender,
-    birthday: data.birthday ?? '', // ← string統一
+    birthday: data.birthday,
   }),
 
   /**
@@ -46,7 +46,7 @@ export const userMapper = {
     firstName: data.firstName,
     email: data.email,
     gender: data.gender,
-    birthday: data.birthday ?? '', // ← string統一
+    birthday: data.birthday,
   }),
 
   /**
@@ -60,7 +60,7 @@ export const userMapper = {
     firstName: user.firstName,
     email: user.email,
     gender: user.gender,
-    birthday: user.birthday ?? '', // ← string統一
+    birthday: user.birthday,
   }),
 
   /**
@@ -71,7 +71,7 @@ export const userMapper = {
   toStorage(form: UserFormData) {
     return {
       ...form,
-      birthday: form.birthday ?? '',
+      birthday: form.birthday,
     };
   },
 
