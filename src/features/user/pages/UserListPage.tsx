@@ -3,6 +3,7 @@ import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useUsersQuery } from '@/features/user/api';
+import { UserDataGrid } from '@/features/user/components';
 import { UserList, SearchForm, AppButton } from '@/features/user/components';
 import type { UserSearchCondition } from '@/features/user/types';
 
@@ -50,7 +51,6 @@ export function UserListPage() {
     setPage(page);
   }
 
-  if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error...</div>;
 
   return (
@@ -75,6 +75,9 @@ export function UserListPage() {
         新規作成
       </AppButton>
       <UserList users={paginatedUsers} />
+      <hr />
+      <h2>ユーザーデータグリッド</h2>
+      <UserDataGrid users={paginatedUsers} loading={isLoading} />
       <Box display="flex" justifyContent="center" mt={2}>
         <Pagination
           count={lastPage}

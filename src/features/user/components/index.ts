@@ -10,3 +10,6 @@ export * from './form/FormSelect';
 export * from './ButtonSection';
 export * from './AppButton';
 export * from './BackButton';
+export * from './columns/userColumns';
+export * from './columns/userActionColumn';
+export * from './UserDataGrid';
