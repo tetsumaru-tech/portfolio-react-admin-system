@@ -22,6 +22,10 @@ export function applyServerErrors<T extends FieldValues>(
   errors: ValidationErrors,
   setError: UseFormSetError<T>,
 ) {
+  if (!errors) {
+    return;
+  }
+
   Object.entries(errors).forEach(([key, messages]) => {
     setError(key as Path<T>, {
       type: 'server',
