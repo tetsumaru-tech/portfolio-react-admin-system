@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
+import { ROUTES } from '@/constants';
 import { useUserDetailQuery } from '@/features/user/api';
 import { userMapper } from '@/features/user/api';
 import {
@@ -73,11 +74,11 @@ export function UserEditPage() {
     }
 
     if (isAdd) {
-      navigate(`/users/new/confirm`, {
+      navigate(ROUTES.userConfirm('create'), {
         state: { formData: userMapper.toStorage(data) },
       });
     } else {
-      navigate(`/users/${userId}/confirm`, {
+      navigate(ROUTES.userConfirm(userId), {
         state: {
           formData: userMapper.toStorage(data),
         },
@@ -143,7 +144,7 @@ export function UserEditPage() {
       <ButtonSection>
         <BackButton
           onClick={() => {
-            navigate(`/users`);
+            navigate(ROUTES.users());
           }}
         >
           キャンセル

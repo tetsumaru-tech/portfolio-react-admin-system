@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
+import { ROUTES } from '@/constants';
 import { userMapper } from '@/features/user/api';
 import {
   useCreateUserMutation,
@@ -46,7 +47,7 @@ export function UserConfirmPage() {
   const handleSubmit = async () => {
     if (!formData) return;
     await mutation.mutateAsync(formData);
-    navigate(`/users`);
+    navigate(ROUTES.users());
   };
   const rows = useMemo(() => {
     if (!formData) return [];
@@ -61,7 +62,7 @@ export function UserConfirmPage() {
   }, [formData]);
 
   if (!formData || typeof formData !== 'object') {
-    navigate(`/users/${userId}/edit`, { replace: true });
+    navigate(ROUTES.userEdit(userId), { replace: true });
   }
 
   return (
@@ -83,7 +84,7 @@ export function UserConfirmPage() {
           <BackButton
             disabled={mutation.isPending}
             onClick={() => {
-              navigate(`/users/${userId}/edit`, {
+              navigate(ROUTES.userEdit(userId), {
                 state: {
                   formData: userMapper.toStorage(location.state?.formData),
                 },

@@ -1,6 +1,7 @@
 import { Typography, Paper } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 
+import { ROUTES } from '@/constants';
 import { useUserDetailQuery } from '@/features/user/api';
 import {
   FormSection,
@@ -53,7 +54,7 @@ export function UserDetailPage() {
           <AppButton
             color="primary"
             onClick={() => {
-              navigate(`/users/${userId}/edit`);
+              navigate(ROUTES.userEdit(userId));
             }}
           >
             編集

@@ -1,14 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { ToastProvider } from './components';
-
+import { ToastProvider } from '@/components';
+import { ROUTEPATTERNS } from '@/constants';
 import {
   UserListPage,
   UserDetailPage,
   UserEditPage,
   UserConfirmPage,
 } from '@/features/user/pages';
-console.log(import.meta.env);
 
 /**
  * アプリケーションのルーティングとトースト提供を設定するコンポーネントです。
@@ -19,12 +18,18 @@ export default function App() {
     <ToastProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<UserListPage />} />
-          <Route path="/users" element={<UserListPage />} />
-          <Route path="/users/:id" element={<UserDetailPage />} />
-          <Route path="/users/new" element={<UserEditPage />} />
-          <Route path="/users/:id/edit" element={<UserEditPage />} />
-          <Route path="/users/:id/confirm" element={<UserConfirmPage />} />
+          <Route path={ROUTEPATTERNS.HOME} element={<UserListPage />} />
+          <Route path={ROUTEPATTERNS.USERS} element={<UserListPage />} />
+          <Route
+            path={ROUTEPATTERNS.USER_DETAIL}
+            element={<UserDetailPage />}
+          />
+          <Route path={ROUTEPATTERNS.USER_CREATE} element={<UserEditPage />} />
+          <Route path={ROUTEPATTERNS.USER_EDIT} element={<UserEditPage />} />
+          <Route
+            path={ROUTEPATTERNS.USER_CONFIRM}
+            element={<UserConfirmPage />}
+          />
         </Routes>
       </BrowserRouter>
     </ToastProvider>

@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { AppDataGrid } from '@/components';
+import { ROUTES } from '@/constants';
 import { useDeleteUserMutation } from '@/features/user/api';
 import {
   userColumns,
@@ -31,7 +32,7 @@ export function UserDataGrid({ users, loading }: Props) {
     () =>
       createUserActionColumn({
         onEdit: (id) => {
-          navigate(`/users/${id}/edit`);
+          navigate(ROUTES.userEdit(id));
         },
 
         onDelete: mutate,
@@ -48,7 +49,7 @@ export function UserDataGrid({ users, loading }: Props) {
       loading={loading}
       getRowId={(row) => Number(row.id)}
       onRowClick={(params) => {
-        navigate(`/users/${params.row.id}`);
+        navigate(ROUTES.userDetail(params.row.id));
       }}
     />
   );

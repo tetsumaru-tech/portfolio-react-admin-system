@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { ROUTES } from '@/constants';
 import { useUsersQuery } from '@/features/user/api';
 import { UserDataGrid } from '@/features/user/components';
 import { SearchForm, AppButton } from '@/features/user/components';
@@ -46,7 +47,7 @@ export function UserListPage() {
         variant="contained"
         color="primary"
         onClick={() => {
-          navigate('/users/new');
+          navigate(ROUTES.userCreate());
         }}
         sx={{ mb: 2 }}
       >
