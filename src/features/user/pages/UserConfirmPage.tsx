@@ -18,6 +18,7 @@ import {
   BackButton,
 } from '@/features/user/components';
 import { userFormRows } from '@/features/user/constants';
+import { createUserSchema, updateUserSchema } from '@/features/user/schema';
 import type { UserFormData } from '@/features/user/types';
 import { formatFieldValue } from '@/utils/formatFieldValue';
 
@@ -46,7 +47,16 @@ export function UserConfirmPage() {
 
   const handleSubmit = async () => {
     if (!formData) return;
-    await mutation.mutateAsync(formData);
+
+    if (isAdd) {
+      const request = userMapper.toCreateRequest(formData);
+      const validateRequest = createUserSchema.parse(request);
+      await createUserMutation.mutateAsync(validateRequest);
+    } else {
+      const request = userMapper.toUpdateRequest(formData);
+      const validateRequest = updateUserSchema.parse(request);
+      await updateUserMutation.mutateAsync(validateRequest);
+    }
     navigate(ROUTES.users());
   };
   const rows = useMemo(() => {

@@ -4,7 +4,6 @@ import {
   type Control,
   type FieldErrors,
   type Path,
-  type RegisterOptions,
 } from 'react-hook-form';
 
 type Option = {
@@ -18,7 +17,6 @@ type Props<T extends Record<string, any>> = {
   errors: FieldErrors<T>;
   label: string;
   options: Option[];
-  rules?: RegisterOptions<T, Path<T>>;
 };
 
 /**
@@ -30,7 +28,6 @@ type Props<T extends Record<string, any>> = {
  * @param props.errors - フィールドエラー
  * @param props.label - ラベル
  * @param props.options - 選択肢のオプション配列
- * @param props.rules - バリデーションルール
  */
 export function FormSelect<T extends Record<string, any>>({
   name,
@@ -38,13 +35,11 @@ export function FormSelect<T extends Record<string, any>>({
   errors,
   label,
   options,
-  rules,
 }: Props<T>) {
   return (
     <Controller
       name={name}
       control={control}
-      rules={rules}
       render={({ field }) => (
         <TextField
           {...field}
@@ -52,12 +47,7 @@ export function FormSelect<T extends Record<string, any>>({
           label={label}
           fullWidth
           error={!!errors[name]}
-          helperText={
-            (errors[name]?.message as string) ||
-            (rules?.maxLength
-              ? `${String(field.value ?? '').length}/${rules.maxLength}`
-              : '')
-          }
+          helperText={errors[name]?.message as string}
         >
           {options.map((option) => (
             <MenuItem key={option.value} value={option.value}>

@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Grid, Paper } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -21,6 +22,7 @@ import {
   BackButton,
 } from '@/features/user/components';
 import { userFormRows } from '@/features/user/constants';
+import { userFormSchema } from '@/features/user/schema';
 import { type UserFormData } from '@/features/user/types';
 import { applyServerErrors } from '@/utils';
 
@@ -41,6 +43,7 @@ export function UserEditPage() {
     register,
     setError,
   } = useForm<UserFormData>({
+    resolver: zodResolver(userFormSchema),
     defaultValues: {
       id: userId,
       lastName: '',
@@ -68,11 +71,6 @@ export function UserEditPage() {
   const navigate = useNavigate();
 
   const onSubmit = (data: UserFormData) => {
-    if (!/^\S+@\S+\.\S+$/.test(data.email)) {
-      alert('有効なメールアドレスを入力してください。');
-      return;
-    }
-
     if (isAdd) {
       navigate(ROUTES.userConfirm('create'), {
         state: { formData: userMapper.toStorage(data) },
@@ -112,7 +110,6 @@ export function UserEditPage() {
                         control={control}
                         errors={errors}
                         label={row.label}
-                        rules={row.rules}
                       />
                     ) : row.type === 'select' ? (
                       <FormSelect<UserFormData>
@@ -120,7 +117,6 @@ export function UserEditPage() {
                         control={control}
                         errors={errors}
                         label={row.label}
-                        rules={row.rules}
                         options={row.options ?? []}
                       />
                     ) : (
@@ -130,7 +126,6 @@ export function UserEditPage() {
                         errors={errors}
                         label={row.label}
                         maxLength={row.maxLength}
-                        rules={row.rules}
                       />
                     )}
                   </FormRow>

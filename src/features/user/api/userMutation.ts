@@ -1,6 +1,9 @@
 import { userApi } from '@/features/user/api';
 import { userQueryKeys } from '@/features/user/constants';
-import type { UserFormData } from '@/features/user/types';
+import type {
+  CreateUserRequest,
+  UpdateUserRequest,
+} from '@/features/user/schema';
 import { useApiMutation } from '@/hooks';
 
 /**
@@ -9,7 +12,7 @@ import { useApiMutation } from '@/hooks';
  */
 export const useCreateUserMutation = () => {
   return useApiMutation({
-    mutationFn: (data: UserFormData) => userApi.createUser(data),
+    mutationFn: (data: CreateUserRequest) => userApi.createUser(data),
     invalidateKeys: [userQueryKeys.all],
   });
 };
@@ -22,7 +25,7 @@ export const useCreateUserMutation = () => {
  */
 export const useUpdateUserMutation = () => {
   return useApiMutation({
-    mutationFn: (data: UserFormData) =>
+    mutationFn: (data: UpdateUserRequest) =>
       userApi.updateUser(Number(data.id), data),
     invalidateKeys: [userQueryKeys.all],
   });

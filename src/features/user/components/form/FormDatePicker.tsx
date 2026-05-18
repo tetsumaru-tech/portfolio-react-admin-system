@@ -5,7 +5,6 @@ import {
   type Control,
   type FieldErrors,
   type Path,
-  type RegisterOptions,
 } from 'react-hook-form';
 
 type Props<T extends Record<string, any>> = {
@@ -13,25 +12,27 @@ type Props<T extends Record<string, any>> = {
   control: Control<T>;
   errors: FieldErrors<T>;
   label: string;
-  rules?: RegisterOptions<T, Path<T>>;
 };
 
 /**
- * 日付入力用の DatePicker コンポーネント
- * React Hook Form の Controller でフォームと連携します。
+ * React Hook Form と MUI の DatePicker を連携するコンポーネント
+ * @template T フォームの値の型
+ * @template T フォームデータの型
+ * @param name フィールド名
+ * @param control React Hook Form のコントロール
+ * @param errors フィールドエラー
+ * @param label ラベル
  */
 export function FormDatePicker<T extends Record<string, unknown>>({
   name,
   control,
   errors,
   label,
-  rules,
 }: Props<T>) {
   return (
     <Controller
       name={name}
       control={control}
-      rules={rules}
       render={({ field }) => (
         <DatePicker
           label={label}

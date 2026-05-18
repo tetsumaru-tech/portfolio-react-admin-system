@@ -1,3 +1,7 @@
+import type {
+  CreateUserRequest,
+  UpdateUserRequest,
+} from '@/features/user/schema';
 import {
   type User,
   type UserFormData,
@@ -91,6 +95,36 @@ export const userMapper = {
       email: data.email,
       gender: data.gender,
       birthday: data.birthday,
+    };
+  },
+
+  /**
+   * フォームデータをAPIの作成リクエスト形式に変換する
+   * @param fromData ユーザーフォームデータ
+   * @returns CreateUserRequest APIに送信する作成リクエストオブジェクト
+   */
+  toCreateRequest(fromData: UserFormData): CreateUserRequest {
+    return {
+      lastName: fromData.lastName,
+      firstName: fromData.firstName,
+      email: fromData.email,
+      birthday: fromData.birthday,
+      gender: fromData.gender,
+    };
+  },
+  /**
+   * フォームデータをAPIの更新リクエスト形式に変換する
+   * @param fromData ユーザーフォームデータ（idを含む）
+   * @returns UpdateUserRequest APIに送信する更新リクエストオブジェクト
+   */
+  toUpdateRequest(fromData: UserFormData): UpdateUserRequest {
+    return {
+      id: Number(fromData.id),
+      lastName: fromData.lastName,
+      firstName: fromData.firstName,
+      email: fromData.email,
+      birthday: fromData.birthday,
+      gender: fromData.gender,
     };
   },
 };
