@@ -1,11 +1,10 @@
-import { API_BASE_URL } from '@/config/api';
 import type {
   User,
   CreateUserInput,
   UpdateUserInput,
   UserSearchCondition,
 } from '@/features/user/types';
-import { ApiError } from '@/utils';
+import { apiFetch } from '@/lib/api';
 
 /**
  * ユーザーリスト取得のレスポンス型
@@ -34,17 +33,8 @@ export const userApi = {
     if (condition?.email) {
       params.set('email', condition.email);
     }
-    const res = await fetch(`${API_BASE_URL}/users?${params.toString()}`);
-    if (!res.ok) {
-      const errorData = await res.json();
-      throw new ApiError(
-        errorData.message || 'エラーが発生しました',
-        res.status,
-        errorData.errors,
-      );
-    }
-    const users = await res.json();
-    return { data: users };
+    const res = await apiFetch<User[]>(`/users?${params.toString()}`);
+    return { data: res };
   },
 
   /**
@@ -53,16 +43,8 @@ export const userApi = {
    * @returns ユーザー情報
    */
   fetchUser: async (id: number): Promise<User> => {
-    const res = await fetch(`${API_BASE_URL}/users/${id}`);
-    if (!res.ok) {
-      const errorData = await res.json();
-      throw new ApiError(
-        errorData.message || 'エラーが発生しました',
-        res.status,
-        errorData.errors,
-      );
-    }
-    return res.json();
+    const res = await apiFetch<User>(`/users/${id}`);
+    return res;
   },
 
   /**
@@ -71,20 +53,12 @@ export const userApi = {
    * @returns 作成されたユーザー情報
    */
   createUser: async (data: CreateUserInput): Promise<User> => {
-    const res = await fetch(`${API_BASE_URL}/users`, {
+    const res = await apiFetch<User>(`/users`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
-    if (!res.ok) {
-      const errorData = await res.json();
-      throw new ApiError(
-        errorData.message || 'エラーが発生しました',
-        res.status,
-        errorData.errors,
-      );
-    }
-    return res.json();
+    await sleep(1000); // テスト用の遅延
+    return res;
   },
 
   /**
@@ -94,7 +68,7 @@ export const userApi = {
    * @returns 更新されたユーザー情報
    */
   updateUser: async (id: number, data: UpdateUserInput): Promise<User> => {
-    const res = await fetch(`${API_BASE_URL}/users/${id}`, {
+    const res = await apiFetch<User>(`/users/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -102,17 +76,8 @@ export const userApi = {
       },
       body: JSON.stringify(data),
     });
-    await sleep(1000);
-
-    if (!res.ok) {
-      const errorData = await res.json();
-      throw new ApiError(
-        errorData.message || 'エラーが発生しました',
-        res.status,
-        errorData.errors,
-      );
-    }
-    return res.json();
+    await sleep(1000); // テスト用の遅延
+    return res;
   },
 
   /**
@@ -120,16 +85,9 @@ export const userApi = {
    * @param id ユーザーID
    */
   deleteUser: async (id: number): Promise<void> => {
-    const res = await fetch(`${API_BASE_URL}/users/${id}`, {
+    await apiFetch<User>(`/users/${id}`, {
       method: 'DELETE',
     });
-    if (!res.ok) {
-      const errorData = await res.json();
-      throw new ApiError(
-        errorData.message || 'エラーが発生しました',
-        res.status,
-        errorData.errors,
-      );
-    }
+    await sleep(1000); // テスト用の遅延
   },
 };
