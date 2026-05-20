@@ -1,3 +1,4 @@
+import { ErrorBoundary } from 'react-error-boundary';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { ToastProvider } from '@/components';
@@ -8,6 +9,7 @@ import {
   UserEditPage,
   UserConfirmPage,
 } from '@/features/user/pages';
+import { AppErrorFallback, NotFoundPage } from '@/pages/error';
 
 /**
  * アプリケーションのルーティングとトースト提供を設定するコンポーネントです。
@@ -15,23 +17,29 @@ import {
  */
 export default function App() {
   return (
-    <ToastProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path={ROUTEPATTERNS.HOME} element={<UserListPage />} />
-          <Route path={ROUTEPATTERNS.USERS} element={<UserListPage />} />
-          <Route
-            path={ROUTEPATTERNS.USER_DETAIL}
-            element={<UserDetailPage />}
-          />
-          <Route path={ROUTEPATTERNS.USER_CREATE} element={<UserEditPage />} />
-          <Route path={ROUTEPATTERNS.USER_EDIT} element={<UserEditPage />} />
-          <Route
-            path={ROUTEPATTERNS.USER_CONFIRM}
-            element={<UserConfirmPage />}
-          />
-        </Routes>
-      </BrowserRouter>
-    </ToastProvider>
+    <ErrorBoundary FallbackComponent={AppErrorFallback}>
+      <ToastProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path={ROUTEPATTERNS.HOME} element={<UserListPage />} />
+            <Route path={ROUTEPATTERNS.USERS} element={<UserListPage />} />
+            <Route
+              path={ROUTEPATTERNS.USER_DETAIL}
+              element={<UserDetailPage />}
+            />
+            <Route
+              path={ROUTEPATTERNS.USER_CREATE}
+              element={<UserEditPage />}
+            />
+            <Route path={ROUTEPATTERNS.USER_EDIT} element={<UserEditPage />} />
+            <Route
+              path={ROUTEPATTERNS.USER_CONFIRM}
+              element={<UserConfirmPage />}
+            />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </BrowserRouter>
+      </ToastProvider>
+    </ErrorBoundary>
   );
 }
