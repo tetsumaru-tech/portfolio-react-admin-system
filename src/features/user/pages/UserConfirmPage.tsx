@@ -20,7 +20,7 @@ import {
 import { userFormRows } from '@/features/user/constants';
 import { createUserSchema, updateUserSchema } from '@/features/user/schema';
 import type { UserFormData } from '@/features/user/types';
-import { formatFieldValue } from '@/utils/formatFieldValue';
+import { getApiError, formatFieldValue, isValidationError } from '@/utils';
 
 /**
  * ユーザー確認ページコンポーネント
@@ -48,16 +48,29 @@ export function UserConfirmPage() {
   const handleSubmit = async () => {
     if (!formData) return;
 
-    if (isAdd) {
-      const request = userMapper.toCreateRequest(formData);
-      const validateRequest = createUserSchema.parse(request);
-      await createUserMutation.mutateAsync(validateRequest);
-    } else {
-      const request = userMapper.toUpdateRequest(formData);
-      const validateRequest = updateUserSchema.parse(request);
-      await updateUserMutation.mutateAsync(validateRequest);
+    try {
+      if (isAdd) {
+        const request = userMapper.toCreateRequest(formData);
+        const validateRequest = createUserSchema.parse(request);
+        await createUserMutation.mutateAsync(validateRequest);
+      } else {
+        const request = userMapper.toUpdateRequest(formData);
+        const validateRequest = updateUserSchema.parse(request);
+        await updateUserMutation.mutateAsync(validateRequest);
+      }
+      navigate(ROUTES.users());
+    } catch (error) {
+      if (isValidationError(error)) {
+        navigate(ROUTES.userEdit(userId), {
+          state: {
+            formData,
+            errors: getApiError(error)?.errors,
+          },
+        });
+        return;
+      }
+      throw error;
     }
-    navigate(ROUTES.users());
   };
   const rows = useMemo(() => {
     if (!formData) return [];

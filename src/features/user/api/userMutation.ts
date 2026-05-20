@@ -13,6 +13,7 @@ import { useApiMutation } from '@/hooks';
 export const useCreateUserMutation = () => {
   return useApiMutation({
     mutationFn: (data: CreateUserRequest) => userApi.createUser(data),
+    successMessage: 'ユーザーを作成しました',
     invalidateKeys: [userQueryKeys.all],
   });
 };
@@ -27,6 +28,7 @@ export const useUpdateUserMutation = () => {
   return useApiMutation({
     mutationFn: (data: UpdateUserRequest) =>
       userApi.updateUser(Number(data.id), data),
+    successMessage: 'ユーザーを更新しました',
     invalidateKeys: [userQueryKeys.all],
   });
 };
@@ -40,6 +42,7 @@ export const useUpdateUserMutation = () => {
 export const useDeleteUserMutation = () => {
   return useApiMutation({
     mutationFn: (userId: number) => userApi.deleteUser(userId),
+    successMessage: 'ユーザーを削除しました',
     invalidateKeys: [userQueryKeys.all],
   });
 };

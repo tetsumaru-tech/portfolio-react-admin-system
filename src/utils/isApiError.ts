@@ -1,4 +1,4 @@
-import { ApiError } from '@/utils';
+import { ApiError, ApiValidationError } from '@/utils';
 
 /**
  * エラーがApiErrorかどうかをチェックします。
@@ -14,8 +14,13 @@ export function isApiError(error: unknown): boolean {
  * @param error - 取得するエラー
  * @returns ApiErrorまたはnull
  */
-export function getApiError(error: unknown): ApiError | null {
+export function getApiError(
+  error: unknown,
+): ApiError | ApiValidationError | null {
   if (error instanceof ApiError) {
+    return error;
+  }
+  if (error instanceof ApiValidationError) {
     return error;
   }
   return null;
