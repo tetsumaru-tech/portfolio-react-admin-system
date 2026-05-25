@@ -23,14 +23,16 @@ class UserRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'lastName' => 'sometimes|required|string|max:8',
-            'firstName' => 'sometimes|required|string|max:8',
-            'birthday' => 'nullable|date|before:today',
+            'last_name' => 'sometimes|required|string|max:8',
+            'first_name' => 'sometimes|required|string|max:8',
+            'birthday' => 'sometimes|required|date|before:today',
+            'email' => 'sometimes|required|email|max:255|unique:users,email',
+            'gender' => 'sometimes|required|in:male,female,other',
         ];
 
-        if ($this->isMethod('post')) {
-            $rules['email'] = 'required|email|max:255|unique:users,email';
-        }
+        // if ($this->isMethod('post')) {
+        //     $rules['email'] = 'required|email|max:255|unique:users,email';
+        // }
 
         return $rules;
     }
