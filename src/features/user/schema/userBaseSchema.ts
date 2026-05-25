@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { USER_FORM_LIMITS } from '@/features/user/constants';
+import { GENDERS } from '@/features/user/types';
 
 export const userBaseSchema = {
   // id: z.number().nullable(),
@@ -16,5 +17,5 @@ export const userBaseSchema = {
     .email('メール形式が不正です')
     .max(USER_FORM_LIMITS.email, 'メールは{value}文字以内です'),
   birthday: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, '日付形式が不正です'),
-  gender: z.enum(['male', 'female', ''], '性別は必須です'),
+  gender: z.enum(GENDERS, '性別は必須です'),
 };

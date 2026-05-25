@@ -1,8 +1,10 @@
+import { userMapper } from '@/features/user/api';
 import type {
   User,
   CreateUserInput,
   UpdateUserInput,
   UserSearchCondition,
+  UserResponse,
 } from '@/features/user/types';
 import { apiFetch } from '@/lib/api';
 
@@ -33,8 +35,9 @@ export const userApi = {
     if (condition?.email) {
       params.set('email', condition.email);
     }
-    const res = await apiFetch<User[]>(`/users?${params.toString()}`);
-    return { data: res };
+    const res = await apiFetch<UserResponse[]>(`/users?${params.toString()}`);
+    const users = res.map(userMapper.fromResponse);
+    return { data: users };
   },
 
   /**
@@ -43,8 +46,8 @@ export const userApi = {
    * @returns ユーザー情報
    */
   fetchUser: async (id: number): Promise<User> => {
-    const res = await apiFetch<User>(`/users/${id}`);
-    return res;
+    const res = await apiFetch<UserResponse>(`/users/${id}`);
+    return userMapper.fromResponse(res);
   },
 
   /**
@@ -55,7 +58,7 @@ export const userApi = {
   createUser: async (data: CreateUserInput): Promise<User> => {
     const res = await apiFetch<User>(`/users`, {
       method: 'POST',
-      body: JSON.stringify(data),
+      body: JSON.stringify(userMapper.toCreateApiRequest(data)),
     });
     await sleep(1000); // テスト用の遅延
     return res;
@@ -74,7 +77,7 @@ export const userApi = {
         'Content-Type': 'application/json',
         Accept: 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(userMapper.toUpdateApiRequest(data)),
     });
     await sleep(1000); // テスト用の遅延
     return res;

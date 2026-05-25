@@ -9,7 +9,11 @@ import {
   type UpdateUserInput,
   type Gender,
   GENDERS,
+  type UserResponse,
+  type CreateUserApiRequest,
+  type UpdateUserApiRequest,
 } from '@/features/user/types';
+import { type YMD } from '@/types';
 
 /**
  * ストレージに保存するユーザー情報の型
@@ -112,6 +116,7 @@ export const userMapper = {
       gender: fromData.gender,
     };
   },
+
   /**
    * フォームデータをAPIの更新リクエスト形式に変換する
    * @param fromData ユーザーフォームデータ（idを含む）
@@ -125,6 +130,54 @@ export const userMapper = {
       email: fromData.email,
       birthday: fromData.birthday,
       gender: fromData.gender,
+    };
+  },
+
+  /**
+   * APIレスポンスを内部ユーザー型に変換する
+   * @param user APIから取得したユーザー情報
+   * @returns 変換後のUserオブジェクト
+   */
+  fromResponse(user: UserResponse): User {
+    return {
+      id: user.id,
+      lastName: user.last_name,
+      firstName: user.first_name,
+      email: user.email,
+      birthday: user.birthday as YMD,
+      gender: user.gender as Gender,
+      createdAt: new Date(user.created_at),
+      updatedAt: new Date(user.updated_at),
+    };
+  },
+
+  /**
+   * 内部のCreateUserInputをAPI送信用の形式に変換する
+   * @param user CreateUserInput 型のユーザー情報
+   * @returns CreateUserApiRequest APIに送信するオブジェクト（スネークケース）
+   */
+  toCreateApiRequest(user: CreateUserInput): CreateUserApiRequest {
+    return {
+      last_name: user.lastName,
+      first_name: user.firstName,
+      email: user.email,
+      birthday: user.birthday as YMD,
+      gender: user.gender as Gender,
+    };
+  },
+
+  /**
+   * 内部のUpdateUserInputをAPI送信用の形式に変換する
+   * @param user UpdateUserInput 型のユーザー情報
+   * @returns UpdateUserApiRequest APIに送信するオブジェクト（スネークケース）
+   */
+  toUpdateApiRequest(user: UpdateUserInput): UpdateUserApiRequest {
+    return {
+      last_name: user.lastName ?? '',
+      first_name: user.firstName ?? '',
+      email: user.email ?? '',
+      birthday: user.birthday as YMD,
+      gender: user.gender as Gender,
     };
   },
 };

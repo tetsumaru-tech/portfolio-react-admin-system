@@ -1,12 +1,6 @@
-import { type YMD, type SelectOption } from '@/types';
+import { type Gender } from './gender';
 
-export const GENDERS = ['male', 'female', ''] as const;
-export type Gender = (typeof GENDERS)[number];
-
-export const genderOptions: SelectOption<Gender>[] = [
-  { value: 'male', label: '男性' },
-  { value: 'female', label: '女性' },
-];
+import { type YMD } from '@/types';
 
 /**
  * ユーザー情報のサーバー型定義
