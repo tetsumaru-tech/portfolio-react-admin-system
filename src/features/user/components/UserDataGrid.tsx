@@ -1,3 +1,4 @@
+import type { GridPaginationModel } from '@mui/x-data-grid';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,17 +13,28 @@ import type { User } from '@/features/user/types';
 
 type Props = {
   users: User[];
+  total: number;
   loading?: boolean;
+  paginationModel?: GridPaginationModel;
+  onPaginationModelChange: (model: GridPaginationModel) => void;
 };
 
 /**
  * ユーザーデータをグリッド形式で表示するコンポーネント
- * @param props - コンポーネントのプロップス
- * @param props.users - 表示するユーザーの配列
- * @param [props.loading] - ローディング状態（オプション）
+ * @param props.users - 表示するユーザーデータの配列
+ * @param props.total - ユーザーデータの総数（ページネーションのため）
+ * @param props.loading - データがロード中かどうかを示すフラグ
+ * @param props.paginationModel - ページネーションのモデル
+ * @param props.onPaginationModelChange - ページネーションモデルが変更されたときのコールバック関数
  * @returns ユーザーデータグリッド
  */
-export function UserDataGrid({ users, loading }: Props) {
+export function UserDataGrid({
+  users,
+  total,
+  loading,
+  paginationModel,
+  onPaginationModelChange,
+}: Props) {
   const navigate = useNavigate();
 
   const { mutate, isPending } = useDeleteUserMutation();
@@ -51,6 +63,10 @@ export function UserDataGrid({ users, loading }: Props) {
       onRowClick={(params) => {
         navigate(ROUTES.userDetail(params.row.id));
       }}
+      rowCount={total}
+      paginationMode="server"
+      paginationModel={paginationModel}
+      onPaginationModelChange={onPaginationModelChange}
     />
   );
 }

@@ -7,12 +7,17 @@ import type {
   UserResponse,
 } from '@/features/user/types';
 import { apiFetch } from '@/lib/api';
+import type { PaginatedResponse } from '@/types';
 
 /**
  * ユーザーリスト取得のレスポンス型
  */
 export type GetListResponse = {
   data: User[];
+  current_page: number;
+  last_page: number;
+  per_page: number;
+  total: number;
 };
 const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
@@ -27,6 +32,8 @@ export const userApi = {
    */
   getList: async (
     condition?: UserSearchCondition,
+    page?: number,
+    pageSize?: number,
   ): Promise<GetListResponse> => {
     const params = new URLSearchParams();
     if (condition?.name) {
@@ -35,9 +42,23 @@ export const userApi = {
     if (condition?.email) {
       params.set('email', condition.email);
     }
-    const res = await apiFetch<UserResponse[]>(`/users?${params.toString()}`);
-    const users = res.map(userMapper.fromResponse);
-    return { data: users };
+    if (page !== undefined) {
+      params.set('page', String(page + 1));
+    }
+    if (pageSize !== undefined) {
+      params.set('perPage', pageSize.toString());
+    }
+    const res = await apiFetch<PaginatedResponse<UserResponse>>(
+      `/users?${params.toString()}`,
+    );
+    const users = res.data.map(userMapper.fromResponse);
+    return {
+      data: users,
+      current_page: res.current_page,
+      last_page: res.last_page,
+      per_page: res.per_page,
+      total: res.total,
+    };
   },
 
   /**

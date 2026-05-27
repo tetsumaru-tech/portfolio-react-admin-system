@@ -20,13 +20,26 @@ export function UserListPage() {
     {},
   ); // 検索実行時の条件を保持
 
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
+
   // React Query
-  const { data, isLoading, isError } = useUsersQuery(searchCondition);
+  const { data, isLoading, isError } = useUsersQuery(
+    searchCondition,
+    paginationModel.page,
+    paginationModel.pageSize,
+  );
 
   /**
    * 検索を実行する
    */
   function handleSearch(): void {
+    setPaginationModel((prev) => ({
+      ...prev,
+      page: 0,
+    }));
     setSearchCondition(condition);
   }
 
@@ -53,7 +66,13 @@ export function UserListPage() {
       >
         新規作成
       </AppButton>
-      <UserDataGrid users={data?.data ?? []} loading={isLoading} />
+      <UserDataGrid
+        users={data?.data ?? []}
+        total={data?.total ?? 0}
+        loading={isLoading}
+        paginationModel={paginationModel}
+        onPaginationModelChange={setPaginationModel}
+      />
     </>
   );
 }

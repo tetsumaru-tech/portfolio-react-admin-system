@@ -17,13 +17,6 @@ export function AppDataGrid<R extends GridValidRowModel>(
       autoHeight
       disableRowSelectionOnClick
       pageSizeOptions={[10, 20, 50]}
-      initialState={{
-        pagination: {
-          paginationModel: {
-            pageSize: 10,
-          },
-        },
-      }}
       {...props}
     />
   );

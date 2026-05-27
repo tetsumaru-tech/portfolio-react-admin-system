@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData } from '@tanstack/react-query';
 
 import { userApi } from '@/features/user/api';
 import type { UserSearchCondition } from '@/features/user/types';
@@ -7,12 +8,19 @@ import type { UserSearchCondition } from '@/features/user/types';
  * 指定された検索条件に基づいてユーザーを取得します。
  *
  * @param condition - ユーザーを検索するための条件。
+ * @param page - 取得するページ番号（0から始まる）。
+ * @param pageSize - 1ページあたりのユーザー数。
  * @returns ユーザー一覧のクエリ結果。
  */
-export const useUsersQuery = (condition: UserSearchCondition) => {
+export const useUsersQuery = (
+  condition: UserSearchCondition,
+  page: number,
+  pageSize: number,
+) => {
   return useQuery({
-    queryKey: ['users', condition],
-    queryFn: () => userApi.getList(condition),
+    queryKey: ['users', condition, page, pageSize],
+    queryFn: () => userApi.getList(condition, page, pageSize),
+    placeholderData: keepPreviousData,
   });
 };
 
