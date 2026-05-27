@@ -38,7 +38,10 @@ class UserController extends Controller
         if ($email) {
             $query->where('email', 'like', '%'.$email.'%');
         }
-        $users = $query->orderBy('id', 'asc')->get();
+
+        $perPage = (int) $request->input('perPage', 10);
+
+        $users = $query->orderBy('id', 'asc')->paginate($perPage);
 
         return response()->json($users);
     }
