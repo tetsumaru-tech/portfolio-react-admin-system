@@ -1,4 +1,4 @@
-import type { GridPaginationModel } from '@mui/x-data-grid';
+import type { GridPaginationModel, GridSortModel } from '@mui/x-data-grid';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,6 +17,8 @@ type Props = {
   loading?: boolean;
   paginationModel?: GridPaginationModel;
   onPaginationModelChange: (model: GridPaginationModel) => void;
+  sortModel: GridSortModel;
+  onSortModelChange: (model: GridSortModel) => void;
 };
 
 /**
@@ -26,6 +28,8 @@ type Props = {
  * @param props.loading - データがロード中かどうかを示すフラグ
  * @param props.paginationModel - ページネーションのモデル
  * @param props.onPaginationModelChange - ページネーションモデルが変更されたときのコールバック関数
+ * @param props.sortModel - ソートモデル
+ * @param props.onSortModelChange - ソートモデルが変更されたときのコールバック関数
  * @returns ユーザーデータグリッド
  */
 export function UserDataGrid({
@@ -34,6 +38,8 @@ export function UserDataGrid({
   loading,
   paginationModel,
   onPaginationModelChange,
+  sortModel,
+  onSortModelChange,
 }: Props) {
   const navigate = useNavigate();
 
@@ -67,6 +73,9 @@ export function UserDataGrid({
       paginationMode="server"
       paginationModel={paginationModel}
       onPaginationModelChange={onPaginationModelChange}
+      sortingMode="server"
+      sortModel={sortModel}
+      onSortModelChange={onSortModelChange}
     />
   );
 }

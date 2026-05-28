@@ -1,3 +1,5 @@
+import type { GridSortModel } from '@mui/x-data-grid';
+
 import { userMapper } from '@/features/user/api';
 import type {
   User,
@@ -28,12 +30,16 @@ export const userApi = {
   /**
    * ユーザーのリストを取得する
    * @param condition 検索条件（オプション）
+   * @param page 取得するページ番号（0から始まる、オプション）
+   * @param pageSize 1ページあたりのユーザー数（オプション）
+   * @param sortModel データグリッドのソートモデル（オプション）
    * @returns ユーザーのリストを含むレスポンス
    */
   getList: async (
     condition?: UserSearchCondition,
     page?: number,
     pageSize?: number,
+    sortModel?: GridSortModel,
   ): Promise<GetListResponse> => {
     const params = new URLSearchParams();
     if (condition?.name) {
@@ -48,6 +54,13 @@ export const userApi = {
     if (pageSize !== undefined) {
       params.set('perPage', pageSize.toString());
     }
+
+    const apiSortField = userMapper.toApiSortField(sortModel?.[0]?.field ?? '');
+    if (apiSortField) {
+      params.set('sortBy', apiSortField);
+      params.set('sortOrder', sortModel?.[0]?.sort ?? 'asc');
+    }
+
     const res = await apiFetch<PaginatedResponse<UserResponse>>(
       `/users?${params.toString()}`,
     );

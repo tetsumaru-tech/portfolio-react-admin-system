@@ -1,3 +1,4 @@
+import type { GridSortModel } from '@mui/x-data-grid';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -25,11 +26,14 @@ export function UserListPage() {
     pageSize: 10,
   });
 
+  const [sortModel, setSortModel] = useState<GridSortModel>([]);
+
   // React Query
   const { data, isLoading, isError } = useUsersQuery(
     searchCondition,
     paginationModel.page,
     paginationModel.pageSize,
+    sortModel,
   );
 
   /**
@@ -72,6 +76,8 @@ export function UserListPage() {
         loading={isLoading}
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}
+        sortModel={sortModel}
+        onSortModelChange={setSortModel}
       />
     </>
   );

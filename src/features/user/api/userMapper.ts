@@ -28,6 +28,20 @@ type UserStorage = {
 };
 
 /**
+ * データグリッドのソートフィールドをAPIのソートフィールドに変換するためのマッピング
+ */
+const SORT_FIELD_MAP = {
+  fullName: 'full_name',
+  email: 'email',
+  birthday: 'birthday',
+} as const;
+
+/**
+ * ソートフィールドが有効なものかをチェックし、APIのソートフィールドに変換する
+ */
+type SortField = keyof typeof SORT_FIELD_MAP;
+
+/**
  * ユーザー関連のデータ変換関数を提供するオブジェクト
  */
 export const userMapper = {
@@ -179,6 +193,18 @@ export const userMapper = {
       birthday: user.birthday as YMD,
       gender: user.gender as Gender,
     };
+  },
+
+  /**
+   * データグリッドのソートフィールドをAPIのソートフィールドに変換する
+   * @param field データグリッドのソートフィールド
+   * @returns APIのソートフィールドに対応する文字列、対応しない場合はundefined
+   */
+  toApiSortField(field: string): string | undefined {
+    if (field in SORT_FIELD_MAP) {
+      return SORT_FIELD_MAP[field as SortField];
+    }
+    return undefined;
   },
 };
 

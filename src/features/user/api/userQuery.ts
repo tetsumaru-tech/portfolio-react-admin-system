@@ -1,3 +1,4 @@
+import type { GridSortModel } from '@mui/x-data-grid';
 import { useQuery } from '@tanstack/react-query';
 import { keepPreviousData } from '@tanstack/react-query';
 
@@ -10,16 +11,18 @@ import type { UserSearchCondition } from '@/features/user/types';
  * @param condition - ユーザーを検索するための条件。
  * @param page - 取得するページ番号（0から始まる）。
  * @param pageSize - 1ページあたりのユーザー数。
+ * @param sortModel - データグリッドのソートモデル。
  * @returns ユーザー一覧のクエリ結果。
  */
 export const useUsersQuery = (
   condition: UserSearchCondition,
   page: number,
   pageSize: number,
+  sortModel: GridSortModel,
 ) => {
   return useQuery({
-    queryKey: ['users', condition, page, pageSize],
-    queryFn: () => userApi.getList(condition, page, pageSize),
+    queryKey: ['users', condition, page, pageSize, sortModel],
+    queryFn: () => userApi.getList(condition, page, pageSize, sortModel),
     placeholderData: keepPreviousData,
   });
 };
