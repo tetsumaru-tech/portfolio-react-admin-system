@@ -7,7 +7,7 @@ import { useUsersQuery } from '@/features/user/api';
 import { UserDataGrid } from '@/features/user/components';
 import { SearchForm, AppButton } from '@/features/user/components';
 import type { UserSearchCondition } from '@/features/user/types';
-
+import { updateSearchParams } from '@/utils';
 /**
  * ユーザーリストページコンポーネント
  */
@@ -45,24 +45,17 @@ export function UserListPage() {
   );
 
   useEffect(() => {
-    setSearchParams({
-      page: String(paginationModel.page),
-      pageSize: String(paginationModel.pageSize),
+    updateSearchParams(setSearchParams, {
+      page: paginationModel.page,
+      pageSize: paginationModel.pageSize,
     });
   }, [paginationModel, setSearchParams]);
 
   useEffect(() => {
     const sort = sortModel[0];
-    setSearchParams((prev) => {
-      const newParams = new URLSearchParams(prev);
-      if (sort) {
-        newParams.set('sortBy', sort.field);
-        newParams.set('sortOrder', sort.sort ?? 'asc');
-      } else {
-        newParams.delete('sortBy');
-        newParams.delete('sortOrder');
-      }
-      return newParams;
+    updateSearchParams(setSearchParams, {
+      sortBy: sort?.field,
+      sortOrder: sort?.sort,
     });
   }, [sortModel, setSearchParams]);
 
