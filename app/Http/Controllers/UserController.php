@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\UserSearchRequest;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
@@ -39,9 +41,11 @@ class UserController extends Controller
             $query->where('email', 'like', '%'.$email.'%');
         }
 
+        $this->applySort($query, $request);
+
         $perPage = (int) $request->input('perPage', 10);
 
-        $users = $query->orderBy('id', 'asc')->paginate($perPage);
+        $users = $query->paginate($perPage);
 
         return response()->json($users);
     }
@@ -104,5 +108,31 @@ class UserController extends Controller
         User::destroy($id);
 
         return response()->noContent();
+    }
+
+    /**
+     * ソート条件を適用する
+     *
+     * @param  Builder  $query  クエリビルダー
+     * @param  Request  $request  リクエスト
+     */
+    private function applySort(Builder $query, Request $request): void
+    {
+        $sortableColumns = [
+            'id',
+            'full_name',
+            'email',
+            'birthday',
+        ];
+        $sortBy = $request->input('sortBy');
+        $sortOrder = strtolower($request->input('sortOrder', 'asc')) === 'desc' ? 'desc' : 'asc';
+        if (! $sortBy || ! in_array($sortBy, $sortableColumns, true)) {
+            return;
+        }
+
+        match ($sortBy) {
+            'full_name' => $query->orderByRaw("concat(last_name, first_name) {$sortOrder}"),
+            default => $query->orderBy($sortBy, $sortOrder),
+        };
     }
 }
