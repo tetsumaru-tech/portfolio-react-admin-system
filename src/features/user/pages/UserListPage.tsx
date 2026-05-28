@@ -1,6 +1,6 @@
 import type { GridSortModel } from '@mui/x-data-grid';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { ROUTES } from '@/constants';
 import { useUsersQuery } from '@/features/user/api';
@@ -21,12 +21,20 @@ export function UserListPage() {
     {},
   ); // 検索実行時の条件を保持
 
+  const [searchParams, setSearchParams] = useSearchParams();
   const [paginationModel, setPaginationModel] = useState({
-    page: 0,
-    pageSize: 10,
+    page: Number(searchParams.get('page') ?? 0),
+    pageSize: Number(searchParams.get('pageSize') ?? 10),
   });
 
-  const [sortModel, setSortModel] = useState<GridSortModel>([]);
+  const initialSortField = searchParams.get('sortBy');
+  const initialSortOrder = searchParams.get('sortOrder');
+
+  const [sortModel, setSortModel] = useState<GridSortModel>(
+    initialSortField && initialSortOrder
+      ? [{ field: initialSortField, sort: initialSortOrder as 'asc' | 'desc' }]
+      : [],
+  );
 
   // React Query
   const { data, isLoading, isError } = useUsersQuery(
@@ -35,6 +43,28 @@ export function UserListPage() {
     paginationModel.pageSize,
     sortModel,
   );
+
+  useEffect(() => {
+    setSearchParams({
+      page: String(paginationModel.page),
+      pageSize: String(paginationModel.pageSize),
+    });
+  }, [paginationModel, setSearchParams]);
+
+  useEffect(() => {
+    const sort = sortModel[0];
+    setSearchParams((prev) => {
+      const newParams = new URLSearchParams(prev);
+      if (sort) {
+        newParams.set('sortBy', sort.field);
+        newParams.set('sortOrder', sort.sort ?? 'asc');
+      } else {
+        newParams.delete('sortBy');
+        newParams.delete('sortOrder');
+      }
+      return newParams;
+    });
+  }, [sortModel, setSearchParams]);
 
   /**
    * 検索を実行する
