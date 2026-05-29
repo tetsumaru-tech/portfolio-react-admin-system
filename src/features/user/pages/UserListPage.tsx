@@ -1,3 +1,4 @@
+import { CircularProgress } from '@mui/material';
 import type { GridSortModel } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -7,6 +8,7 @@ import { useUsersQuery } from '@/features/user/api';
 import { UserDataGrid } from '@/features/user/components';
 import { SearchForm, AppButton } from '@/features/user/components';
 import type { UserSearchCondition } from '@/features/user/types';
+import { useDebounce } from '@/hooks';
 import { updateSearchParams } from '@/utils';
 /**
  * ユーザーリストページコンポーネント
@@ -20,6 +22,12 @@ export function UserListPage() {
   const [searchCondition, setSearchCondition] = useState<UserSearchCondition>(
     {},
   ); // 検索実行時の条件を保持
+
+  // リアルタイム検索の状態を管理
+  const [isRealTimeSearch, setIsRealTimeSearch] = useState<boolean>(false);
+
+  // 入力のデバウンスされた値
+  const debouncedCondition = useDebounce(condition, 1000);
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [paginationModel, setPaginationModel] = useState({
@@ -37,8 +45,8 @@ export function UserListPage() {
   );
 
   // React Query
-  const { data, isLoading, isError } = useUsersQuery(
-    searchCondition,
+  const { data, isLoading, isError, isFetching } = useUsersQuery(
+    isRealTimeSearch ? debouncedCondition : searchCondition,
     paginationModel.page,
     paginationModel.pageSize,
     sortModel,
@@ -70,6 +78,14 @@ export function UserListPage() {
     setSearchCondition(condition);
   }
 
+  function onToggleRealTimeSearch(enabled: boolean) {
+    setIsRealTimeSearch(enabled);
+    if (!enabled) {
+      // リアルタイム検索をオフにしたときは、現在の入力値で検索を実行
+      setSearchCondition(condition);
+    }
+  }
+
   if (isError) return <div>Error...</div>;
 
   return (
@@ -80,9 +96,12 @@ export function UserListPage() {
         condition={condition}
         onChange={setCondition}
         onSearch={handleSearch}
+        isRealTimeSearch={isRealTimeSearch}
+        onToggleRealTimeSearch={onToggleRealTimeSearch}
       />
       <hr />
       <h2>検索結果</h2>
+      {isRealTimeSearch && isFetching && <CircularProgress size={20} />}
       <AppButton
         variant="contained"
         color="primary"
@@ -96,7 +115,7 @@ export function UserListPage() {
       <UserDataGrid
         users={data?.data ?? []}
         total={data?.total ?? 0}
-        loading={isLoading}
+        loading={isLoading || isFetching}
         paginationModel={paginationModel}
         onPaginationModelChange={setPaginationModel}
         sortModel={sortModel}
