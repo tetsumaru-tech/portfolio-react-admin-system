@@ -1,11 +1,11 @@
-import { isApiError, getApiError } from './';
+import { isApiError, getApiError } from '.';
 
 /**
  * APIエラーメッセージを取得します。
  * @param error - エラーオブジェクト
  * @returns エラーメッセージ
  */
-export function getApiErrorMessage(error: unknown): string {
+export function getErrorMessage(error: unknown): string {
   if (isApiError(error)) {
     const err = getApiError(error);
     return err ? err.message : '';

@@ -5,7 +5,7 @@ import {
 } from '@tanstack/react-query';
 
 import { useToast } from '@/components';
-import { getApiError, getApiErrorMessage } from '@/utils';
+import { getApiError, getErrorMessage } from '@/utils';
 
 /**
  * APIミューテーション用のプロパティ型定義
@@ -72,7 +72,7 @@ export function useApiMutation<TData, TVariables>({
           return;
         }
       }
-      showToast(getApiErrorMessage(error), 'error');
+      showToast(getErrorMessage(error), 'error');
     },
   });
 }

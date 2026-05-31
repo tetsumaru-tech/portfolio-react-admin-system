@@ -17,9 +17,9 @@ import { AppErrorFallback, NotFoundPage } from '@/pages/error';
  */
 export default function App() {
   return (
-    <ErrorBoundary FallbackComponent={AppErrorFallback}>
-      <ToastProvider>
-        <BrowserRouter>
+    <ToastProvider>
+      <BrowserRouter>
+        <ErrorBoundary FallbackComponent={AppErrorFallback}>
           <Routes>
             <Route path={ROUTEPATTERNS.HOME} element={<UserListPage />} />
             <Route path={ROUTEPATTERNS.USERS} element={<UserListPage />} />
@@ -38,8 +38,8 @@ export default function App() {
             />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
-        </BrowserRouter>
-      </ToastProvider>
-    </ErrorBoundary>
+        </ErrorBoundary>
+      </BrowserRouter>
+    </ToastProvider>
   );
 }

@@ -1,5 +1,8 @@
 import { Typography, Button, Stack } from '@mui/material';
 import type { FallbackProps } from 'react-error-boundary';
+import { Link } from 'react-router-dom';
+
+import { getApiError, getErrorMessage } from '@/utils';
 
 /**
  * アプリケーションのエラーをキャッチして表示するフォールバックコンポーネント。
@@ -9,7 +12,9 @@ import type { FallbackProps } from 'react-error-boundary';
  * @returns エラー表示用の JSX
  */
 export function AppErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
-  console.log(error);
+  console.error(error);
+
+  const apiError = getApiError(error);
 
   return (
     <Stack
@@ -26,9 +31,22 @@ export function AppErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
       <Typography color="text.secondary">
         予期しないエラーが発生しました。
       </Typography>
-      <Button variant="contained" onClick={resetErrorBoundary}>
-        再試行
-      </Button>
+
+      {import.meta.env.DEV && apiError && (
+        <Typography color="error" variant="body2">
+          {getErrorMessage(error)}
+        </Typography>
+      )}
+
+      <Stack direction="row" spacing={2}>
+        <Button variant="contained" onClick={resetErrorBoundary}>
+          再試行
+        </Button>
+
+        <Button variant="outlined" component={Link} to="/users">
+          一覧へ戻る
+        </Button>
+      </Stack>
     </Stack>
   );
 }

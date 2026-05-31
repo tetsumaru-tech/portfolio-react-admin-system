@@ -3,6 +3,7 @@ import type { GridSortModel } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
+import { ErrorMessage } from '@/components';
 import { ROUTES } from '@/constants';
 import { useUsersQuery } from '@/features/user/api';
 import { UserDataGrid } from '@/features/user/components';
@@ -86,7 +87,7 @@ export function UserListPage() {
     }
   }
 
-  if (isError) return <div>Error...</div>;
+  if (isError) return <ErrorMessage message="ユーザーの取得に失敗しました。" />;
 
   return (
     <>
