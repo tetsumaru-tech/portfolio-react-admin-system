@@ -1,6 +1,7 @@
+import { Box } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 
-import { AppHeader, AppContainer } from '@/components';
+import { AppHeader, AppContainer, AppSidebar } from '@/components';
 
 /**
  * アプリケーションのメインレイアウトコンポーネント
@@ -11,9 +12,19 @@ export function MainLayout() {
   return (
     <>
       <AppHeader />
-      <AppContainer sx={{ mt: 8 }}>
-        <Outlet />
-      </AppContainer>
+      <Box display="flex">
+        <AppSidebar />
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+          }}
+        >
+          <AppContainer>
+            <Outlet />
+          </AppContainer>
+        </Box>
+      </Box>
     </>
   );
 }

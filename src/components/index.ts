@@ -4,3 +4,4 @@ export * from './ToastProvider';
 export * from './AppDataGrid';
 export * from './AppContainer';
 export * from './AppHeader';
+export * from './AppSidebar';
