@@ -5,6 +5,7 @@ export const ROUTEPATTERNS = {
   USER_DETAIL: '/users/:id',
   USER_EDIT: '/users/:id/edit',
   USER_CONFIRM: '/users/:id/confirm',
+  LOGIN: '/login',
 } as const;
 
 export const ROUTES = {
@@ -14,4 +15,5 @@ export const ROUTES = {
   userDetail: (id: number | string) => `/users/${id}`,
   userEdit: (id: number | string) => `/users/${id}/edit`,
   userConfirm: (id: number | string) => `/users/${id}/confirm`,
+  login: () => '/login',
 } as const;
