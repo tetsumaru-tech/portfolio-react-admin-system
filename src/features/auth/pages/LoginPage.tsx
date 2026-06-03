@@ -1,5 +1,5 @@
 import { Button, Paper, Stack, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import { ROUTES } from '@/constants';
 import { useAuth } from '@/features/auth/hooks';
@@ -9,11 +9,14 @@ import { useAuth } from '@/features/auth/hooks';
  */
 export function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const { login } = useAuth();
 
   function handleLogin() {
     login({ id: 1, name: 'John Doe' });
-    navigate(ROUTES.users());
+    const from = location.state?.from?.pathname ?? ROUTES.users();
+    navigate(from, { replace: true });
   }
 
   return (
