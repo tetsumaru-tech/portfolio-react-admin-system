@@ -25,13 +25,18 @@ type Props = {
  * @returns 認証コンテキストプロバイダーでラップされた子コンポーネント
  */
 export function AuthProvider({ children }: Props) {
-  const [user, setUser] = useState<AuthUser | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(() => {
+    const savedUser = localStorage.getItem('authUser');
+    return savedUser ? (JSON.parse(savedUser) as AuthUser) : null;
+  });
 
   function login(user: AuthUser) {
+    localStorage.setItem('authUser', JSON.stringify(user));
     setUser(user);
   }
 
   function logout() {
+    localStorage.removeItem('authUser');
     setUser(null);
   }
 
