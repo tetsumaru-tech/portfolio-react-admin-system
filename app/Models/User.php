@@ -7,15 +7,13 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 // #[Fillable(['last_name', 'first_name', 'email', 'birthday', 'gender', 'password', 'remember_token'])]
-#[Fillable(['last_name', 'first_name', 'email', 'birthday', 'gender'])]
+#[Fillable(['last_name', 'first_name', 'email', 'birthday', 'gender', 'password'])]
 #[Hidden(['password', 'remember_token'])]
-// class User extends Authenticatable
-class User extends Model
+class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
@@ -34,5 +32,5 @@ class User extends Model
     }
 
     // protected $fillable = ['last_name', 'first_name', 'email', 'birthday', 'gender', 'password', 'remember_token'];
-    protected $fillable = ['last_name', 'first_name', 'email', 'birthday', 'gender'];
+    protected $fillable = ['last_name', 'first_name', 'email', 'birthday', 'gender', 'password'];
 }

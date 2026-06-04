@@ -19,7 +19,7 @@ return new class extends Migration
             // $table->timestamp('email_verified_at')->nullable(); // 認証周りは一旦保留
             $table->date('birthday')->nullable();
             $table->string('gender')->nullable();
-            // $table->string('password'); // 認証周りは一旦保留
+            $table->string('password');
             // $table->rememberToken();
             $table->timestamps();
         });

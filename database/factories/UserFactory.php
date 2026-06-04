@@ -31,7 +31,7 @@ class UserFactory extends Factory
             // 'email_verified_at' => now(), // 認証周りは一旦保留
             'birthday' => fake()->date(),
             'gender' => fake()->randomElement(['male', 'female', 'other']),
-            // 'password' => static::$password ??= Hash::make('password'), // 認証周りは一旦保留
+            'password' => static::$password ??= Hash::make('password'),
             // 'remember_token' => Str::random(10), // 認証周りは一旦保留
         ];
     }
