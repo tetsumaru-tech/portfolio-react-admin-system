@@ -33,7 +33,7 @@ export function AppHeader() {
         </Typography>
         {user && (
           <>
-            <Typography>Welcome, {user.name} | </Typography>
+            <Typography>Welcome, {user.fullName} | </Typography>
             <Button color="inherit" onClick={handleLogout}>
               Logout
             </Button>

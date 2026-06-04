@@ -1,6 +1,7 @@
 import { createContext, useState } from 'react';
 import type { ReactNode } from 'react';
 
+import { authApi } from '@/features/auth/api';
 import type { AuthUser } from '@/features/auth/types';
 
 type AuthContextType = {
@@ -36,6 +37,7 @@ export function AuthProvider({ children }: Props) {
   }
 
   function logout() {
+    authApi.logout();
     localStorage.removeItem('authUser');
     setUser(null);
   }

@@ -2,6 +2,7 @@ import { Button, Paper, Stack, Typography } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { ROUTES } from '@/constants';
+import { authApi } from '@/features/auth/api';
 import { useAuth } from '@/features/auth/hooks';
 
 /**
@@ -13,8 +14,12 @@ export function LoginPage() {
 
   const { login } = useAuth();
 
-  function handleLogin() {
-    login({ id: 1, name: 'John Doe' });
+  async function handleLogin() {
+    const user = await authApi.login({
+      email: 'miyazawa.mikako@example.com',
+      password: 'password',
+    });
+    login(user);
     const from = location.state?.from?.pathname ?? ROUTES.users();
     navigate(from, { replace: true });
   }
