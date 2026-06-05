@@ -1,16 +1,22 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const VITE_API_BASE_URL_WITH_API = import.meta.env.VITE_API_BASE_URL_WITH_API;
+
 import { ApiError, ApiValidationError } from '@/utils';
+import { getCookie } from '@/utils';
 
 /**
- *
+ * APIリクエストを送信するための関数
+ * @param path APIエンドポイントのパス
+ * @param options リクエストオプション
+ * @returns APIレスポンスデータ
  */
 export async function apiFetch<T>(
   path: string,
   options?: RequestInit,
 ): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
+  const response = await fetch(`${VITE_API_BASE_URL_WITH_API}${path}`, {
     headers: {
       'Content-Type': 'application/json',
+      'X-XSRF-TOKEN': decodeURIComponent(getCookie('XSRF-TOKEN') ?? ''),
     },
     ...options,
   });
