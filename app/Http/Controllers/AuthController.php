@@ -32,12 +32,15 @@ class AuthController extends Controller
     /**
      * 認証されたユーザーの情報を返します。
      *
-     * @param  Request  $request  ユーザー情報リクエスト
      * @return JsonResponse 認証されたユーザーの情報を含むJSONレスポンス
      */
-    public function me(Request $request): JsonResponse
+    public function me(): JsonResponse
     {
-        return response()->json($request->user());
+        if (! Auth::check()) {
+            return response()->json(['message' => 'Unauthenticated'], 401);
+        }
+
+        return response()->json(['user' => Auth::user()]);
     }
 
     /**
