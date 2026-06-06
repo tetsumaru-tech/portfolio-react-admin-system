@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 
 import { authApi } from '@/features/auth/api';
@@ -6,8 +6,8 @@ import type { AuthUser } from '@/features/auth/types';
 
 type AuthContextType = {
   user: AuthUser | null;
-  login: (user: AuthUser) => void;
-  logout: () => void;
+  setUser: (user: AuthUser | null) => void;
+  isLoading: boolean;
 };
 
 /**
@@ -26,28 +26,31 @@ type Props = {
  * @returns 認証コンテキストプロバイダーでラップされた子コンポーネント
  */
 export function AuthProvider({ children }: Props) {
-  const [user, setUser] = useState<AuthUser | null>(() => {
-    const savedUser = localStorage.getItem('authUser');
-    return savedUser ? (JSON.parse(savedUser) as AuthUser) : null;
-  });
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  function login(user: AuthUser) {
-    localStorage.setItem('authUser', JSON.stringify(user));
-    setUser(user);
-  }
+  useEffect(() => {
+    const initializeAuth = async () => {
+      try {
+        const authUser = await authApi.me();
+        setUser(authUser);
+      } catch (error) {
+        console.error('ユーザー情報の取得に失敗:', error);
+        setUser(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  function logout() {
-    authApi.logout();
-    localStorage.removeItem('authUser');
-    setUser(null);
-  }
+    initializeAuth();
+  }, []);
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        login,
-        logout,
+        setUser,
+        isLoading,
       }}
     >
       {children}

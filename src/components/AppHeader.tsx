@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { DRAWER_WIDTH } from '@/constants';
 import { ROUTES } from '@/constants';
+import { authApi } from '@/features/auth/api';
 import { useAuth } from '@/features/auth/hooks';
 
 /**
@@ -12,12 +13,13 @@ import { useAuth } from '@/features/auth/hooks';
 export function AppHeader() {
   const navigate = useNavigate();
 
-  const { logout, user } = useAuth();
+  const { setUser, user } = useAuth();
 
-  function handleLogout() {
-    logout();
+  const handleLogout = async () => {
+    await authApi.logout();
+    setUser(null);
     navigate(ROUTES.login());
-  }
+  };
 
   return (
     <AppBar

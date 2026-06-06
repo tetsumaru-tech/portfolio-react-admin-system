@@ -12,17 +12,17 @@ export function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const { login } = useAuth();
+  const { setUser } = useAuth();
 
-  async function handleLogin() {
+  const handleLogin = async () => {
     const user = await authApi.login({
       email: 'miyazawa.mikako@example.com',
       password: 'password',
     });
-    login(user);
+    setUser(user);
     const from = location.state?.from?.pathname ?? ROUTES.users();
     navigate(from, { replace: true });
-  }
+  };
 
   return (
     <Paper sx={{ p: 4, maxWidth: 400, margin: '0 auto', mt: 8 }}>

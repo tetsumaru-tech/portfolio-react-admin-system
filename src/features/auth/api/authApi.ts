@@ -29,4 +29,13 @@ export const authApi = {
       method: 'POST',
     });
   },
+
+  /**
+   * 認証されたユーザー情報を取得するAPI
+   * @returns 認証されたユーザー情報
+   */
+  async me(): Promise<AuthUser> {
+    const response = await apiFetch<LoginResponse>('/me');
+    return authMapper.fromResponse(response.user);
+  },
 };
