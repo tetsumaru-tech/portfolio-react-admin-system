@@ -1,7 +1,8 @@
 const VITE_API_BASE_URL_WITH_API = import.meta.env.VITE_API_BASE_URL_WITH_API;
 
+import { ensureCsrf } from '@/features/auth/api';
+import { getXsrToken } from '@/lib/api';
 import { ApiError, ApiValidationError } from '@/utils';
-import { getCookie } from '@/utils';
 
 /**
  * APIリクエストを送信するための関数
@@ -13,10 +14,15 @@ export async function apiFetch<T>(
   path: string,
   options?: RequestInit,
 ): Promise<T> {
+  const method = options?.method ?? 'GET';
+  if (method !== 'GET') {
+    await ensureCsrf();
+  }
   const response = await fetch(`${VITE_API_BASE_URL_WITH_API}${path}`, {
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
-      'X-XSRF-TOKEN': decodeURIComponent(getCookie('XSRF-TOKEN') ?? ''),
+      'X-XSRF-TOKEN': getXsrToken(),
     },
     ...options,
   });
