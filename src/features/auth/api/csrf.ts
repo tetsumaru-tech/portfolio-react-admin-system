@@ -1,7 +1,16 @@
-import { getXsrToken } from '@/lib/api';
+import { getCookie } from '@/utils';
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 let csrfInitialized = false;
+
+/**
+ * XSRFトークンを取得する関数
+ * @returns XSRFトークン
+ */
+export function getXsrToken(): string {
+  return decodeURIComponent(getCookie('XSRF-TOKEN') ?? '');
+}
 
 /**
  * CSRFトークンを確実に取得するための関数
@@ -14,7 +23,7 @@ export async function ensureCsrf(): Promise<void> {
 
   // If XSRF token cookie is not set, request CSRF cookie from server
   const xsrfToken = getXsrToken();
-  if (xsrfToken) {
+  if (!xsrfToken) {
     await fetch(`${API_BASE_URL}/sanctum/csrf-cookie`, {
       credentials: 'include',
     });
