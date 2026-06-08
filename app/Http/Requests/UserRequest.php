@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
 {
@@ -17,22 +18,23 @@ class UserRequest extends FormRequest
 
     /**
      * リクエストに適用されるバリデーションルールを取得する。
+     * ルール差分が3つ以上発生したら、StoreUserRequest / UpdateUserRequest に分割すること
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
-        $rules = [
-            'last_name' => 'sometimes|required|string|max:8',
-            'first_name' => 'sometimes|required|string|max:8',
-            'birthday' => 'sometimes|required|date|before:today',
-            'email' => 'sometimes|required|email|max:255|unique:users,email',
-            'gender' => 'sometimes|required|in:male,female,other',
-        ];
+        $emailRule = $this->isMethod('post') ?
+            ['required', 'email',  Rule::unique('users', 'email')]
+            : ['required', 'email',  Rule::unique('users', 'email')->ignore($this->route('id'))];
 
-        // if ($this->isMethod('post')) {
-        //     $rules['email'] = 'required|email|max:255|unique:users,email';
-        // }
+        $rules = [
+            'last_name' => 'required|string|max:8',
+            'first_name' => 'required|string|max:8',
+            'birthday' => 'required|date|before:today',
+            'email' => $emailRule,
+            'gender' => 'required|in:male,female,other',
+        ];
 
         return $rules;
     }
