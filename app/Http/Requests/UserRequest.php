@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 
 class UserRequest extends FormRequest
 {
@@ -35,6 +36,14 @@ class UserRequest extends FormRequest
             'email' => $emailRule,
             'gender' => 'required|in:male,female,other',
         ];
+
+        if ($this->isMethod('post')) {
+            $rules['password'] = [
+                'required',
+                'confirmed',
+                Password::min(8)->mixedCase()->numbers(),
+            ];
+        }
 
         return $rules;
     }

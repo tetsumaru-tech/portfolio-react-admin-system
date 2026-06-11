@@ -72,6 +72,8 @@ class UserController extends Controller
     public function store(UserRequest $request): JsonResponse
     {
         $data = $request->validated();
+        unset($data['password_confirmation']);
+
         $user = User::create($data);
 
         return response()->json($user, 201);

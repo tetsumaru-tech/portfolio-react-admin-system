@@ -12,7 +12,7 @@ use Illuminate\Notifications\Notifiable;
 
 // #[Fillable(['last_name', 'first_name', 'email', 'birthday', 'gender', 'password', 'remember_token'])]
 #[Fillable(['last_name', 'first_name', 'email', 'birthday', 'gender', 'password'])]
-#[Hidden(['password', 'remember_token'])]
+// #[Hidden(['password', 'remember_token'])]　　// Laravel 13から利用。重複管理になるため、$fillableを優先する。
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
