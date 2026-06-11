@@ -25,6 +25,8 @@ type UserStorage = {
   email: string;
   birthday: string;
   gender: Gender;
+  password: string;
+  passwordConfirmation: string;
 };
 
 /**
@@ -56,6 +58,8 @@ export const userMapper = {
     email: data.email,
     gender: data.gender,
     birthday: data.birthday,
+    password: data.password,
+    passwordConfirmation: data.passwordConfirmation,
   }),
 
   /**
@@ -113,6 +117,8 @@ export const userMapper = {
       email: data.email,
       gender: data.gender,
       birthday: data.birthday,
+      password: data.password,
+      passwordConfirmation: data.passwordConfirmation,
     };
   },
 
@@ -128,6 +134,8 @@ export const userMapper = {
       email: fromData.email,
       birthday: fromData.birthday,
       gender: fromData.gender,
+      password: fromData.password ?? '',
+      passwordConfirmation: fromData.passwordConfirmation ?? '',
     };
   },
 
@@ -177,6 +185,8 @@ export const userMapper = {
       email: user.email,
       birthday: user.birthday as YMD,
       gender: user.gender as Gender,
+      password: user.password ?? '',
+      password_confirmation: user.passwordConfirmation ?? '',
     };
   },
 

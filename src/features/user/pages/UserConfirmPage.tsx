@@ -38,18 +38,18 @@ export function UserConfirmPage() {
     ? userMapper.fromStorage(location.state.formData)
     : null;
 
-  const isAdd =
+  const isCreate =
     formData?.id === null || formData?.id === undefined || formData?.id === 0;
 
   const createUserMutation = useCreateUserMutation();
   const updateUserMutation = useUpdateUserMutation();
-  const mutation = isAdd ? createUserMutation : updateUserMutation;
+  const mutation = isCreate ? createUserMutation : updateUserMutation;
 
   const handleSubmit = async () => {
     if (!formData) return;
 
     try {
-      if (isAdd) {
+      if (isCreate) {
         const request = userMapper.toCreateRequest(formData);
         const validateRequest = createUserSchema.parse(request);
         await createUserMutation.mutateAsync(validateRequest);
@@ -75,14 +75,22 @@ export function UserConfirmPage() {
   const rows = useMemo(() => {
     if (!formData) return [];
     return userFormRows
-      .filter((row) => row.showInConfirm !== false)
+      .filter((row) => {
+        if (row.showInConfirm === false) {
+          return false;
+        }
+        if (!isCreate && row.key === 'password') {
+          return false;
+        }
+        return true;
+      })
       .map((row) => ({
         label: row.label,
         value: row.confirmValue
           ? row.confirmValue(formData)
           : formatFieldValue(row, formData[row.key]),
       }));
-  }, [formData]);
+  }, [formData, isCreate]);
 
   if (!formData || typeof formData !== 'object') {
     navigate(ROUTES.userEdit(userId), { replace: true });

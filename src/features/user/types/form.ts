@@ -8,9 +8,11 @@ export type Row = {
   key: keyof UserFormData;
   label: string;
   maxLength?: number;
-  type?: 'text' | 'date' | 'select';
+  minLength?: number;
+  type?: 'text' | 'date' | 'select' | 'password' | 'password_confirmation';
   rules?: RegisterOptions<UserFormData>;
   options?: SelectOption<string>[];
   confirmValue?: (data: UserFormData) => string;
+  showInEdit?: boolean;
   showInConfirm?: boolean;
 };

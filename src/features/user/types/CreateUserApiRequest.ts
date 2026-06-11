@@ -1,4 +1,5 @@
-import { type Gender } from './gender';
+import { type UpdateUserApiRequest } from './UpdateUserApiRequest';
+// import { type Gender } from './gender';
 
 /**
  * ユーザー作成APIのリクエストデータ型
@@ -6,10 +7,7 @@ import { type Gender } from './gender';
  * @remarks
  * 各プロパティはAPIへ送信する際のユーザー情報を表します。
  */
-export type CreateUserApiRequest = {
-  last_name: string;
-  first_name: string;
-  email: string;
-  birthday: string | null;
-  gender: Gender;
+export type CreateUserApiRequest = UpdateUserApiRequest & {
+  password: string;
+  password_confirmation: string;
 };

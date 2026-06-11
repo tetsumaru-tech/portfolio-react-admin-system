@@ -17,6 +17,7 @@ import {
   FormTextField,
   FormDatePicker,
   FormSelect,
+  FormPasswordField,
   ButtonSection,
   AppButton,
   BackButton,
@@ -32,7 +33,7 @@ import { applyServerErrors } from '@/utils';
 export function UserEditPage() {
   const { id } = useParams<{ id: string }>();
   const userId = Number(id ?? '');
-  const isAdd = userId === 0;
+  const isCreate = userId === 0;
   const location = useLocation();
 
   const {
@@ -51,6 +52,8 @@ export function UserEditPage() {
       email: '',
       gender: '',
       birthday: '',
+      password: '',
+      passwordConfirmation: '',
     },
   });
 
@@ -71,7 +74,7 @@ export function UserEditPage() {
   const navigate = useNavigate();
 
   const onSubmit = (data: UserFormData) => {
-    if (isAdd) {
+    if (isCreate) {
       navigate(ROUTES.userConfirm('create'), {
         state: { formData: userMapper.toStorage(data) },
       });
@@ -83,6 +86,10 @@ export function UserEditPage() {
       });
     }
   };
+
+  const rows = userFormRows.filter(
+    (row) => isCreate || row.showInEdit !== false,
+  );
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -97,7 +104,7 @@ export function UserEditPage() {
         <Grid container>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <FormSection>
-              {userFormRows.map((row, i, rows) => (
+              {rows.map((row, i, rows) => (
                 <FormRowContainer key={row.key}>
                   <FormRow
                     label={row.label}
@@ -118,6 +125,14 @@ export function UserEditPage() {
                         errors={errors}
                         label={row.label}
                         options={row.options ?? []}
+                      />
+                    ) : row.type === 'password' ? (
+                      <FormPasswordField<UserFormData>
+                        name={row.key}
+                        control={control}
+                        errors={errors}
+                        label={row.label}
+                        minLength={row.minLength}
                       />
                     ) : (
                       <FormTextField<UserFormData>

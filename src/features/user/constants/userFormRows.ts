@@ -1,4 +1,4 @@
-import { USER_FORM_LIMITS } from './userFormLimits';
+import { USER_FORM_LIMITS, USER_FORM_MIN_LENGTH } from './userFormConstants';
 
 import { genderOptions, type Row } from '@/features/user/types';
 /**
@@ -32,5 +32,21 @@ export const userFormRows: Row[] = [
     key: 'birthday',
     label: '誕生日',
     type: 'date',
+  },
+  {
+    key: 'password',
+    label: 'パスワード',
+    type: 'password',
+    minLength: USER_FORM_MIN_LENGTH.password,
+    showInEdit: false,
+    confirmValue: (data) => `${'*'.repeat(data.password?.length ?? 0)}`,
+  },
+  {
+    key: 'passwordConfirmation',
+    label: 'パスワード確認',
+    type: 'password',
+    minLength: USER_FORM_MIN_LENGTH.password,
+    showInEdit: false,
+    showInConfirm: false,
   },
 ];
