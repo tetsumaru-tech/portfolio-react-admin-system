@@ -5,8 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 import { ErrorMessage } from '@/components';
 import { ROUTES } from '@/constants';
-import { authApi } from '@/features/auth/api';
-import { useAuth } from '@/features/auth/hooks';
+import { useLoginMutation } from '@/features/auth/api';
 import { loginSchema, type LoginFormData } from '@/features/auth/schema';
 import { FormPasswordField, FormTextField } from '@/features/user/components';
 
@@ -16,8 +15,7 @@ import { FormPasswordField, FormTextField } from '@/features/user/components';
 export function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
-
-  const { setUser } = useAuth();
+  const loginMutaion = useLoginMutation();
 
   const {
     control,
@@ -34,8 +32,7 @@ export function LoginPage() {
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      const user = await authApi.login(data);
-      setUser(user);
+      await loginMutaion.mutateAsync(data);
       const from = location.state?.from?.pathname ?? ROUTES.users();
       navigate(from, { replace: true });
     } catch {
@@ -61,9 +58,14 @@ export function LoginPage() {
             label="パスワード"
           />
           {errors.root && <ErrorMessage message={errors.root.message} />}
-
-          <Button type="submit" variant="contained" color="primary" fullWidth>
-            ログイン
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            fullWidth
+            disabled={loginMutaion.isPending}
+          >
+            {loginMutaion.isPending ? 'ログイン中' : 'ログイン'}
           </Button>
         </Stack>
       </form>
