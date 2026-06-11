@@ -1,9 +1,14 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Paper, Stack, Typography } from '@mui/material';
+import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+import { ErrorMessage } from '@/components';
 import { ROUTES } from '@/constants';
 import { authApi } from '@/features/auth/api';
 import { useAuth } from '@/features/auth/hooks';
+import { loginSchema, type LoginFormData } from '@/features/auth/schema';
+import { FormPasswordField, FormTextField } from '@/features/user/components';
 
 /**
  * ログインページ
@@ -14,29 +19,54 @@ export function LoginPage() {
 
   const { setUser } = useAuth();
 
-  const handleLogin = async () => {
-    const user = await authApi.login({
-      email: 'miyazawa.mikako@example.com',
-      password: 'password',
-    });
-    setUser(user);
-    const from = location.state?.from?.pathname ?? ROUTES.users();
-    navigate(from, { replace: true });
+  const {
+    control,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  const onSubmit = async (data: LoginFormData) => {
+    try {
+      const user = await authApi.login(data);
+      setUser(user);
+      const from = location.state?.from?.pathname ?? ROUTES.users();
+      navigate(from, { replace: true });
+    } catch {
+      setError('root', { message: 'メールアドレスまたはパスワードが違います' });
+    }
   };
 
   return (
     <Paper sx={{ p: 4, maxWidth: 400, margin: '0 auto', mt: 8 }}>
-      <Stack spacing={2}>
-        <Typography variant="h5">Login</Typography>
-      </Stack>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleLogin}
-        fullWidth
-      >
-        ログイン
-      </Button>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Stack spacing={2}>
+          <Typography variant="h5">Login</Typography>
+          <FormTextField
+            name="email"
+            control={control}
+            errors={errors}
+            label="メールアドレス"
+          />
+          <FormPasswordField
+            name="password"
+            control={control}
+            errors={errors}
+            label="パスワード"
+          />
+          {errors.root && <ErrorMessage message={errors.root.message} />}
+
+          <Button type="submit" variant="contained" color="primary" fullWidth>
+            ログイン
+          </Button>
+        </Stack>
+      </form>
     </Paper>
   );
 }

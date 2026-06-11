@@ -5,7 +5,11 @@ import { Alert } from '@mui/material';
  * @param message 表示するエラーメッセージ。nullの場合は表示しない。
  * @return エラーメッセージを表示するコンポーネント
  */
-export function ErrorMessage({ message }: { message: string | null }) {
+export function ErrorMessage({
+  message,
+}: {
+  message: string | null | undefined;
+}) {
   return (
     <>
       {message && (
