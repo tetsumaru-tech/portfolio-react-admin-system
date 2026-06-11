@@ -54,6 +54,8 @@ class AuthController extends Controller
     public function logout(): JsonResponse
     {
         Auth::logout();
+        request()->session()->invalidate(); // 現在のセッションを破棄 かつ 新しいセッションIDを発行
+        request()->session()->regenerateToken(); // CSRFトークン再発行
 
         return response()->json([
             'message' => 'Logged out',
