@@ -25,7 +25,7 @@ class LoginRequest extends FormRequest
     {
         return [
             'email' => 'required|email', // メールアドレスは必須で、正しい形式である必要があります
-            'password' => 'required|string|min:6', // パスワードは必須で、文字列で、最低6文字必要です
+            'password' => 'required|string|min:8', // パスワードは必須で、文字列で、最低8文字必要です
         ];
     }
 }
