@@ -22,6 +22,7 @@ export async function apiFetch<T>(
     credentials: 'include',
     ...options,
     headers: {
+      Accept: 'application/json',
       'Content-Type': 'application/json',
       'X-XSRF-TOKEN': getXsrToken(),
       ...(options?.headers ?? {}),
