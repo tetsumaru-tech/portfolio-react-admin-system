@@ -49,4 +49,4 @@ export const userFormRows: Row[] = [
     showInEdit: false,
     showInConfirm: false,
   },
-];
+] satisfies Row[];

@@ -1,3 +1,5 @@
+import type { UserPasswordFormData } from '../types';
+
 import { userApi } from '@/features/user/api';
 import { userQueryKeys } from '@/features/user/constants';
 import type {
@@ -46,3 +48,17 @@ export const useDeleteUserMutation = () => {
     invalidateKeys: [userQueryKeys.all],
   });
 };
+
+/**
+ * パスワード更新用のミューテーションフック。
+ * 指定したユーザーIDのパスワードを更新します。
+ *
+ * @param id 更新対象のユーザーID
+ */
+export function useUpdatePasswordMutation(id: number) {
+  return useApiMutation({
+    mutationFn: (data: UserPasswordFormData) =>
+      userApi.updatePassword(id, data),
+    successMessage: 'パスワードを変更しました',
+  });
+}

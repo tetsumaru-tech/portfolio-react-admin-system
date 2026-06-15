@@ -7,6 +7,7 @@ import type {
   UpdateUserInput,
   UserSearchCondition,
   UserResponse,
+  UserPasswordFormData,
 } from '@/features/user/types';
 import { apiFetch } from '@/lib/api';
 import type { PaginatedResponse } from '@/types';
@@ -127,4 +128,19 @@ export const userApi = {
     });
     await sleep(1000); // テスト用の遅延
   },
+
+  /**
+   * 指定したユーザーのパスワードを更新する
+   * @param id ユーザーID
+   * @param data パスワード更新用のフォームデータ
+   * @returns 更新リクエストのレスポンス
+   */
+  updatePassword: (id: number, data: UserPasswordFormData) =>
+    apiFetch(`/users/${id}/password`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        password: data.password,
+        password_confirmation: data.passwordConfirmation,
+      }),
+    }),
 };

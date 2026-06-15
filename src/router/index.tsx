@@ -8,6 +8,7 @@ import {
   UserDetailPage,
   UserEditPage,
   UserConfirmPage,
+  UserPasswordPage,
 } from '@/features/user/pages';
 import { MainLayout } from '@/layouts';
 import { NotFoundPage } from '@/pages';
@@ -32,6 +33,10 @@ export const router = createBrowserRouter([
           { path: ROUTEPATTERNS.USER_CREATE, element: <UserEditPage /> },
           { path: ROUTEPATTERNS.USER_EDIT, element: <UserEditPage /> },
           { path: ROUTEPATTERNS.USER_CONFIRM, element: <UserConfirmPage /> },
+          {
+            path: ROUTEPATTERNS.USER_PASSWORD_EDIT,
+            element: <UserPasswordPage />,
+          },
         ],
       },
     ],

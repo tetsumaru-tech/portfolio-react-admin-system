@@ -59,6 +59,9 @@ export function UserDetailPage() {
           >
             編集
           </AppButton>
+          <AppButton onClick={() => navigate(ROUTES.userPassowrdEdit(userId!))}>
+            パスワード変更
+          </AppButton>
         </ButtonSection>
       </Paper>
     </>
