@@ -9,6 +9,7 @@ Route::get('/users/{id}', [UserController::class, 'show'])->where('id', '[0-9]+'
 Route::post('/users', [UserController::class, 'store']);
 Route::put('/users/{id}', [UserController::class, 'update'])->where('id', '[0-9]+');
 Route::delete('/users/{id}', [UserController::class, 'destroy'])->where('id', '[0-9]+');
+Route::patch('/users/{id}/password', [UserController::class, 'updatePassword'])->where('id', '[0-9]+');
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);

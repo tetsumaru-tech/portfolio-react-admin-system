@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PasswordUpdateRequest;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\UserSearchRequest;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
@@ -136,5 +138,31 @@ class UserController extends Controller
             'full_name' => $query->orderByRaw("concat(last_name, first_name) {$sortOrder}"),
             default => $query->orderBy($sortBy, $sortOrder),
         };
+    }
+
+    /**
+     * 指定されたIDのユーザーのパスワードを更新する
+     *
+     * @param  PasswordUpdateRequest  $request  パスワード更新リクエスト
+     * @param  int  $id  ユーザーID
+     * @return JsonResponse 更新結果のメッセージ
+     */
+    public function updatePassword(PasswordUpdateRequest $request, int $id): JsonResponse
+    {
+        $user = User::findOrFail($id);
+
+        if (! empty($request->current_password) && ! Hash::check($request->current_password, $user->password)) {
+            return response()->json([
+                'message' => '現在のパスワードが違います',
+            ], 422);
+        }
+
+        $user->update([
+            'password' => $request->password,
+        ]);
+
+        return response()->json([
+            'message' => 'パスワードを変更しました',
+        ]);
     }
 }
