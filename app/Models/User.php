@@ -11,7 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 // #[Fillable(['last_name', 'first_name', 'email', 'birthday', 'gender', 'password', 'remember_token'])]
-#[Fillable(['last_name', 'first_name', 'email', 'birthday', 'gender', 'password'])]
+#[Fillable(['last_name', 'first_name', 'email', 'birthday', 'gender', 'password', 'role'])]
 // #[Hidden(['password', 'remember_token'])]　　// Laravel 13から利用。重複管理になるため、$fillableを優先する。
 class User extends Authenticatable
 {
@@ -32,5 +32,5 @@ class User extends Authenticatable
     }
 
     // protected $fillable = ['last_name', 'first_name', 'email', 'birthday', 'gender', 'password', 'remember_token'];
-    protected $fillable = ['last_name', 'first_name', 'email', 'birthday', 'gender', 'password'];
+    protected $fillable = ['last_name', 'first_name', 'email', 'birthday', 'gender', 'password', 'role'];
 }
