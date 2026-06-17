@@ -2,12 +2,15 @@
 
 namespace App\Providers;
 
+use App\Models\User;
+use App\Policies\UserPolicy;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * アプリケーションのサービスを登録する
      */
     public function register(): void
     {
@@ -15,10 +18,10 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bootstrap any application services.
+     * アプリケーションのブート処理を実行する
      */
     public function boot(): void
     {
-        //
+        Gate::policy(User::class, UserPolicy::class);
     }
 }
