@@ -1,5 +1,6 @@
 import { type Gender } from './gender';
 
+import { type Role } from '@/features/auth/types';
 import { type YMD } from '@/types';
 
 /**
@@ -12,6 +13,7 @@ export type User = {
   email: string;
   gender: Gender;
   birthday: YMD;
+  role: Role;
   createdAt: Date;
   updatedAt: Date;
 };

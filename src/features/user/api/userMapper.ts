@@ -168,6 +168,7 @@ export const userMapper = {
       email: user.email,
       birthday: user.birthday as YMD,
       gender: user.gender as Gender,
+      role: user.role,
       createdAt: new Date(user.created_at),
       updatedAt: new Date(user.updated_at),
     };

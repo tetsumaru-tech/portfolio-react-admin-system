@@ -13,6 +13,8 @@ export const authMapper = {
       firstName: response.first_name,
       fullName: `${response.last_name} ${response.first_name}`,
       email: response.email,
+      birthday: response.birthday,
+      role: response.role,
     };
   },
 };

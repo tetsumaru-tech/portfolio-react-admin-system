@@ -8,6 +8,7 @@ import {
 import { Link } from 'react-router-dom';
 
 import { ROUTEPATTERNS, DRAWER_WIDTH } from '@/constants';
+import { AdminOnly } from '@/features/auth/components';
 
 /**
  * アプリケーションのサイドバー コンポーネント
@@ -29,12 +30,17 @@ export function AppSidebar() {
     >
       <Toolbar />
       <List>
-        <ListItemButton component={Link} to={ROUTEPATTERNS.USERS}>
-          <ListItemText primary="ユーザー一覧" />
+        <ListItemButton component={Link} to={ROUTEPATTERNS.PROFILE}>
+          <ListItemText primary="プロファイル" />
         </ListItemButton>
-        <ListItemButton component={Link} to={ROUTEPATTERNS.USER_CREATE}>
-          <ListItemText primary="ユーザー登録" />
-        </ListItemButton>
+        <AdminOnly>
+          <ListItemButton component={Link} to={ROUTEPATTERNS.USERS}>
+            <ListItemText primary="ユーザー一覧" />
+          </ListItemButton>
+          <ListItemButton component={Link} to={ROUTEPATTERNS.USER_CREATE}>
+            <ListItemText primary="ユーザー登録" />
+          </ListItemButton>
+        </AdminOnly>
       </List>
     </Drawer>
   );

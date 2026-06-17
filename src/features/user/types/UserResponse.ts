@@ -1,5 +1,7 @@
 import { type Gender } from './gender';
 
+import type { Role } from '@/features/auth/types';
+
 /**
  * ユーザーレスポンスの型定義
  */
@@ -10,6 +12,7 @@ export type UserResponse = {
   email: string;
   birthday: string | null;
   gender: Gender;
+  role: Role;
   created_at: string;
   updated_at: string;
 };

@@ -25,7 +25,7 @@ export function NotFoundPage() {
       <Typography color="text.secondary">
         指定されたページは存在しないか、 削除された可能性があります。
       </Typography>
-      <Button variant="contained" onClick={() => navigate(ROUTES.home())}>
+      <Button variant="contained" onClick={() => navigate(ROUTES.top())}>
         ホームに戻る
       </Button>
     </Stack>
