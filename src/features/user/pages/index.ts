@@ -3,4 +3,3 @@ export * from './UserDetailPage';
 export * from './UserEditPage';
 export * from './UserConfirmPage';
 export * from './UserPasswordPage';
-export * from './UserProfilePage';

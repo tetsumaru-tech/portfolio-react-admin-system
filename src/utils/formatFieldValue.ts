@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 
+import type { Row as ProfileRow } from '@/features/profile/types';
 import type { Row } from '@/features/user/types';
 
 /**
@@ -8,7 +9,10 @@ import type { Row } from '@/features/user/types';
  * @param value - フォーマットする値。
  * @returns フォーマットされた文字列。
  */
-export function formatFieldValue(row: Row, value: unknown): string {
+export function formatFieldValue(
+  row: Row | ProfileRow,
+  value: unknown,
+): string {
   if (value == null) return '';
 
   // select

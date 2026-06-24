@@ -4,11 +4,14 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import { ROUTES } from '@/constants';
-import { useUserDetailQuery } from '@/features/user/api';
-import { userMapper } from '@/features/user/api';
+import { useProfileQuery } from '@/features/profile';
+import { profileRows } from '@/features/profile/constants';
+import { profileMapper } from '@/features/profile/mappers';
+import { profileSchema } from '@/features/profile/schema';
+import { type ProfileFormData } from '@/features/profile/types';
 import {
   FormSection,
   FormRowContainer,
@@ -16,23 +19,19 @@ import {
   FormTextField,
   FormDatePicker,
   FormSelect,
-  FormPasswordField,
   ButtonSection,
   AppButton,
   BackButton,
 } from '@/features/user/components';
-import { userFormRows } from '@/features/user/constants';
-import { userFormSchema } from '@/features/user/schema';
-import { type UserFormData } from '@/features/user/types';
 import { applyServerErrors } from '@/utils';
 
 /**
- * ユーザー編集ページコンポーネント
+ * プロファイル編集ページコンポーネント
+ * ユーザーのプロフィール情報編集フォームを表示し、確認ページへ遷移します。
  */
-export function UserEditPage() {
-  const { id } = useParams<{ id: string }>();
-  const userId = Number(id ?? '');
-  const isCreate = userId === 0;
+export function ProfileEditPage() {
+  const { data, isSuccess } = useProfileQuery();
+
   const location = useLocation();
 
   const {
@@ -40,55 +39,48 @@ export function UserEditPage() {
     handleSubmit,
     formState: { errors },
     reset,
-    register,
     setError,
-  } = useForm<UserFormData>({
-    resolver: zodResolver(userFormSchema),
+  } = useForm<ProfileFormData>({
+    resolver: zodResolver(profileSchema),
     defaultValues: {
-      id: userId,
       lastName: '',
       firstName: '',
       email: '',
       gender: '',
       birthday: '',
-      password: '',
-      passwordConfirmation: '',
     },
   });
 
-  const { data, isSuccess } = useUserDetailQuery(userId);
-
   useEffect(() => {
     if (location.state?.formData) {
-      reset(userMapper.fromStorage(location.state.formData));
+      reset(profileMapper.fromStorage(location.state.formData));
       applyServerErrors(location.state?.errors, setError);
       return;
     }
 
     if (isSuccess && data) {
-      reset(userMapper.fromApi(data));
+      reset(profileMapper.fromResponse(data));
     }
   }, [location.state, isSuccess, data, reset, setError]);
 
   const navigate = useNavigate();
 
-  const onSubmit = (data: UserFormData) => {
-    if (isCreate) {
-      navigate(ROUTES.userConfirm('create'), {
-        state: { formData: userMapper.toStorage(data) },
-      });
-    } else {
-      navigate(ROUTES.userConfirm(userId), {
-        state: {
-          formData: userMapper.toStorage(data),
-        },
-      });
-    }
+  const onSubmit = (data: ProfileFormData) => {
+    navigate(ROUTES.profileConfirm(), {
+      state: {
+        formData: profileMapper.toStorage(data),
+      },
+    });
   };
 
-  const rows = userFormRows.filter(
-    (row) => isCreate || row.showInEdit !== false,
-  );
+  if (!data) {
+    navigate(ROUTES.top());
+    return null;
+  }
+
+  const rows = profileRows.filter((row) => {
+    return row.showInEdit !== false;
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -111,30 +103,23 @@ export function UserEditPage() {
                     required={!!row.rules?.required}
                   >
                     {row.type === 'date' ? (
-                      <FormDatePicker<UserFormData>
+                      <FormDatePicker<ProfileFormData>
                         name={row.key}
                         control={control}
                         errors={errors}
                         label={row.label}
                       />
                     ) : row.type === 'select' ? (
-                      <FormSelect<UserFormData>
+                      <FormSelect<ProfileFormData>
                         name={row.key}
                         control={control}
                         errors={errors}
                         label={row.label}
                         options={row.options ?? []}
-                      />
-                    ) : row.type === 'password' ? (
-                      <FormPasswordField<UserFormData>
-                        name={row.key}
-                        control={control}
-                        errors={errors}
-                        label={row.label}
-                        minLength={row.minLength}
+                        disabled={row.disabledInEdit}
                       />
                     ) : (
-                      <FormTextField<UserFormData>
+                      <FormTextField<ProfileFormData>
                         name={row.key}
                         control={control}
                         errors={errors}
@@ -146,14 +131,13 @@ export function UserEditPage() {
                 </FormRowContainer>
               ))}
             </FormSection>
-            <input type="hidden" {...register('id')} />
           </LocalizationProvider>
         </Grid>
       </Paper>
       <ButtonSection>
         <BackButton
           onClick={() => {
-            navigate(ROUTES.users());
+            navigate(ROUTES.profile());
           }}
         >
           キャンセル

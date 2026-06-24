@@ -4,12 +4,16 @@ import { ROUTEPATTERNS } from '@/constants';
 import { LoginPage } from '@/features/auth/pages';
 import { ProtectedRoute, AdminRoute } from '@/features/auth/routes';
 import {
+  ProfilePage,
+  ProfileEditPage,
+  ProfileConfirmPage,
+} from '@/features/profile';
+import {
   UserListPage,
   UserDetailPage,
   UserEditPage,
   UserConfirmPage,
   UserPasswordPage,
-  UserProfilePage,
 } from '@/features/user/pages';
 import { MainLayout } from '@/layouts';
 import { TopPage } from '@/pages';
@@ -32,9 +36,16 @@ export const router = createBrowserRouter([
           },
           {
             path: ROUTEPATTERNS.PROFILE,
-            element: <UserProfilePage />,
+            element: <ProfilePage />,
           },
-
+          {
+            path: ROUTEPATTERNS.PROFILE_EDIT,
+            element: <ProfileEditPage />,
+          },
+          {
+            path: ROUTEPATTERNS.PROFILE_CONFIRM,
+            element: <ProfileConfirmPage />,
+          },
           {
             element: <AdminRoute />,
             children: [

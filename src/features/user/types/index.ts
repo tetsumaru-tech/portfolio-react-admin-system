@@ -5,6 +5,7 @@ export * from './userDto';
 export * from './form';
 export * from './UserResponse';
 export * from './gender';
+export * from './role';
 export * from './CreateUserApiRequest';
 export * from './UpdateUserApiRequest';
 export * from './UserPasswordFormData';

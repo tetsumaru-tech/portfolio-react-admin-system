@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
-import { userBaseSchema } from './userBaseSchema';
-
+import { PASSWORD_PATTERN } from '@/features/user/constants';
 import { USER_FORM_MIN_LENGTH } from '@/features/user/constants';
+import { userBaseSchema } from '@/features/user/schema';
 
 /**
  * ユーザー編集フォーム用の Zod スキーマ
@@ -13,6 +13,11 @@ export const userFormSchema = z
   .object({
     ...userBaseSchema,
     id: z.number().nullable(),
+    password: z
+      .string()
+      .regex(PASSWORD_PATTERN, '大文字・小文字・数字を含めてください')
+      .optional(),
+    passwordConfirmation: z.string().optional(),
   })
   .superRefine((data, ctx) => {
     const isCreate = data.id === null || data.id === 0;

@@ -11,6 +11,7 @@ import type {
 } from '@/features/user/types';
 import { apiFetch } from '@/lib/api';
 import type { PaginatedResponse } from '@/types';
+import { sleep } from '@/utils';
 
 /**
  * ユーザーリスト取得のレスポンス型
@@ -22,7 +23,6 @@ export type GetListResponse = {
   per_page: number;
   total: number;
 };
-const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 /**
  * ユーザー関連のAPI関数を提供するオブジェクト

@@ -1,11 +1,11 @@
-import { USER_FORM_LIMITS, USER_FORM_MIN_LENGTH } from './userFormConstants';
-
-import { genderOptions, type Row } from '@/features/user/types';
+import { type Row } from '@/features/profile/types';
+import { USER_FORM_LIMITS } from '@/features/user/constants';
+import { genderOptions, roleOptions } from '@/features/user/types';
 
 /**
  * ユーザーフォームの行定義
  */
-export const userFormRows: Row[] = [
+export const profileRows: Row[] = [
   {
     key: 'lastName',
     label: '性',
@@ -28,6 +28,8 @@ export const userFormRows: Row[] = [
     label: '性別',
     type: 'select',
     options: genderOptions,
+    confirmValue: (data) =>
+      genderOptions.find((option) => (option.value = data.gender))?.label ?? '',
   },
   {
     key: 'birthday',
@@ -35,19 +37,15 @@ export const userFormRows: Row[] = [
     type: 'date',
   },
   {
-    key: 'password',
-    label: 'パスワード',
-    type: 'password',
-    minLength: USER_FORM_MIN_LENGTH.password,
-    showInEdit: false,
-    confirmValue: (data) => `${'*'.repeat(data.password?.length ?? 0)}`,
-  },
-  {
-    key: 'passwordConfirmation',
-    label: 'パスワード確認',
-    type: 'password',
-    minLength: USER_FORM_MIN_LENGTH.password,
+    key: 'role',
+    label: '権限',
+    type: 'select',
+    options: roleOptions,
+    showValue: (data) => (data.role === 'admin' ? '管理者' : '一般ユーザー'),
     showInEdit: false,
     showInConfirm: false,
+    confirmValue: (data) =>
+      roleOptions.find((option) => (option.value = data.role))?.label ?? '',
+    disabledInEdit: true,
   },
 ] satisfies Row[];

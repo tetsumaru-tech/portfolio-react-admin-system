@@ -17,6 +17,7 @@ type Props<T extends Record<string, any>> = {
   errors: FieldErrors<T>;
   label: string;
   options: Option[];
+  disabled?: boolean;
 };
 
 /**
@@ -29,12 +30,13 @@ type Props<T extends Record<string, any>> = {
  * @param props.label - ラベル
  * @param props.options - 選択肢のオプション配列
  */
-export function FormSelect<T extends Record<string, any>>({
+export function FormSelect<T extends Record<string, unknown>>({
   name,
   control,
   errors,
   label,
   options,
+  disabled,
 }: Props<T>) {
   return (
     <Controller
@@ -48,6 +50,7 @@ export function FormSelect<T extends Record<string, any>>({
           fullWidth
           error={!!errors[name]}
           helperText={errors[name]?.message as string}
+          disabled={disabled}
         >
           {options.map((option) => (
             <MenuItem key={option.value} value={option.value}>

@@ -30,6 +30,9 @@ export function AppSidebar() {
     >
       <Toolbar />
       <List>
+        <ListItemButton component={Link} to={ROUTEPATTERNS.TOP}>
+          <ListItemText primary="トップ" />
+        </ListItemButton>
         <ListItemButton component={Link} to={ROUTEPATTERNS.PROFILE}>
           <ListItemText primary="プロファイル" />
         </ListItemButton>
