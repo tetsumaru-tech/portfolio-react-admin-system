@@ -7,6 +7,7 @@ import {
   ProfilePage,
   ProfileEditPage,
   ProfileConfirmPage,
+  ProfilePasswordPage,
 } from '@/features/profile';
 import {
   UserListPage,
@@ -47,6 +48,10 @@ export const router = createBrowserRouter([
             element: <ProfileConfirmPage />,
           },
           {
+            path: ROUTEPATTERNS.PROFILE_PASSWORD,
+            element: <ProfilePasswordPage />,
+          },
+          {
             element: <AdminRoute />,
             children: [
               { path: ROUTEPATTERNS.USER_DETAIL, element: <UserDetailPage /> },
@@ -59,7 +64,7 @@ export const router = createBrowserRouter([
 
               { path: ROUTEPATTERNS.USERS, element: <UserListPage /> },
               {
-                path: ROUTEPATTERNS.USER_PASSWORD_EDIT,
+                path: ROUTEPATTERNS.USER_PASSWORD,
                 element: <UserPasswordPage />,
               },
             ],

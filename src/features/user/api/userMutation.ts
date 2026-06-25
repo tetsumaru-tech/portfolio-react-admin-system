@@ -55,7 +55,7 @@ export const useDeleteUserMutation = () => {
  *
  * @param id 更新対象のユーザーID
  */
-export function useUpdatePasswordMutation(id: number) {
+export function useUpdateProfileMutation(id: number) {
   return useApiMutation({
     mutationFn: (data: UserPasswordFormData) =>
       userApi.updatePassword(id, data),

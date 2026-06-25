@@ -2,7 +2,7 @@ import { Typography, Paper, CircularProgress } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { ROUTES } from '@/constants';
-import { useUpdatePasswordMutation } from '@/features/profile/api';
+import { useUpdateProfileMutation } from '@/features/profile/api';
 import { profileRows } from '@/features/profile/constants';
 import { profileMapper } from '@/features/profile/mappers';
 import { updateProfileSchema } from '@/features/profile/schema';
@@ -29,7 +29,7 @@ export function ProfileConfirmPage() {
     ? profileMapper.fromStorage(location.state.formData)
     : null;
 
-  const mutation = useUpdatePasswordMutation();
+  const mutation = useUpdateProfileMutation();
 
   const handleSubmit = async () => {
     if (!formData) return;

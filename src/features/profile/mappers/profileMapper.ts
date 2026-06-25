@@ -1,9 +1,11 @@
 import type { UpdateProfileRequest } from '@/features/profile/schema';
-import {
-  type ProfileFormData,
-  type ProfileResponse,
-  type UpdateProfileApiRequest,
-  type UpdateProfileInput,
+import type {
+  ProfileFormData,
+  ProfileResponse,
+  UpdateProfileApiRequest,
+  UpdateProfilePasswordApiRequest,
+  UpdateProfileInput,
+  UpdateProfilePasswordInput,
 } from '@/features/profile/types';
 import { type Role, ROLES } from '@/features/user/types';
 import { type Gender, GENDERS } from '@/features/user/types';
@@ -96,6 +98,21 @@ export const profileMapper = {
       email: profile.email ?? '',
       birthday: profile.birthday as YMD,
       gender: profile.gender as Gender,
+    };
+  },
+
+  /**
+   * 内部のUpdateUserInputをAPI送信用の形式に変換する
+   * @param profile UpdateProfileInput 型のプロフィール情報
+   * @returns UpdateProfileApiRequest APIに送信するオブジェクト（スネークケース）
+   */
+  toUpdatePasswordApiRequest(
+    profile: UpdateProfilePasswordInput,
+  ): UpdateProfilePasswordApiRequest {
+    return {
+      current_password: profile.currentPassword ?? '',
+      password: profile.password ?? '',
+      password_confirmation: profile.passwordConfirmation ?? '',
     };
   },
 };

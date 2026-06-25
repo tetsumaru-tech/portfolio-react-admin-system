@@ -5,12 +5,14 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
 
 import { ROUTES } from '@/constants';
-import { useUserDetailQuery } from '@/features/user/api';
-import { userMapper } from '@/features/user/api';
-import { useUpdateProfileMutation } from '@/features/user/api';
+import { useProfileQuery } from '@/features/profile';
+import { useUpdateProfilePasswordMutation } from '@/features/profile/api';
+import { profilePasswordRows } from '@/features/profile/constants';
+import { profileMapper } from '@/features/profile/mappers';
+import { profilePasswordSchema } from '@/features/profile/schema';
+import type { ProfilePasswordFormData } from '@/features/profile/types';
 import {
   FormSection,
   FormRowContainer,
@@ -20,19 +22,14 @@ import {
   AppButton,
   BackButton,
 } from '@/features/user/components';
-import { userPasswordRows } from '@/features/user/constants';
-import { userPasswordSchema } from '@/features/user/schema';
-import { type UserPasswordFormData } from '@/features/user/types';
 import { applyServerErrors } from '@/utils';
 
 /**
- * パスワード変更ページコンポーネント
+ * プロフィールパスワード変更ページコンポーネント
  */
-export function UserPasswordPage() {
-  const { id } = useParams<{ id: string }>();
-  const userId = Number(id ?? '');
+export function ProfilePasswordPage() {
   const location = useLocation();
-  const updatePasswordMutation = useUpdateProfileMutation(userId);
+  const mutation = useUpdateProfilePasswordMutation();
 
   const {
     control,
@@ -40,15 +37,16 @@ export function UserPasswordPage() {
     formState: { errors },
     reset,
     setError,
-  } = useForm<UserPasswordFormData>({
-    resolver: zodResolver(userPasswordSchema),
+  } = useForm<ProfilePasswordFormData>({
+    resolver: zodResolver(profilePasswordSchema),
     defaultValues: {
+      currentPassword: '',
       password: '',
       passwordConfirmation: '',
     },
   });
 
-  const { data, isSuccess } = useUserDetailQuery(userId);
+  const { data, isSuccess } = useProfileQuery();
 
   useEffect(() => {
     if (location.state?.formData) {
@@ -57,19 +55,19 @@ export function UserPasswordPage() {
       return;
     }
 
-    if (isSuccess && data) {
-      reset(userMapper.fromApi(data));
-    }
-  }, [location.state, isSuccess, data, reset, setError]);
+    // if (isSuccess && data) {
+    //   reset(profileMapper.fromApi(data));
+    // }
+  }, [location.state, data, isSuccess, reset, setError]);
 
   const navigate = useNavigate();
 
-  const onSubmit = (data: UserPasswordFormData) => {
-    updatePasswordMutation.mutate(data);
-    navigate(ROUTES.userDetail(userId));
+  const onSubmit = (data: ProfilePasswordFormData) => {
+    mutation.mutate(data);
+    navigate(ROUTES.profile());
   };
 
-  const rows = userPasswordRows;
+  const rows = profilePasswordRows;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -91,7 +89,7 @@ export function UserPasswordPage() {
                     isLast={i === rows.length - 1}
                     required={!!row.rules?.required}
                   >
-                    <FormPasswordField<UserPasswordFormData>
+                    <FormPasswordField<ProfilePasswordFormData>
                       name={row.key}
                       control={control}
                       errors={errors}
@@ -102,14 +100,13 @@ export function UserPasswordPage() {
                 </FormRowContainer>
               ))}
             </FormSection>
-            <input type="hidden" value={userId} />
           </LocalizationProvider>
         </Grid>
       </Paper>
       <ButtonSection>
         <BackButton
           onClick={() => {
-            navigate(ROUTES.userDetail(userId));
+            navigate(ROUTES.profile());
           }}
         >
           キャンセル

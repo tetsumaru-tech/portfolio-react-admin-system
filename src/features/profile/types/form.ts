@@ -1,6 +1,9 @@
 import type { RegisterOptions } from 'react-hook-form';
 
-import type { ProfileFormData } from '@/features/profile/types';
+import type {
+  ProfileFormData,
+  ProfilePasswordFormData,
+} from '@/features/profile/types';
 import type { SelectOption } from '@/types';
 
 export type Row = {
@@ -17,4 +20,12 @@ export type Row = {
   showInEdit?: boolean;
   showInConfirm?: boolean;
   disabledInEdit?: boolean;
+};
+
+export type UpdatePasswordRow = {
+  key: keyof ProfilePasswordFormData;
+  label: string;
+  maxLength?: number;
+  minLength?: number;
+  type?: 'password' | 'password_confirmation';
 };

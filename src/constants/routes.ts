@@ -5,10 +5,11 @@ export const ROUTEPATTERNS = {
   USER_DETAIL: '/users/:id',
   USER_EDIT: '/users/:id/edit',
   USER_CONFIRM: '/users/:id/confirm',
-  USER_PASSWORD_EDIT: '/users/:id/password',
+  USER_PASSWORD: '/users/:id/password',
   PROFILE: '/profile',
   PROFILE_EDIT: '/profile/edit',
   PROFILE_CONFIRM: '/profile/confirm',
+  PROFILE_PASSWORD: '/profile/password',
   LOGIN: '/login',
 } as const;
 
@@ -23,5 +24,6 @@ export const ROUTES = {
   profile: () => '/profile',
   profileEdit: () => '/profile/edit',
   profileConfirm: () => '/profile/confirm',
+  profilePassword: () => '/profile/password',
   login: () => '/login',
 } as const;

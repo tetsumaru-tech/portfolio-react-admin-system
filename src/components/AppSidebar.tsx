@@ -36,6 +36,9 @@ export function AppSidebar() {
         <ListItemButton component={Link} to={ROUTEPATTERNS.PROFILE}>
           <ListItemText primary="プロファイル" />
         </ListItemButton>
+        <ListItemButton component={Link} to={ROUTEPATTERNS.PROFILE_PASSWORD}>
+          <ListItemText primary="パスワード変更" />
+        </ListItemButton>
         <AdminOnly>
           <ListItemButton component={Link} to={ROUTEPATTERNS.USERS}>
             <ListItemText primary="ユーザー一覧" />
