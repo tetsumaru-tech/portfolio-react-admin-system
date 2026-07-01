@@ -1,9 +1,6 @@
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 
 import { DRAWER_WIDTH } from '@/constants';
-import { ROUTES } from '@/constants';
-import { authApi } from '@/features/auth/api';
 import { useAuth } from '@/features/auth/hooks';
 
 /**
@@ -11,14 +8,9 @@ import { useAuth } from '@/features/auth/hooks';
  * @returns アプリケーションのヘッダーを表示する JSX
  */
 export function AppHeader() {
-  const navigate = useNavigate();
-
-  const { setUser, user } = useAuth();
-
+  const { user, logout } = useAuth();
   const handleLogout = async () => {
-    await authApi.logout();
-    setUser(null);
-    navigate(ROUTES.login());
+    logout();
   };
 
   return (

@@ -1,13 +1,15 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useCallback } from 'react';
 import type { ReactNode } from 'react';
 
 import { authApi } from '@/features/auth/api';
 import type { AuthUser } from '@/features/auth/types';
+import { setUnauthorizedHandler, type LogoutOptions } from '@/lib/api';
 
 type AuthContextType = {
   user: AuthUser | null;
   setUser: (user: AuthUser | null) => void;
   isLoading: boolean;
+  logout: (options?: LogoutOptions) => Promise<void>;
 };
 
 /**
@@ -28,6 +30,16 @@ type Props = {
 export function AuthProvider({ children }: Props) {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const logout = useCallback(async ({ callApi = true }: LogoutOptions = {}) => {
+    try {
+      if (callApi) {
+        await authApi.logout();
+      }
+    } finally {
+      setUser(null);
+      console.log('after logout');
+    }
+  }, []);
 
   useEffect(() => {
     const initializeAuth = async () => {
@@ -45,12 +57,20 @@ export function AuthProvider({ children }: Props) {
     initializeAuth();
   }, []);
 
+  useEffect(() => {
+    setUnauthorizedHandler(logout);
+    return () => {
+      setUnauthorizedHandler(() => {});
+    };
+  }, [logout]);
+
   return (
     <AuthContext.Provider
       value={{
         user,
         setUser,
         isLoading,
+        logout,
       }}
     >
       {children}
