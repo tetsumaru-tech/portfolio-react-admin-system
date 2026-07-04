@@ -11,6 +11,7 @@ export const ROUTEPATTERNS = {
   PROFILE_CONFIRM: '/profile/confirm',
   PROFILE_PASSWORD: '/profile/password',
   LOGIN: '/login',
+  FORBIDDEN: '/403',
 } as const;
 
 export const ROUTES = {
@@ -26,4 +27,5 @@ export const ROUTES = {
   profileConfirm: () => '/profile/confirm',
   profilePassword: () => '/profile/password',
   login: () => '/login',
+  forbidden: () => '/403',
 } as const;

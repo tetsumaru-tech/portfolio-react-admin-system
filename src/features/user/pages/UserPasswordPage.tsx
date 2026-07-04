@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
+import { ButtonSection, AppButton, BackButton } from '@/components';
 import { ROUTES } from '@/constants';
 import { useUserDetailQuery } from '@/features/user/api';
 import { userMapper } from '@/features/user/api';
@@ -16,9 +17,6 @@ import {
   FormRowContainer,
   FormRow,
   FormPasswordField,
-  ButtonSection,
-  AppButton,
-  BackButton,
 } from '@/features/user/components';
 import { userPasswordRows } from '@/features/user/constants';
 import { userPasswordSchema } from '@/features/user/schema';

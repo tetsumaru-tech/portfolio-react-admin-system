@@ -1,12 +1,12 @@
 import { Typography, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
+import { ButtonSection, AppButton } from '@/components';
 import { ROUTES } from '@/constants';
 import { AdminOnly } from '@/features/auth/components';
-import { ButtonSection, AppButton } from '@/features/user/components';
 
 /**
- *
+ * トップページコンポーネント
  */
 export function TopPage() {
   const navigate = useNavigate();

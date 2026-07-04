@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
+import { ButtonSection, AppButton, BackButton } from '@/components';
 import { ROUTES } from '@/constants';
 import { userMapper } from '@/features/user/api';
 import {
@@ -13,9 +14,6 @@ import {
   FormSection,
   FormRowContainer,
   FormRow,
-  ButtonSection,
-  AppButton,
-  BackButton,
 } from '@/features/user/components';
 import { userFormRows } from '@/features/user/constants';
 import { createUserSchema, updateUserSchema } from '@/features/user/schema';

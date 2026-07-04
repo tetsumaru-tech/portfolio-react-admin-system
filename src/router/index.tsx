@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import { ROUTEPATTERNS } from '@/constants';
+import { ROUTES } from '@/constants';
 import { LoginPage } from '@/features/auth/pages';
 import { ProtectedRoute, AdminRoute } from '@/features/auth/routes';
 import {
@@ -17,11 +18,13 @@ import {
   UserPasswordPage,
 } from '@/features/user/pages';
 import { MainLayout } from '@/layouts';
+import { setForbiddenHandler } from '@/lib';
 import { TopPage } from '@/pages';
-import { NotFoundPage } from '@/pages';
+import { NotFoundPage, ForbiddenPage } from '@/pages';
 
 export const router = createBrowserRouter([
   { path: ROUTEPATTERNS.LOGIN, element: <LoginPage /> },
+  { path: ROUTEPATTERNS.FORBIDDEN, element: <ForbiddenPage /> },
   {
     element: <ProtectedRoute />,
     children: [
@@ -74,3 +77,8 @@ export const router = createBrowserRouter([
     ],
   },
 ]);
+
+/**
+ * API層から通知された403 Forbiddenを画面遷移へ変換する。
+ */
+setForbiddenHandler(() => router.navigate(ROUTES.forbidden()));

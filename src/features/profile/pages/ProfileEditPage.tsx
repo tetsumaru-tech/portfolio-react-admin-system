@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+import { ButtonSection, AppButton, BackButton } from '@/components';
 import { ROUTES } from '@/constants';
 import { useProfileQuery } from '@/features/profile';
 import { profileRows } from '@/features/profile/constants';
@@ -19,9 +20,6 @@ import {
   FormTextField,
   FormDatePicker,
   FormSelect,
-  ButtonSection,
-  AppButton,
-  BackButton,
 } from '@/features/user/components';
 import { applyServerErrors } from '@/utils';
 

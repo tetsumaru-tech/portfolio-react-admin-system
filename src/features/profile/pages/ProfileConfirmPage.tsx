@@ -1,6 +1,7 @@
 import { Typography, Paper, CircularProgress } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+import { ButtonSection, AppButton, BackButton } from '@/components';
 import { ROUTES } from '@/constants';
 import { useUpdateProfileMutation } from '@/features/profile/api';
 import { profileRows } from '@/features/profile/constants';
@@ -11,9 +12,6 @@ import {
   FormSection,
   FormRowContainer,
   FormRow,
-  ButtonSection,
-  AppButton,
-  BackButton,
 } from '@/features/user/components';
 import { getApiError, formatFieldValue, isValidationError } from '@/utils';
 

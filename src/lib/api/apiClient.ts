@@ -2,6 +2,7 @@ const VITE_API_BASE_URL_WITH_API = import.meta.env.VITE_API_BASE_URL_WITH_API;
 
 import { ensureCsrf } from '@/features/auth/api';
 import { getXsrToken } from '@/features/auth/api';
+import { notifyForbidden } from '@/lib';
 import { notifyUnauthorized } from '@/lib/api';
 import { ApiError, ApiValidationError } from '@/utils';
 
@@ -34,6 +35,9 @@ export async function apiFetch<T>(
     const errorData = await response.json();
     if (response.status === 401) {
       notifyUnauthorized();
+    }
+    if (response.status === 403) {
+      notifyForbidden();
     }
     if (response.status === 422) {
       throw new ApiValidationError(

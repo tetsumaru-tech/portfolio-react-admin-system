@@ -1,6 +1,7 @@
 import { Typography, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
+import { ButtonSection, AppButton, BackButton } from '@/components';
 import { ROUTES } from '@/constants';
 import { useProfileQuery } from '@/features/profile';
 import { profileRows } from '@/features/profile/constants';
@@ -9,9 +10,6 @@ import {
   FormSection,
   FormRowContainer,
   FormRow,
-  ButtonSection,
-  AppButton,
-  BackButton,
 } from '@/features/user/components';
 
 /**

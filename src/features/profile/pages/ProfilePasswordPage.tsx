@@ -6,11 +6,11 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+import { ButtonSection, AppButton, BackButton } from '@/components';
 import { ROUTES } from '@/constants';
 import { useProfileQuery } from '@/features/profile';
 import { useUpdateProfilePasswordMutation } from '@/features/profile/api';
 import { profilePasswordRows } from '@/features/profile/constants';
-import { profileMapper } from '@/features/profile/mappers';
 import { profilePasswordSchema } from '@/features/profile/schema';
 import type { ProfilePasswordFormData } from '@/features/profile/types';
 import {
@@ -18,9 +18,6 @@ import {
   FormRowContainer,
   FormRow,
   FormPasswordField,
-  ButtonSection,
-  AppButton,
-  BackButton,
 } from '@/features/user/components';
 import { applyServerErrors } from '@/utils';
 

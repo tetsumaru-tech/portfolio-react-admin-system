@@ -1,15 +1,13 @@
 import { Typography, Paper } from '@mui/material';
 import { useParams, useNavigate } from 'react-router-dom';
 
+import { ButtonSection, AppButton, BackButton } from '@/components';
 import { ROUTES } from '@/constants';
 import { useUserDetailQuery } from '@/features/user/api';
 import {
   FormSection,
   FormRowContainer,
   FormRow,
-  ButtonSection,
-  AppButton,
-  BackButton,
 } from '@/features/user/components';
 import { getAge } from '@/types';
 

@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 
+import { ButtonSection, AppButton, BackButton } from '@/components';
 import { ROUTES } from '@/constants';
 import { useUserDetailQuery } from '@/features/user/api';
 import { userMapper } from '@/features/user/api';
@@ -17,9 +18,6 @@ import {
   FormDatePicker,
   FormSelect,
   FormPasswordField,
-  ButtonSection,
-  AppButton,
-  BackButton,
 } from '@/features/user/components';
 import { userFormRows } from '@/features/user/constants';
 import { userFormSchema } from '@/features/user/schema';
