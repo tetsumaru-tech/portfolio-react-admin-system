@@ -8,3 +8,4 @@ export * from './AppSidebar';
 export * from './AppButton';
 export * from './BackButton';
 export * from './ButtonSection';
+export * from './ConfirmDialog';

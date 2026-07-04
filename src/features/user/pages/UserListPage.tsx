@@ -5,8 +5,9 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { ErrorMessage } from '@/components';
 import { AppButton } from '@/components';
+import { ConfirmDialog } from '@/components';
 import { ROUTES } from '@/constants';
-import { useUsersQuery } from '@/features/user/api';
+import { useUsersQuery, useDeleteUserMutation } from '@/features/user/api';
 import { UserDataGrid } from '@/features/user/components';
 import { SearchForm } from '@/features/user/components';
 import type { UserSearchCondition } from '@/features/user/types';
@@ -54,6 +55,9 @@ export function UserListPage() {
     paginationModel.pageSize,
     sortModel,
   );
+
+  const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
+  const deleteMutation = useDeleteUserMutation();
 
   useEffect(() => {
     updateSearchParams(setSearchParams, {
@@ -123,6 +127,21 @@ export function UserListPage() {
         onPaginationModelChange={setPaginationModel}
         sortModel={sortModel}
         onSortModelChange={setSortModel}
+        onDeleteClick={setDeleteTargetId}
+        isPending={deleteMutation.isPending}
+      />
+      <ConfirmDialog
+        open={deleteTargetId !== null}
+        title="ユーザー削除"
+        message="このユーザーを削除しますか？
+         この操作は元に戻せません。"
+        confirmLabel="削除"
+        onClose={() => setDeleteTargetId(null)}
+        onConfirm={() => {
+          if (deleteTargetId == null) return;
+          deleteMutation.mutateAsync(deleteTargetId);
+          setDeleteTargetId(null);
+        }}
       />
     </>
   );

@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { AppDataGrid } from '@/components';
 import { ROUTES } from '@/constants';
-import { useDeleteUserMutation } from '@/features/user/api';
 import {
   userColumns,
   createUserActionColumn,
@@ -19,6 +18,8 @@ type Props = {
   onPaginationModelChange: (model: GridPaginationModel) => void;
   sortModel: GridSortModel;
   onSortModelChange: (model: GridSortModel) => void;
+  onDeleteClick: (id: number) => void;
+  isPending: boolean;
 };
 
 /**
@@ -30,6 +31,8 @@ type Props = {
  * @param props.onPaginationModelChange - ページネーションモデルが変更されたときのコールバック関数
  * @param props.sortModel - ソートモデル
  * @param props.onSortModelChange - ソートモデルが変更されたときのコールバック関数
+ * @param props.onDeleteClick - ユーザー削除ボタンがクリックされたときのコールバック関数
+ * @param props.isPending - 削除操作が保留中かどうかを示すフラグ
  * @returns ユーザーデータグリッド
  */
 export function UserDataGrid({
@@ -40,10 +43,10 @@ export function UserDataGrid({
   onPaginationModelChange,
   sortModel,
   onSortModelChange,
+  onDeleteClick,
+  isPending,
 }: Props) {
   const navigate = useNavigate();
-
-  const { mutate, isPending } = useDeleteUserMutation();
 
   //リファレンス安定化のため、useMemoを利用（deleteMutation object 自体がrender で変わる可能性あるため)
   const actionColumn = useMemo(
@@ -52,12 +55,10 @@ export function UserDataGrid({
         onEdit: (id) => {
           navigate(ROUTES.userEdit(id));
         },
-
-        onDelete: mutate,
-
+        onDelete: onDeleteClick,
         disabled: isPending,
       }),
-    [navigate, mutate, isPending],
+    [navigate, onDeleteClick, isPending],
   );
 
   return (

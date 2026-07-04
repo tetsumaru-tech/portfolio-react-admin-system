@@ -38,9 +38,6 @@ export const createUserActionColumn = ({
         disabled={disabled}
         onClick={(e) => {
           e.stopPropagation();
-          if (!confirm('削除しますか？')) {
-            return;
-          }
           onDelete(Number(row.id));
         }}
       >
