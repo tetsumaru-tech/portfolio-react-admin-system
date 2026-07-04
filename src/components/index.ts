@@ -1,5 +1,5 @@
 export * from './Pagination';
-export * from './ErrorMessage';
+export * from './feedback';
 export * from './ToastProvider';
 export * from './AppDataGrid';
 export * from './AppContainer';

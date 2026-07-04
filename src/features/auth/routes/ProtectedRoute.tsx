@@ -1,5 +1,6 @@
 import { Outlet, Navigate, useLocation } from 'react-router-dom';
 
+import { Loading } from '@/components/feedback';
 import { useAuth } from '@/features/auth/hooks';
 
 /**
@@ -11,7 +12,7 @@ export function ProtectedRoute() {
   const location = useLocation();
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (!user) {

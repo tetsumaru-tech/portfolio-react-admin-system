@@ -2,6 +2,7 @@ import { Typography, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 import { ButtonSection, AppButton, BackButton } from '@/components';
+import { Loading, ErrorMessage } from '@/components/feedback';
 import { ROUTES } from '@/constants';
 import { useProfileQuery } from '@/features/profile';
 import { profileRows } from '@/features/profile/constants';
@@ -16,8 +17,15 @@ import {
  *
  */
 export function ProfilePage() {
-  const { data } = useProfileQuery();
+  const { data, isLoading, isError } = useProfileQuery();
   const navigate = useNavigate();
+
+  if (isLoading) {
+    return <Loading />;
+  }
+  if (isError) {
+    return <ErrorMessage message="ユーザー情報の取得に失敗しました。" />;
+  }
 
   if (!data) {
     navigate(ROUTES.top());
@@ -53,7 +61,7 @@ export function ProfilePage() {
           ))}
         </FormSection>
         <ButtonSection>
-          <BackButton />
+          <BackButton onClick={() => navigate(ROUTES.top())} />
           <AppButton
             color="primary"
             onClick={() => {
