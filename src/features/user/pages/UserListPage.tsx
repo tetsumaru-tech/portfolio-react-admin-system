@@ -1,4 +1,4 @@
-import { CircularProgress } from '@mui/material';
+import { Box, CircularProgress, Typography, Divider } from '@mui/material';
 import type { GridSortModel } from '@mui/x-data-grid';
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -97,8 +97,12 @@ export function UserListPage() {
 
   return (
     <>
-      <h1>User List</h1>
-      <h2>検索条件</h2>
+      <Typography variant="h4" gutterBottom>
+        ユーザー一覧
+      </Typography>
+      <Typography variant="h5" gutterBottom>
+        検索条件
+      </Typography>
       <SearchForm
         condition={condition}
         onChange={setCondition}
@@ -106,19 +110,29 @@ export function UserListPage() {
         isRealTimeSearch={isRealTimeSearch}
         onToggleRealTimeSearch={onToggleRealTimeSearch}
       />
-      <hr />
-      <h2>検索結果</h2>
-      {isRealTimeSearch && isFetching && <CircularProgress size={20} />}
-      <AppButton
-        variant="contained"
-        color="primary"
-        onClick={() => {
-          navigate(ROUTES.userCreate());
+      <Divider sx={{ my: 3 }} />
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          mb: 1,
         }}
-        sx={{ mb: 2 }}
       >
-        新規作成
-      </AppButton>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Typography variant="h5">検索結果</Typography>
+          {isRealTimeSearch && isFetching && <CircularProgress size={20} />}
+        </Box>
+        <AppButton
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            navigate(ROUTES.userCreate());
+          }}
+        >
+          新規作成
+        </AppButton>
+      </Box>
       <UserDataGrid
         users={data?.data ?? []}
         total={data?.total ?? 0}
