@@ -9,3 +9,4 @@ export * from './AppButton';
 export * from './BackButton';
 export * from './ButtonSection';
 export * from './ConfirmDialog';
+export * from './MenuCard';
