@@ -1,24 +1,16 @@
 import {
-  AdminPanelSettings as AdminPanelSettingsIcon,
-  Block as BlockIcon,
-  Group as GroupIcon,
   Key as KeyIcon,
-  Lock as LockIcon,
-  Logout as LogoutIcon,
-  NotificationsActive as NotificationsActiveIcon,
   Person as PersonIcon,
   PersonAdd as PersonAddIcon,
-  Search as SearchIcon,
-  TableRows as TableRowsIcon,
-  Verified as VerifiedIcon,
 } from '@mui/icons-material';
-import { Typography, Paper, Chip, Stack } from '@mui/material';
+import { Typography, Paper, Chip } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 import { MenuCard } from '@/components';
 import { ROUTES } from '@/constants';
 import { AdminOnly } from '@/features/auth/components';
 import { useAuth } from '@/features/auth/hooks';
+import { SkillList, FeatureList } from '@/features/top/components';
 
 /**
  * トップページコンポーネント
@@ -26,53 +18,6 @@ import { useAuth } from '@/features/auth/hooks';
 export function TopPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
-
-  const features = [
-    {
-      icon: <LockIcon color="primary" />,
-      label: 'Sanctum認証',
-    },
-    {
-      icon: <AdminPanelSettingsIcon color="primary" />,
-      label: '権限制御（Admin / User）',
-    },
-    {
-      icon: <GroupIcon color="primary" />,
-      label: 'ユーザーCRUD',
-    },
-    {
-      icon: <PersonIcon color="primary" />,
-      label: 'プロフィール管理',
-    },
-    {
-      icon: <KeyIcon color="primary" />,
-      label: 'パスワード変更',
-    },
-    {
-      icon: <SearchIcon color="primary" />,
-      label: 'リアルタイム検索',
-    },
-    {
-      icon: <TableRowsIcon color="primary" />,
-      label: 'サーバーサイドページング・ソート',
-    },
-    {
-      icon: <VerifiedIcon color="primary" />,
-      label: 'Zodバリデーション',
-    },
-    {
-      icon: <NotificationsActiveIcon color="primary" />,
-      label: 'Toast通知',
-    },
-    {
-      icon: <LogoutIcon color="primary" />,
-      label: '401自動ログアウト',
-    },
-    {
-      icon: <BlockIcon color="primary" />,
-      label: '403 Forbidden対応',
-    },
-  ];
 
   return (
     <>
@@ -129,22 +74,21 @@ export function TopPage() {
           </Paper>
         </AdminOnly>
         <Paper sx={{ p: 2, mt: 2 }}>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h4" gutterBottom>
             このポートフォリオについて
           </Typography>
-          <Stack spacing={1}>
-            {features.map((feature, index) => (
-              <Stack
-                direction="row"
-                spacing={1}
-                alignItems="center"
-                key={index}
-              >
-                {feature.icon}
-                <Typography>{feature.label}</Typography>
-              </Stack>
-            ))}
-          </Stack>
+          <Paper sx={{ p: 2, mt: 2 }}>
+            <Typography variant="h5" gutterBottom>
+              Features
+            </Typography>
+            <FeatureList />
+          </Paper>
+          <Paper sx={{ p: 2, mt: 2 }}>
+            <Typography variant="h6" gutterBottom>
+              Skills
+            </Typography>
+            <SkillList />
+          </Paper>
         </Paper>
       </Paper>
     </>

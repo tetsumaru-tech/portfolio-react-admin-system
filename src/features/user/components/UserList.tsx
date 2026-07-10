@@ -77,7 +77,7 @@ export function UserList({ users }: UserListProps) {
                     size="small"
                     onClick={(e) => {
                       e.stopPropagation();
-                      deleteMutation.mutate(Number(user.id));
+                      deleteMutation.mutateAsync(Number(user.id));
                     }}
                     disabled={deleteMutation.isPending}
                   >

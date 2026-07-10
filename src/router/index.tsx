@@ -10,6 +10,7 @@ import {
   ProfileConfirmPage,
   ProfilePasswordPage,
 } from '@/features/profile';
+import { TopPage } from '@/features/top/pages';
 import {
   UserListPage,
   UserDetailPage,
@@ -19,7 +20,6 @@ import {
 } from '@/features/user/pages';
 import { MainLayout } from '@/layouts';
 import { setForbiddenHandler } from '@/lib';
-import { TopPage } from '@/pages';
 import { NotFoundPage, ForbiddenPage } from '@/pages';
 
 export const router = createBrowserRouter([
