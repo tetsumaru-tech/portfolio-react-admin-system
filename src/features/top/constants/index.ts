@@ -1,2 +1,2 @@
-export { features } from './features';
+export { featureCategories } from './features';
 export { skillCategories } from './skills';
