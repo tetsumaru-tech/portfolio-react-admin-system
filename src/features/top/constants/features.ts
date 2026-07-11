@@ -7,7 +7,6 @@ import {
   Block,
   Cached,
   CheckCircle,
-  Construction,
   ErrorOutline,
   FactCheck,
   FindInPage,
@@ -20,7 +19,6 @@ import {
   Preview,
   QueryStats,
   Router,
-  Rule,
   Search,
   Sort,
   Sync,
@@ -56,11 +54,11 @@ export const featureCategories: FeatureCategory[] = [
     skills: [
       {
         icon: Lock,
-        label: 'Sanctum認証',
+        label: 'SPA認証（Sanctum）',
       },
       {
         icon: Login,
-        label: 'ログイン・認証状態確認・ログアウト',
+        label: 'ログイン・認証状態管理',
       },
       {
         icon: Logout,
@@ -68,7 +66,7 @@ export const featureCategories: FeatureCategory[] = [
       },
       {
         icon: AdminPanelSettings,
-        label: '権限制御（Admin / User）',
+        label: 'ロールベース認可（Admin / User）',
       },
       {
         icon: Block,
@@ -76,7 +74,7 @@ export const featureCategories: FeatureCategory[] = [
       },
       {
         icon: Router,
-        label: 'ルーティングガード',
+        label: 'ProtectedRoute / AdminRoute',
       },
     ],
   },
@@ -110,7 +108,7 @@ export const featureCategories: FeatureCategory[] = [
       },
       {
         icon: Sync,
-        label: 'URLクエリ状態の保持',
+        label: 'URLクエリとの状態同期',
       },
       {
         icon: CheckCircle,
@@ -118,7 +116,7 @@ export const featureCategories: FeatureCategory[] = [
       },
       {
         icon: Preview,
-        label: '編集 → 確認 → 送信の2段階フォーム',
+        label: '確認画面付きフォーム',
       },
       {
         icon: FindInPage,
@@ -131,31 +129,23 @@ export const featureCategories: FeatureCategory[] = [
     ],
   },
   {
-    title: '品質・設計',
+    title: '設計・品質',
     skills: [
       {
-        icon: Rule,
-        label: 'Zodバリデーション',
-      },
-      {
-        icon: Construction,
-        label: 'React Hook Form',
-      },
-      {
         icon: Cached,
-        label: 'React Query キャッシュ更新',
-      },
-      {
-        icon: QueryStats,
-        label: '共通Mutationフック',
+        label: 'React Queryによるキャッシュ管理',
       },
       {
         icon: Api,
-        label: '共通APIクライアント（apiFetch）',
+        label: '共通APIクライアント',
       },
       {
         icon: Apps,
         label: '共通UIコンポーネント',
+      },
+      {
+        icon: QueryStats,
+        label: '共通Mutationフック',
       },
       {
         icon: CheckCircle,
@@ -163,11 +153,11 @@ export const featureCategories: FeatureCategory[] = [
       },
       {
         icon: ErrorOutline,
-        label: 'サーバーエラーのフォーム反映',
+        label: 'サーバーバリデーション表示',
       },
       {
         icon: FactCheck,
-        label: 'Error Boundary対応',
+        label: 'Error Boundary',
       },
     ],
   },

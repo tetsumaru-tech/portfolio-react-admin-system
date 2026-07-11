@@ -34,15 +34,6 @@ export function FeatureList() {
           </Stack>
         </div>
       ))}
-      {/* {features.map((feature, index) => {
-        const Icon = feature.icon;
-        return (
-          <Stack direction="row" spacing={1} alignItems="center" key={index}>
-            <Icon color="primary" />
-            <Typography>{feature.label}</Typography>
-          </Stack>
-        );
-      })} */}
     </Stack>
   );
 }
