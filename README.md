@@ -1,73 +1,157 @@
-# React + TypeScript + Vite
+# React 管理画面ポートフォリオ
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React 19、TypeScript、Material UIで構築した、最新の管理者ダッシュボード。認証、権限管理、データ管理、レスポンシブUI パターンなど、エンタープライズグレードのSPA開発ベストプラクティスを実践しています。
 
-Currently, two official plugins are available:
+## 📋 概要
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+ポートフォリオ管理システムのフロントエンドアプリケーション。React開発のベストプラクティスを実践し、以下に注力しています：
 
-## React Compiler
+- **型安全性**: 完全なTypeScript実装
+- **状態管理**: サーバー状態にはReact Query、アプリ状態にはContext API
+- **パフォーマンス**: データ取得のキャッシング最適化
+- **アクセシビリティ**: Material UIコンポーネントによるWCAG準拠
+- **コード品質**: ESLintとPrettierによる一貫性の確保
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🚀 機能
 
-## Expanding the ESLint configuration
+### 認証・権限管理
+- **SPA認証**: Laravel Sanctumによるクッキーベース認証
+- **自動ログアウト**: 401 Unauthorizedレスポンス時の自動ログアウト
+- **ロールベース アクセス制御**: AdminユーザーとUserロールによる権限分離
+- **エラーハンドリング**: 404/403エラーページの表示
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### ユーザー管理
+- **ユーザーCRUD**: ユーザー情報の作成・編集・削除操作
+- **プロフィール管理**: ユーザー情報と設定の編集
+- **パスワード管理**: パスワード変更機能
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### UI・画面操作
+- **リアルタイム検索**: 大規模データセット内での即座フィルタリング
+- **サーバーサイド ページング・ソート**: MUI X Data Gridを使用した効率的なデータ読み込み
+- **URLクエリ状態同期**: URLにフィルタ状態を保存して共有可能なリンク生成
+- **ローディング・空データ表示**: データ取得中や空データ時のユーザーフレンドリーなUI
+- **確認ダイアログ**: ユーザーアクションの安全な確認UI
+- **フォーム確認画面**: 複数ステップフォームと送信前プレビュー機能
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 設計・品質
+- **React Queryキャッシング**: インテリジェントなサーバー状態管理と自動更新
+- **共通APIクライアント**: 中央集約化されたHTTPクライアント（インターセプター付き）
+- **共通UIコンポーネント**: 再利用可能なMaterial UIコンポーネント ライブラリ
+- **Toast通知**: ユーザーフィードバック システム
+- **サーバー バリデーション表示**: API検証エラーのフォーム内表示
+- **Error Boundary**: Error Boundary ラッパーによるエラー処理
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🛠 技術スタック
+
+### コア
+- **React** 19.2
+- **TypeScript** 5.9
+- **Vite** 7.3 (超高速ビルドツール)
+
+### UI・スタイリング
+- **Material UI** 7.3 (コンポーネント ライブラリ)
+- **Emotion** 11.14 (CSS-in-JS)
+- **MUI X Data Grid** 8.28 (高度なデータテーブル)
+- **MUI X Date Pickers** 8.27 (日付・時刻選択)
+
+### 状態管理・データ
+- **TanStack React Query** 5.99 (サーバー状態管理)
+- **React Hook Form** 7.74 (フォーム処理)
+- **Zod** 4.4 (TypeScript-firstスキーマ検証)
+- **Day.js** 1.11 (軽量な日付操作)
+
+### ルーティング・ナビゲーション
+- **React Router** 7.13 (クライアントサイド ルーティング)
+
+### 開発ツール
+- **ESLint** 8.57 (コード リンティング)
+- **Prettier** 3.8 (コード フォーマッティング)
+- **React Query DevTools** 5.99 (開発ユーティリティ)
+
+## 📦 インストール
+
+### 必要環境
+- Node.js 18以上 または npm 9以上
+
+### セットアップ
+```bash
+# 依存関係をインストール
+npm install
+
+# 環境変数ファイルをコピー
+cp .env.example .env
+
+# .envを更新してAPI設定を変更
+# VITE_API_URL=http://localhost:8000
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🚀 開発方法
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+# 開発サーバーを起動（HMR有効）
+npm run dev
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# ESLintでコード品質チェック
+npm run lint
+
+# 本番ビルド
+npm run build
+
+# 本番ビルドをローカルでプレビュー
+npm run preview
 ```
+
+### 環境変数
+`.env.example` をベースに `.env` ファイルを作成：
+```env
+VITE_API_URL=http://localhost:8000
+```
+
+## 📁 プロジェクト構成
+
+```
+src/
+├── components/        # 再利用可能なUIコンポーネント
+├── features/         # 機能別モジュール（ユーザー、認証など）
+├── hooks/            # カスタムReactフック
+├── layouts/          # ページレイアウト
+├── pages/            # ルートページ
+├── router/           # React Router設定
+├── lib/              # ユーティリティ・ヘルパー
+├── config/           # アプリケーション設定
+├── types/            # TypeScript型定義
+└── App.tsx           # メインコンポーネント
+```
+
+## 🔐 認証フロー
+
+1. ユーザーが認証情報でログイン
+2. サーバーが検証して認証トークン（httpOnlyクッキー）を返す
+3. 以降のリクエストにクッキーが自動付与される
+4. 401レスポンスの場合、自動的にログアウト
+5. 認証なしユーザーはログインページへリダイレクト
+
+## 📝 コマンド一覧
+
+| コマンド | 説明 |
+|---------|------|
+| `npm run dev` | Viteデブサーバー起動（HMR付き） |
+| `npm run build` | 本番ビルド |
+| `npm run preview` | 本番ビルドのプレビュー |
+| `npm run lint` | ESLintチェック実行 |
+
+## 🎯 主要コンポーネント
+
+- **ProtectedRoute**: 認証が必要なルートをラップ
+- **AdminRoute**: Admin権限が必要なルートをラップ
+- **APIクライアント**: 認証インターセプター付きの中央集約HTTPクライアント
+- **Toast System**: グローバル通知管理
+- **Error Boundary**: React エラーをキャッチしてグレースフルに表示
+
+## 🔗 関連プロジェクト
+
+- [Laravel API バックエンド](../laravel-api) - このフロントエンドのRESTful APIサーバー
+
+## 📄 ライセンス
+
+このプロジェクトはオープンソースで、MITライセンスの下で利用可能です。
