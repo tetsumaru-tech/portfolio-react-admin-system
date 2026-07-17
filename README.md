@@ -150,7 +150,7 @@ src/
 
 ## 🔗 関連プロジェクト
 
-- [Laravel API バックエンド](../laravel-api) - このフロントエンドのRESTful APIサーバー
+- [Laravel Portfolio API バックエンド](../laravel-portfolio-api) - このフロントエンドのRESTful APIサーバー
 
 ## 📄 ライセンス
 
