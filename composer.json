@@ -1,6 +1,6 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/portfolio-api",
+    "name": "laravel/portfolio-react-admin",
     "type": "project",
     "description": "Portfolio management REST API built with Laravel.",
     "keywords": ["laravel", "framework"],

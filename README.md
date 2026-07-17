@@ -230,7 +230,7 @@ php artisan test --coverage
 
 ## 🔗 関連プロジェクト
 
-- [React 管理画面ポートフォリオ](../react-admin-portfolio) - フロントエンド Reactアプリケーション
+- [Portfolio React Admin](../portfolio-react-admin) - フロントエンド Reactアプリケーション
 
 ## 📄 ライセンス
 
