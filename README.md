@@ -15,18 +15,21 @@ Laravel 13とPHP 8.3で構築した、堅牢なRESTful API。React管理画面�
 ## 🚀 機能
 
 ### 認証・権限管理
+
 - **Laravel Sanctum**: クッキーベースのSPA認証
 - **ロールベース アクセス制御**: AdminユーザーとUserロールによる権限管理ポリシー
 - **ミドルウェア保護**: 認証・管理者のみのルート保護
 - **セキュアエンドポイント**: CSRF保護とセキュアなパスワード処理
 
 ### ユーザー管理
+
 - **ユーザーAPI エンドポイント**: 作成・読取・更新・削除操作
 - **プロフィール操作**: ユーザー情報と設定管理
 - **パスワード管理**: セキュアなパスワード リセット・変更機能
 - **ユーザーリスト**: 管理画面用のページング・フィルタ対応ユーザーリスト
 
 ### API機能
+
 - **RESTful設計**: 標準HTTPメソッドとステータスコード
 - **JSON API**: 一貫したJSON レスポンス形式
 - **バリデーション**: サーバーサイド フォームリクエスト検証と詳細なエラーメッセージ
@@ -36,16 +39,19 @@ Laravel 13とPHP 8.3で構築した、堅牢なRESTful API。React管理画面�
 ## 🛠 技術スタック
 
 ### コア
+
 - **PHP** 8.3
 - **Laravel Framework** 13
 - **MySQL** (データベース)
 
 ### 認証・セキュリティ
+
 - **Laravel Sanctum** 4.3 (SPA認証)
 - **CSRF保護** (ビルトイン)
 - **権限管理ポリシー** (ロールベース)
 
 ### 開発・テスト
+
 - **PHPUnit** 12.5 (テストフレームワーク)
 - **Mockery** 1.6 (テスト モック)
 - **PHPStan** 2.1 (静的解析)
@@ -53,6 +59,7 @@ Laravel 13とPHP 8.3で構築した、堅牢なRESTful API。React管理画面�
 - **FakerPHP** 1.23 (ダミーデータ生成)
 
 ### ツール
+
 - **Composer** (PHP依存管理)
 - **Artisan** (Laravel コマンドラインインターフェース)
 - **Tinker** (対話型シェル)
@@ -60,6 +67,7 @@ Laravel 13とPHP 8.3で構築した、堅牢なRESTful API。React管理画面�
 ## 📦 インストール
 
 ### 必要環境
+
 - PHP 8.3以上
 - Composer
 - MySQL 8.0以上 または SQLite
@@ -96,7 +104,9 @@ npm run build
 ```
 
 ### 環境変数
+
 `.env.example` をベースに `.env` ファイルを作成：
+
 ```env
 APP_NAME=PortfolioAPI
 APP_ENV=local
@@ -174,24 +184,26 @@ tests/
 
 ## 📝 コマンド一覧
 
-| コマンド | 説明 |
-|---------|------|
-| `composer run setup` | 完全セットアップ（インストール、キー生成、マイグレーション、ビルド） |
-| `composer run dev` | すべての開発サービスを起動 |
-| `composer run test` | PHPUnitテスト実行 |
-| `composer run format` | Laravel Pintフォーマッター実行 |
-| `composer run lint` | PHPStan静的解析実行 |
-| `php artisan migrate` | データベース マイグレーション実行 |
-| `php artisan seed` | データベース シーダー実行 |
+| コマンド              | 説明                                                                 |
+| --------------------- | -------------------------------------------------------------------- |
+| `composer run setup`  | 完全セットアップ（インストール、キー生成、マイグレーション、ビルド） |
+| `composer run dev`    | すべての開発サービスを起動                                           |
+| `composer run test`   | PHPUnitテスト実行                                                    |
+| `composer run format` | Laravel Pintフォーマッター実行                                       |
+| `composer run lint`   | PHPStan静的解析実行                                                  |
+| `php artisan migrate` | データベース マイグレーション実行                                    |
+| `php artisan seed`    | データベース シーダー実行                                            |
 
 ## 📚 APIエンドポイント
 
 ### 認証
+
 - `POST /api/login` - ユーザーログイン
 - `POST /api/logout` - ユーザーログアウト
 - `GET /api/user` - 現在のユーザープロフィール取得
 
 ### ユーザー管理（管理者のみ）
+
 - `GET /api/users` - ユーザーリスト取得（ページング対応）
 - `POST /api/users` - 新規ユーザー作成
 - `GET /api/users/{id}` - ユーザー詳細取得
@@ -199,6 +211,7 @@ tests/
 - `DELETE /api/users/{id}` - ユーザー削除
 
 ### プロフィール
+
 - `PUT /api/profile` - 自身のプロフィール更新
 - `PUT /api/password` - パスワード変更
 
