@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Password;
 
 class ProfileRequest extends FormRequest
 {
@@ -34,20 +33,12 @@ class ProfileRequest extends FormRequest
             : ['required', 'email',  Rule::unique('users', 'email')->ignore($user->id)];
 
         $rules = [
-            'last_name' => 'required|string|max:8',
-            'first_name' => 'required|string|max:8',
+            'last_name' => 'required|string|max:10',
+            'first_name' => 'required|string|max:10',
             'birthday' => 'required|date|before:today',
             'email' => $emailRule,
             'gender' => 'required|in:male,female,other',
         ];
-
-        // if ($this->isMethod('post')) {
-        //     $rules['password'] = [
-        //         'required',
-        //         'confirmed',
-        //         Password::min(8)->mixedCase()->numbers(),
-        //     ];
-        // }
 
         return $rules;
     }
