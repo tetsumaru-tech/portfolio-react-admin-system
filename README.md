@@ -216,13 +216,50 @@ docker compose exec php composer install
 
 #### 5. Nodeパッケージのインストール
 
-Reactコンテナを使う場合
+コンテナ内のパッケージをインストールしてコンテナ実行時に参照する（CI / コンテナ開発向け）場合と、ホスト側の VS Code が型定義を参照できるようにホストにも依存をインストールする（ローカル開発向け）場合の両方を案内します。
+
+- コンテナ内にパッケージをインストール（コンテナが依存を参照するため）：
 
 ```bash
 docker compose exec react npm install
 ```
 
-※ Dockerfile内で `npm install` を実行している場合は不要です。
+- ホスト（Mac / Windows / Linux）で VS Code を使って開発する場合は、エディタが型定義を参照できるようにホストにも依存をインストールしてください：
+
+```bash
+cd frontend
+npm install
+```
+
+よくある問題と対処手順
+
+- エディタで次のようなエラーが出る場合：
+
+  "インターフェイス 'JSX.IntrinsicElements' が存在しないため、暗黙的に JSX 要素の型は 'any' になります。"
+
+  対処方法：
+  1. まずフロントエンドの依存が正しくインストールされているか確認します。
+
+  ```bash
+  cd frontend
+  npm install
+  npx tsc --noEmit
+  ```
+
+  2. package.json に TypeScript / 型定義が含まれていない場合は追加します（このプロジェクトでは通常不要です）。
+
+  ```bash
+  cd frontend
+  npm install --save-dev typescript @types/react @types/react-dom
+  ```
+
+  3. VS Code がワークスペース内の TypeScript を使っているか確認します（古いグローバル版を使っていると型定義が見えないことがあります）。
+     - コマンドパレット（Cmd/Ctrl+Shift+P）で「TypeScript: Select TypeScript Version」を選び、「Use Workspace Version」を選択
+     - ウィンドウをリロード（Command Palette → Developer: Reload Window）
+
+  4. node_modules 内の @types/react が存在するか確認します（例: frontend/node_modules/@types/react）。
+
+補足: リポジトリが `./frontend` をコンテナにマウントし、さらにコンテナ内の `node_modules` を匿名ボリュームで上書きする構成（例: `- ./frontend:/app` と `- /app/node_modules`）になっている場合、コンテナ内の node_modules はホストから見えません。そのためホストの VS Code で開発する場合はホスト側にも `npm install` を実行しておく運用をおすすめします。
 
 #### 6. LaravelのAPP_KEY生成
 
