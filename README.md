@@ -15,44 +15,97 @@ React 管理画面と Laravel REST API を組み合わせた、ポートフォ�
 
 ### フロントエンド
 
-- SPA 認証と自動ログアウト
-- ロールベースアクセス制御
-- ユーザー CRUD 操作
-- プロフィール・パスワード管理
-- リアルタイム検索・サーバーサイドページング・ソート
-- Toast 通知・確認ダイアログ・エラーハンドリング
-- レスポンシブ UI
+#### 認証・権限管理
+
+- **SPA認証**: Laravel Sanctumによるクッキーベース認証
+- **自動ログアウト**: 401エラー時の自動ログアウト処理
+- **ロールベースアクセス制御（RBAC）**: AdminユーザーとUserロールによる権限分離
+- **保護されたルート**: ProtectedRoute・AdminRoute による認証・権限チェック
+- **エラーハンドリング**: 404/403エラーページの表示
+
+#### ユーザー管理
+
+- **ユーザーCRUD操作**: ユーザーの作成・読取・更新・削除
+- **プロフィール管理**: 自身のユーザー情報編集
+- **パスワード管理**: パスワード変更機能
+- **管理者向けユーザー管理**: 管理画面でのユーザー一括管理
+
+#### UI・UX
+
+- **リアルタイム検索**: 大規模データセット内での即座フィルタリング
+- **サーバーサイドページング・ソート**: MUI X Data Gridによる効率的なデータ読み込み
+- **URLクエリ状態同期**: フィルタ・ページ・ソート状態をURLに保存
+- **ローディング・空データ表示**: ユーザーフレンドリーなデータ取得状態UI
+- **確認ダイアログ**: 削除・重要操作の安全な確認UI
+- **複数ステップフォーム**: フォーム送信前プレビュー機能
+- **レスポンシブUI**: モバイル・タブレット対応デザイン
+
+#### 高度な状態管理・パフォーマンス
+
+- **React Queryキャッシング**: インテリジェントなサーバー状態管理と自動更新
+- **共通APIクライアント**: 中央集約化されたHTTPクライアント（インターセプター付き）
+- **共通UIコンポーネント**: 再利用可能なMaterial UIコンポーネント ライブラリ
+- **Toast通知**: グローバル通知システム
+- **サーバー バリデーション表示**: API検証エラーのフォーム内表示
+- **Error Boundary**: Reactエラーをキャッチしてグレースフルに表示
 
 ### バックエンド
 
-- Laravel Sanctum による SPA 認証
-- ロールベース権限管理
-- ユーザー管理 API
-- バリデーションとエラーハンドリング
-- PHPUnit / PHPStan / Laravel Pint による品質管理
+#### 認証・セキュリティ
+
+- **Laravel Sanctum**: クッキーベースのSPA認証
+- **ロールベース権限管理（RBAC）**: AdminユーザーとUserロールの権限ポリシー
+- **ミドルウェア保護**: 認証・管理者権限チェック
+- **CSRF保護**: クロスサイトリクエスト偽造対策
+- **セキュアなパスワード処理**: Bcryptハッシング
+
+#### ユーザー管理
+
+- **ユーザーAPI**: CRUD操作エンドポイント
+- **プロフィール操作**: ユーザー情報・設定管理
+- **パスワード管理**: セキュアなパスワード変更機能
+- **ユーザーリスト**: ページング・フィルタ対応のユーザーリスト取得
+- **管理者のみの操作**: 管理者権限が必要な操作の制御
+
+#### API・データ処理
+
+- **RESTful設計**: 標準HTTPメソッドとステータスコード
+- **JSON API**: 一貫したJSONレスポンス形式
+- **バリデーション**: サーバーサイド フォームリクエスト検証
+- **詳細なエラーメッセージ**: 検証エラーの詳細情報提供
+- **ページング**: 設定可能なページベースデータ ページング
+- **包括的なエラーハンドリング**: 有意義なエラーレスポンス
+
+#### 品質・テスト
+
+- **PHPUnit**: 包括的なユニット・機能テスト
+- **Mockeryを使用したモック**: テスト用モック機能
+- **PHPStan**: 静的解析による型安全性チェック
+- **Laravel Pint**: コードフォーマッティング
+- **FakerPHP**: テスト用ダミーデータ生成
 
 ## 🛠 技術スタック
 
 ### フロントエンド
 
-- React 19
-- TypeScript 5.9
-- Vite 7 / 8
-- Material UI 7
-- MUI X Data Grid
-- React Query
-- React Hook Form
-- Zod
+- **React** 19 / **TypeScript** 5.9
+- **Vite** 7 (ビルドツール)
+- **Material UI** 7 / **MUI X Data Grid** 8 / **MUI X Date Pickers** 8
+- **React Query** 5 (サーバー状態管理)
+- **React Hook Form** 7 (フォーム処理)
+- **Zod** 4 (スキーマ検証)
+- **React Router** 7 (ルーティング)
+- **Day.js** 1 (日付操作)
+- **ESLint** 8 / **Prettier** 3 (コード品質)
 
 ### バックエンド
 
-- PHP 8.3
-- Laravel 13
-- Laravel Sanctum 4.3
-- MySQL
-- PHPUnit 12.5
-- PHPStan 2.1
-- Laravel Pint 1.29
+- **PHP** 8.3 / **Laravel** 13
+- **Laravel Sanctum** 4.3 (SPA認証)
+- **MySQL** 8.0 (データベース)
+- **PHPUnit** 12.5 / **Mockery** 1.6 (テスト)
+- **PHPStan** 2.1 / **Laravel Pint** 1.29 (コード品質)
+- **FakerPHP** 1.23 (テストデータ)
 
 ## 🏗 アーキテクチャ
 
@@ -75,97 +128,185 @@ MySQL Database
 ```text
 portfolio-react-admin-system/
 ├── backend/                # Laravel API
-│   ├── app/                # Controllers / Models / Policies / Providers
-│   ├── config/             # 設定ファイル
-│   ├── database/           # Migrations / Seeders / Factories
-│   ├── routes/             # API ルート
-│   └── tests/              # PHPUnit テスト
-├── frontend/               # React 管理画面
-│   ├── src/                # アプリケーション本体
-│   │   ├── components/     # 共通 UI コンポーネント
-│   │   ├── features/       # 機能別モジュール
-│   │   ├── hooks/          # カスタムフック
-│   │   ├── layouts/        # レイアウト
-│   │   ├── pages/          # ページコンポーネント
-│   │   └── router/         # ルーティング
-│   └── package.json
-└── README.md               # このファイル
+│   ├── app/
+│   │   ├── Http/
+│   │   │   ├── Controllers/     # API コントローラ
+│   │   │   ├── Requests/        # フォーム検証リクエスト
+│   │   │   └── Middleware/      # カスタムミドルウェア
+│   │   ├── Models/              # Eloquentモデル
+│   │   ├── Policies/            # 権限管理ポリシー
+│   │   ├── Providers/           # サービス プロバイダ
+│   │   └── Services/            # ビジネスロジック サービス
+│   ├── database/
+│   │   ├── migrations/          # データベース マイグレーション
+│   │   ├── factories/           # テスト用モデル ファクトリ
+│   │   └── seeders/             # データベース シーダー
+│   ├── routes/
+│   │   ├── api.php              # APIルート
+│   │   └── console.php          # Artisanコマンド
+│   ├── tests/
+│   │   ├── Unit/                # ユニット テスト
+│   │   └── Feature/             # 機能・統合テスト
+│   ├── config/                  # 設定ファイル
+│   └── ...
+├── frontend/                # React 管理画面
+│   ├── src/
+│   │   ├── components/          # 再利用可能なUIコンポーネント
+│   │   ├── features/            # 機能別モジュール（ユーザー、認証など）
+│   │   ├── hooks/               # カスタムReactフック
+│   │   ├── layouts/             # ページレイアウト
+│   │   ├── pages/               # ルートページ
+│   │   ├── router/              # React Router設定
+│   │   ├── lib/                 # ユーティリティ・ヘルパー
+│   │   ├── config/              # アプリケーション設定
+│   │   ├── types/               # TypeScript型定義
+│   │   └── App.tsx              # メインコンポーネント
+│   ├── public/                  # 静的アセット
+│   ├── package.json
+│   └── vite.config.ts
+├── docker/                  # Docker設定
+│   └── ...
+├── docker-compose.yml       # Docker Compose設定
+└── README.md                # このファイル
 ```
 
-## 🚀 セットアップ
+## 🚀 初回セットアップ
 
 ### 必要環境
 
-- Node.js 18 以上
-- PHP 8.3 以上
-- Composer
-- MySQL 8.0 以上または SQLite
+- Docker & Docker Compose
+- Git
 
-### バックエンド
+### セットアップ手順
 
-```bash
-cd backend
-composer install
-cp .env.example .env   # もし存在する場合
-php artisan key:generate
-php artisan migrate
-```
-
-### フロントエンド
+#### 1. リポジトリをクローン
 
 ```bash
-cd frontend
-npm install
+git clone https://github.com/create-a-fun-life/portfolio-react-admin-system.git
+cd portfolio-react-admin-system
 ```
 
-必要に応じて、フロントエンドの環境変数に API の URL を設定します。
+#### 2. 環境変数を作成
 
-```env
-VITE_API_URL=http://localhost:8000
+**Backend**
+
+```bash
+cp backend/.env.example backend/.env
+```
+
+**Frontend**
+
+```bash
+cp frontend/.env.example frontend/.env
+```
+
+#### 3. Docker起動
+
+```bash
+docker compose up -d --build
+```
+
+初回のみイメージのビルドが行われます。
+
+#### 4. Composerパッケージのインストール
+
+```bash
+docker compose exec php composer install
+```
+
+#### 5. Nodeパッケージのインストール
+
+Reactコンテナを使う場合
+
+```bash
+docker compose exec react npm install
+```
+
+※ Dockerfile内で `npm install` を実行している場合は不要です。
+
+#### 6. LaravelのAPP_KEY生成
+
+```bash
+docker compose exec php php artisan key:generate
+```
+
+#### 7. データベース作成
+
+```bash
+docker compose exec php php artisan migrate --seed
+```
+
+以下のテストユーザーが作成されます。
+
+| Role  | Email             | Password |
+| ----- | ----------------- | -------- |
+| Admin | admin@example.com | password |
+| User  | user@example.com  | password |
+
+#### 8. 動作確認
+
+**Frontend**
+
+```
+http://localhost:5173
+```
+
+**Backend API**
+
+```
+http://localhost:8000
+```
+
+---
+
+### データベースを初期化したい場合
+
+```bash
+docker compose down -v
+docker compose up -d --build
+docker compose exec php php artisan migrate --seed
+```
+
+### コンテナ停止
+
+```bash
+docker compose down
 ```
 
 ## ▶️ 開発実行
 
-### バックエンド起動
+初回セットアップ後、開発を再開する場合は以下を実行します。
 
 ```bash
-cd backend
-composer run dev
-```
+# Docker コンテナを起動
+docker compose up -d
 
-このコマンドで、Laravel サーバー・キュー・ログ表示・Vite アセット処理がまとめて起動します。
-
-### フロントエンド起動
-
-```bash
-cd frontend
+# フロントエンド開発サーバーを起動（別ターミナル）
 npm run dev
 ```
 
 - フロントエンド: http://localhost:5173
-- バックエンド: http://localhost:8000
+- バックエンド API: http://localhost:8000
 
 ## 🧪 開発コマンド
 
 ### フロントエンド
 
 ```bash
-cd frontend
-npm run dev
-npm run build
-npm run lint
-npm run preview
+npm run dev       # 開発サーバーを起動（HMR有効）
+npm run build     # 本番ビルド
+npm run lint      # ESLintでコード品質チェック
+npm run preview   # 本番ビルドをローカルでプレビュー
 ```
 
 ### バックエンド
 
 ```bash
-cd backend
-composer run setup
-composer run dev
-composer run test
-composer run format
-composer run lint
+docker compose exec php composer run setup    # 完全セットアップ
+docker compose exec php composer run dev      # すべての開発サービスを起動
+docker compose exec php composer run test     # PHPUnitテスト実行
+docker compose exec php composer run format   # Laravel Pintフォーマッター実行
+docker compose exec php composer run lint     # PHPStan静的解析実行
 ```
 
 ## 🔐 認証フロー
@@ -195,11 +336,6 @@ composer run lint
 
 - PUT /api/profile
 - PUT /api/password
-
-## 📄 ドキュメント
-
-- [backend/README.md](backend/README.md)
-- [frontend/README.md](frontend/README.md)
 
 ## 📄 ライセンス
 
