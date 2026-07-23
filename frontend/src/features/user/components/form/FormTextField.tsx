@@ -6,7 +6,7 @@ import {
   type Path,
 } from 'react-hook-form';
 
-type Props<T extends Record<string, any>> = {
+type Props<T extends Record<string, unknown>> = {
   name: Path<T>;
   control: Control<T>;
   errors: FieldErrors<T>;
@@ -24,7 +24,7 @@ type Props<T extends Record<string, any>> = {
  * @param label ラベル
  * @param maxLength 最大文字数（オプション）
  */
-export function FormTextField<T extends Record<string, any>>({
+export function FormTextField<T extends Record<string, unknown>>({
   name,
   control,
   errors,

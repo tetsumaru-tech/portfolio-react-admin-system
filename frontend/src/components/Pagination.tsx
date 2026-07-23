@@ -4,6 +4,13 @@ type PaginationProps = {
   onPaging: (page: number) => void;
 };
 
+/**
+ * ページネーションコンポーネント
+ *
+ * @param currentPage - 現在のページ番号
+ * @param lastPage - 最終ページ番号
+ * @param onPaging - ページ選択時に呼び出される関数
+ */
 export function Pagination({
   currentPage,
   lastPage,

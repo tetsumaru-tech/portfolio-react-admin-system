@@ -11,7 +11,7 @@ type Option = {
   label: string;
 };
 
-type Props<T extends Record<string, any>> = {
+type Props<T extends Record<string, unknown>> = {
   name: Path<T>;
   control: Control<T>;
   errors: FieldErrors<T>;
