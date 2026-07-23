@@ -29,7 +29,11 @@ import { getApiError, formatFieldValue, isValidationError } from '@/utils';
  */
 export function UserConfirmPage() {
   const { id } = useParams<{ id: string }>();
-  const userId = Number(id);
+  const rawId = id ?? '';
+  const parsedUserId = Number(rawId);
+  const userId = rawId === 'create' || rawId === '' || Number.isNaN(parsedUserId)
+    ? 0
+    : parsedUserId;
   const location = useLocation();
   const navigate = useNavigate();
   const formData: UserFormData | null = location.state?.formData
@@ -37,7 +41,11 @@ export function UserConfirmPage() {
     : null;
 
   const isCreate =
-    formData?.id === null || formData?.id === undefined || formData?.id === 0;
+    rawId === 'create' ||
+    rawId === '' ||
+    formData?.id === null ||
+    formData?.id === undefined ||
+    formData?.id === 0;
 
   const createUserMutation = useCreateUserMutation();
   const updateUserMutation = useUpdateUserMutation();
@@ -59,7 +67,7 @@ export function UserConfirmPage() {
       navigate(ROUTES.users());
     } catch (error) {
       if (isValidationError(error)) {
-        navigate(ROUTES.userEdit(userId), {
+        navigate(isCreate ? ROUTES.userCreate() : ROUTES.userEdit(userId), {
           state: {
             formData,
             errors: getApiError(error)?.errors,
@@ -91,7 +99,9 @@ export function UserConfirmPage() {
   }, [formData, isCreate]);
 
   if (!formData || typeof formData !== 'object') {
-    navigate(ROUTES.userEdit(userId), { replace: true });
+    navigate(isCreate ? ROUTES.userCreate() : ROUTES.userEdit(userId), {
+      replace: true,
+    });
   }
 
   return (
@@ -113,7 +123,7 @@ export function UserConfirmPage() {
           <BackButton
             disabled={mutation.isPending}
             onClick={() => {
-              navigate(ROUTES.userEdit(userId), {
+              navigate(isCreate ? ROUTES.userCreate() : ROUTES.userEdit(userId), {
                 state: {
                   formData: userMapper.toStorage(location.state?.formData),
                 },

@@ -28,8 +28,11 @@ import { applyServerErrors } from '@/utils';
  */
 export function UserEditPage() {
   const { id } = useParams<{ id: string }>();
-  const userId = Number(id ?? '');
-  const isCreate = userId === 0;
+  const rawId = id ?? '';
+  const parsedUserId = Number(rawId);
+  const isCreate =
+    rawId === 'create' || rawId === '' || Number.isNaN(parsedUserId);
+  const userId = isCreate ? 0 : parsedUserId;
   const location = useLocation();
 
   const {
@@ -42,7 +45,7 @@ export function UserEditPage() {
   } = useForm<UserFormData>({
     resolver: zodResolver(userFormSchema),
     defaultValues: {
-      id: userId,
+      id: isCreate ? null : userId,
       lastName: '',
       firstName: '',
       email: '',
@@ -53,7 +56,7 @@ export function UserEditPage() {
     },
   });
 
-  const { data, isSuccess } = useUserDetailQuery(userId);
+  const { data, isSuccess } = useUserDetailQuery(isCreate ? 0 : userId);
 
   useEffect(() => {
     if (location.state?.formData) {
