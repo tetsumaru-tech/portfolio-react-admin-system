@@ -1,23 +1,22 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Grid, Paper } from '@mui/material';
+import { Grid, Paper, Typography } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
-import { ButtonSection, AppButton, BackButton } from '@/components';
+import { AppButton, BackButton, ButtonSection } from '@/components';
 import { ROUTES } from '@/constants';
-import { useUserDetailQuery } from '@/features/user/api';
-import { userMapper } from '@/features/user/api';
+import { userMapper, useUserDetailQuery } from '@/features/user/api';
 import {
-  FormSection,
-  FormRowContainer,
-  FormRow,
-  FormTextField,
   FormDatePicker,
-  FormSelect,
   FormPasswordField,
+  FormRow,
+  FormRowContainer,
+  FormSection,
+  FormSelect,
+  FormTextField,
 } from '@/features/user/components';
 import { userFormRows } from '@/features/user/constants';
 import { userFormSchema } from '@/features/user/schema';
@@ -98,6 +97,9 @@ export function UserEditPage() {
           width: '100%',
         }}
       >
+        <Typography variant="h6" gutterBottom>
+          {isCreate ? 'ユーザー新規作成' : 'ユーザー編集'}
+        </Typography>
         <Grid container>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <FormSection>
