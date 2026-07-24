@@ -9,13 +9,16 @@ export const profileRows: Row[] = [
   {
     key: 'lastName',
     label: '性',
+    dispLabel: '氏名',
     maxLength: USER_FORM_LIMITS.lastName,
+    showValue: (data) => `${data.lastName} ${data.firstName}`,
     confirmValue: (data) => `${data.lastName} ${data.firstName}`,
   },
   {
     key: 'firstName',
     label: '名',
     maxLength: USER_FORM_LIMITS.firstName,
+    showInDetail: false,
     showInConfirm: false,
   },
   {
@@ -28,6 +31,8 @@ export const profileRows: Row[] = [
     label: '性別',
     type: 'select',
     options: genderOptions,
+    showValue: (data) =>
+      genderOptions.find((option) => (option.value = data.gender))?.label ?? '',
     confirmValue: (data) =>
       genderOptions.find((option) => (option.value = data.gender))?.label ?? '',
   },

@@ -1,16 +1,16 @@
-import { Typography, Paper } from '@mui/material';
-import { useParams, useNavigate } from 'react-router-dom';
+import { Paper, Typography } from '@mui/material';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import { ButtonSection, AppButton, BackButton } from '@/components';
-import { Loading, Empty, ErrorMessage } from '@/components/feedback';
+import { AppButton, BackButton, ButtonSection } from '@/components';
+import { Empty, ErrorMessage, Loading } from '@/components/feedback';
 import { ROUTES } from '@/constants';
-import { useUserDetailQuery } from '@/features/user/api';
+import { userMapper, useUserDetailQuery } from '@/features/user/api';
 import {
-  FormSection,
-  FormRowContainer,
   FormRow,
+  FormRowContainer,
+  FormSection,
 } from '@/features/user/components';
-import { getAge } from '@/types';
+import { userFormRows } from '@/features/user/constants';
 
 /**
  * ユーザー詳細ページのコンポーネント。
@@ -24,7 +24,7 @@ export function UserDetailPage() {
   const navigate = useNavigate();
 
   // React Query
-  const { data: user, isLoading, isError } = useUserDetailQuery(userId);
+  const { data: data, isLoading, isError } = useUserDetailQuery(userId);
 
   if (isLoading) {
     return <Loading />;
@@ -32,10 +32,24 @@ export function UserDetailPage() {
   if (isError) {
     return <ErrorMessage message="ユーザー情報の取得に失敗しました。" />;
   }
-  if (!user) {
+  if (!data) {
     return <Empty message="ユーザー情報が見つかりませんでした。" />;
   }
 
+  const user = userMapper.fromStorage(data);
+  const rows = userFormRows
+    .filter((row) => {
+      if (row.showInDetail === false) {
+        return false;
+      }
+      return true;
+    })
+    .map((row) => {
+      return {
+        label: row.dispLabel ? row.dispLabel : row.label,
+        value: row.showValue ? row.showValue(user) : String(user[row.key]),
+      };
+    });
   return (
     <>
       <Paper sx={{ p: 2 }}>
@@ -43,12 +57,7 @@ export function UserDetailPage() {
           ユーザー詳細
         </Typography>
         <FormSection>
-          {[
-            { label: '名前', value: `${user.lastName} ${user.firstName}` },
-            { label: 'メール', value: user.email },
-            { label: '誕生日', value: user.birthday },
-            { label: '年齢', value: getAge(user.birthday) },
-          ].map((row, i, rows) => (
+          {rows.map((row, i, rows) => (
             <FormRowContainer key={row.label}>
               <FormRow label={row.label} isLast={i === rows.length - 1}>
                 <Typography>{row.value}</Typography>

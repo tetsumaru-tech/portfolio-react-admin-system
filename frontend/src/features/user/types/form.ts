@@ -6,12 +6,15 @@ import type { SelectOption } from '@/types';
 export type Row = {
   key: keyof UserFormData;
   label: string;
+  dispLabel?: string;
   maxLength?: number;
   minLength?: number;
   type?: 'text' | 'date' | 'select' | 'password' | 'password_confirmation';
   rules?: RegisterOptions<UserFormData>;
   options?: SelectOption<string>[];
+  showValue?: (data: UserFormData) => string;
   confirmValue?: (data: UserFormData) => string;
+  showInDetail?: boolean;
   showInEdit?: boolean;
   showInConfirm?: boolean;
 };

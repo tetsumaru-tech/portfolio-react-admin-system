@@ -9,6 +9,7 @@ import type { SelectOption } from '@/types';
 export type Row = {
   key: keyof ProfileFormData;
   label: string;
+  dispLabel?: string;
   maxLength?: number;
   minLength?: number;
   type?: 'text' | 'date' | 'select';
@@ -17,6 +18,7 @@ export type Row = {
   showValue?: (data: ProfileFormData) => string;
   confirmLabel?: (data: ProfileFormData) => string;
   confirmValue?: (data: ProfileFormData) => string;
+  showInDetail?: boolean;
   showInEdit?: boolean;
   showInConfirm?: boolean;
   disabledInEdit?: boolean;

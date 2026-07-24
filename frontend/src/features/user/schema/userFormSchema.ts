@@ -1,7 +1,9 @@
 import { z } from 'zod';
 
-import { PASSWORD_PATTERN } from '@/features/user/constants';
-import { USER_FORM_MIN_LENGTH } from '@/features/user/constants';
+import {
+  PASSWORD_PATTERN,
+  USER_FORM_MIN_LENGTH,
+} from '@/features/user/constants';
 import { userBaseSchema } from '@/features/user/schema';
 
 /**
@@ -59,4 +61,8 @@ export const userFormSchema = z
         message: 'パスワードが一致しません',
       });
     }
+  })
+  .refine((data) => data.gender !== '', {
+    message: '性別は必須です',
+    path: ['gender'],
   });

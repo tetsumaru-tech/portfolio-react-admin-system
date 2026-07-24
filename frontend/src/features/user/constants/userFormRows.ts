@@ -9,13 +9,16 @@ export const userFormRows: Row[] = [
   {
     key: 'lastName',
     label: '性',
+    dispLabel: '氏名',
     maxLength: USER_FORM_LIMITS.lastName,
+    showValue: (data) => `${data.lastName} ${data.firstName}`,
     confirmValue: (data) => `${data.lastName} ${data.firstName}`,
   },
   {
     key: 'firstName',
     label: '名',
     maxLength: USER_FORM_LIMITS.firstName,
+    showInDetail: false,
     showInConfirm: false,
   },
   {
@@ -28,6 +31,8 @@ export const userFormRows: Row[] = [
     label: '性別',
     type: 'select',
     options: genderOptions,
+    showValue: (data) =>
+      genderOptions.find((option) => (option.value = data.gender))?.label ?? '',
   },
   {
     key: 'birthday',
@@ -39,6 +44,7 @@ export const userFormRows: Row[] = [
     label: 'パスワード',
     type: 'password',
     minLength: USER_FORM_MIN_LENGTH.password,
+    showInDetail: false,
     showInEdit: false,
     confirmValue: (data) => `${'*'.repeat(data.password?.length ?? 0)}`,
   },
@@ -47,6 +53,7 @@ export const userFormRows: Row[] = [
     label: 'パスワード確認',
     type: 'password',
     minLength: USER_FORM_MIN_LENGTH.password,
+    showInDetail: false,
     showInEdit: false,
     showInConfirm: false,
   },

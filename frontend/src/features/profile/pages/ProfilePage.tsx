@@ -1,16 +1,16 @@
-import { Typography, Paper } from '@mui/material';
+import { Paper, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
-import { ButtonSection, AppButton, BackButton } from '@/components';
-import { Loading, ErrorMessage } from '@/components/feedback';
+import { AppButton, BackButton, ButtonSection } from '@/components';
+import { ErrorMessage, Loading } from '@/components/feedback';
 import { ROUTES } from '@/constants';
 import { useProfileQuery } from '@/features/profile';
 import { profileRows } from '@/features/profile/constants';
 import { profileMapper } from '@/features/profile/mappers';
 import {
-  FormSection,
-  FormRowContainer,
   FormRow,
+  FormRowContainer,
+  FormSection,
 } from '@/features/user/components';
 
 /**
@@ -35,13 +35,13 @@ export function ProfilePage() {
   const profile = profileMapper.fromResponse(data);
   const rows = profileRows
     .filter((row) => {
-      if (row.showInConfirm === false) {
+      if (row.showInDetail === false) {
         return false;
       }
       return true;
     })
     .map((row) => ({
-      label: row.label,
+      label: row.dispLabel ? row.dispLabel : row.label,
       value: row.showValue ? row.showValue(profile) : String(profile[row.key]),
     }));
 
