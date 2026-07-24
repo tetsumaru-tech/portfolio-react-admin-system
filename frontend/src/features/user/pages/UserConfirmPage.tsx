@@ -1,24 +1,23 @@
-import { Typography, Paper, CircularProgress } from '@mui/material';
+import { CircularProgress, Paper, Typography } from '@mui/material';
 import { useMemo } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
-import { ButtonSection, AppButton, BackButton } from '@/components';
+import { AppButton, BackButton, ButtonSection } from '@/components';
 import { ROUTES } from '@/constants';
-import { userMapper } from '@/features/user/api';
 import {
   useCreateUserMutation,
+  userMapper,
   useUpdateUserMutation,
 } from '@/features/user/api';
 import {
-  FormSection,
-  FormRowContainer,
   FormRow,
+  FormRowContainer,
+  FormSection,
 } from '@/features/user/components';
 import { userFormRows } from '@/features/user/constants';
 import { createUserSchema, updateUserSchema } from '@/features/user/schema';
 import type { UserFormData } from '@/features/user/types';
-import { getApiError, formatFieldValue, isValidationError } from '@/utils';
+import { formatFieldValue, getApiError, isValidationError } from '@/utils';
 
 /**
  * ユーザー確認ページコンポーネント
@@ -31,9 +30,10 @@ export function UserConfirmPage() {
   const { id } = useParams<{ id: string }>();
   const rawId = id ?? '';
   const parsedUserId = Number(rawId);
-  const userId = rawId === 'create' || rawId === '' || Number.isNaN(parsedUserId)
-    ? 0
-    : parsedUserId;
+  const userId =
+    rawId === 'create' || rawId === '' || Number.isNaN(parsedUserId)
+      ? 0
+      : parsedUserId;
   const location = useLocation();
   const navigate = useNavigate();
   const formData: UserFormData | null = location.state?.formData
@@ -91,7 +91,7 @@ export function UserConfirmPage() {
         return true;
       })
       .map((row) => ({
-        label: row.label,
+        label: row.dispLabel ? row.dispLabel : row.label,
         value: row.confirmValue
           ? row.confirmValue(formData)
           : formatFieldValue(row, formData[row.key]),
@@ -123,11 +123,14 @@ export function UserConfirmPage() {
           <BackButton
             disabled={mutation.isPending}
             onClick={() => {
-              navigate(isCreate ? ROUTES.userCreate() : ROUTES.userEdit(userId), {
-                state: {
-                  formData: userMapper.toStorage(location.state?.formData),
+              navigate(
+                isCreate ? ROUTES.userCreate() : ROUTES.userEdit(userId),
+                {
+                  state: {
+                    formData: userMapper.toStorage(location.state?.formData),
+                  },
                 },
-              });
+              );
             }}
           />
           <AppButton

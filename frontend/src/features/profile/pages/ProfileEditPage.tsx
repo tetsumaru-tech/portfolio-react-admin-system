@@ -4,9 +4,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-import { ButtonSection, AppButton, BackButton } from '@/components';
+import { AppButton, BackButton, ButtonSection } from '@/components';
 import { ROUTES } from '@/constants';
 import { useProfileQuery } from '@/features/profile';
 import { profileRows } from '@/features/profile/constants';
@@ -14,12 +14,12 @@ import { profileMapper } from '@/features/profile/mappers';
 import { profileSchema } from '@/features/profile/schema';
 import { type ProfileFormData } from '@/features/profile/types';
 import {
-  FormSection,
-  FormRowContainer,
-  FormRow,
-  FormTextField,
   FormDatePicker,
+  FormRow,
+  FormRowContainer,
+  FormSection,
   FormSelect,
+  FormTextField,
 } from '@/features/user/components';
 import { applyServerErrors } from '@/utils';
 
@@ -75,7 +75,6 @@ export function ProfileEditPage() {
     navigate(ROUTES.top());
     return null;
   }
-
   const rows = profileRows.filter((row) => {
     return row.showInEdit !== false;
   });

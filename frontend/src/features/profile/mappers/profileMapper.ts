@@ -3,12 +3,11 @@ import type {
   ProfileFormData,
   ProfileResponse,
   UpdateProfileApiRequest,
-  UpdateProfilePasswordApiRequest,
   UpdateProfileInput,
+  UpdateProfilePasswordApiRequest,
   UpdateProfilePasswordInput,
 } from '@/features/profile/types';
-import { type Role, ROLES } from '@/features/user/types';
-import { type Gender, GENDERS } from '@/features/user/types';
+import { type Gender, GENDERS, type Role, ROLES } from '@/features/user/types';
 import { type YMD } from '@/types';
 
 /**
