@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Grid, Paper } from '@mui/material';
+import { Grid, Paper, Typography } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useEffect } from 'react';
@@ -72,6 +72,9 @@ export function ProfilePasswordPage() {
           width: '100%',
         }}
       >
+        <Typography variant="h6" gutterBottom>
+          プロフィールパスワード更新
+        </Typography>
         <Grid container>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <FormSection>

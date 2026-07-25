@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { USER_FORM_MIN_LENGTH } from '@/features/user/constants';
-import { userBaseSchema } from '@/features/user/schema';
+import { userBaseSchema } from '@/features/user/schema/userBaseSchema';
 
 /**
  * ユーザー作成リクエストのスキーマ定義

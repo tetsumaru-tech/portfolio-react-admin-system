@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { userBaseSchema } from '@/features/user/schema';
+import { userBaseSchema } from '@/features/user/schema/userBaseSchema';
 
 /**
  * ユーザー更新リクエストのスキーマ定義

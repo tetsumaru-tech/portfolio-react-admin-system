@@ -4,7 +4,7 @@ import {
   PASSWORD_PATTERN,
   USER_FORM_MIN_LENGTH,
 } from '@/features/user/constants';
-import { userBaseSchema } from '@/features/user/schema';
+import { userBaseSchema } from '@/features/user/schema/userBaseSchema';
 
 /**
  * ユーザー編集フォーム用の Zod スキーマ

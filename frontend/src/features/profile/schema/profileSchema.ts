@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { userBaseSchema } from '@/features/user/schema';
+import { userBaseSchema } from '@/features/user/schema/userBaseSchema';
 import { ROLES } from '@/features/user/types';
 
 export const profileSchema = z.object({

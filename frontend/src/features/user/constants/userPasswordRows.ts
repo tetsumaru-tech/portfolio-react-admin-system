@@ -18,5 +18,6 @@ export const userPasswordRows: UpdatePasswordRow[] = [
     label: 'パスワード確認',
     type: 'password',
     minLength: USER_FORM_MIN_LENGTH.password,
+    required: true,
   },
 ] satisfies UpdatePasswordRow[];

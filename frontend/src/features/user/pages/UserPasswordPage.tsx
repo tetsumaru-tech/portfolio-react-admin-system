@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Grid, Paper } from '@mui/material';
+import { Grid, Paper, Typography } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useEffect } from 'react';
@@ -80,6 +80,9 @@ export function UserPasswordPage() {
           width: '100%',
         }}
       >
+        <Typography variant="h6" gutterBottom>
+          ユーザーパスワード更新
+        </Typography>
         <Grid container>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <FormSection>
@@ -88,7 +91,7 @@ export function UserPasswordPage() {
                   <FormRow
                     label={row.label}
                     isLast={i === rows.length - 1}
-                    required={!!row.rules?.required}
+                    required={row.required}
                   >
                     <FormPasswordField<UserPasswordFormData>
                       name={row.key}
