@@ -36,7 +36,7 @@ export const userFormRows: Row[] = [
     required: true,
     options: genderOptions,
     showValue: (data) =>
-      genderOptions.find((option) => (option.value = data.gender))?.label ?? '',
+      genderOptions.find((option) => option.value === data.gender)?.label ?? '',
   },
   {
     key: 'birthday',

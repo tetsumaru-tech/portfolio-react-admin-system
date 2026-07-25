@@ -36,9 +36,9 @@ export const profileRows: Row[] = [
     required: true,
     options: genderOptions,
     showValue: (data) =>
-      genderOptions.find((option) => (option.value = data.gender))?.label ?? '',
+      genderOptions.find((option) => option.value === data.gender)?.label ?? '',
     confirmValue: (data) =>
-      genderOptions.find((option) => (option.value = data.gender))?.label ?? '',
+      genderOptions.find((option) => option.value === data.gender)?.label ?? '',
   },
   {
     key: 'birthday',
@@ -56,7 +56,7 @@ export const profileRows: Row[] = [
     showInEdit: false,
     showInConfirm: false,
     confirmValue: (data) =>
-      roleOptions.find((option) => (option.value = data.role))?.label ?? '',
+      roleOptions.find((option) => option.value === data.role)?.label ?? '',
     disabledInEdit: true,
   },
 ] satisfies Row[];
