@@ -24,6 +24,7 @@ import {
 } from '@mui/icons-material';
 
 export type Skill = {
+  label: string;
   icon: SvgIconComponent;
 };
 
