@@ -37,7 +37,6 @@ export function AuthProvider({ children }: Props) {
       }
     } finally {
       setUser(null);
-      console.log('after logout');
     }
   }, []);
 
