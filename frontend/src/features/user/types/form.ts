@@ -1,5 +1,3 @@
-import type { RegisterOptions } from 'react-hook-form';
-
 import type { UserFormData, UserPasswordFormData } from '@/features/user/types';
 import type { SelectOption } from '@/types';
 
@@ -10,7 +8,7 @@ export type Row = {
   maxLength?: number;
   minLength?: number;
   type?: 'text' | 'date' | 'select' | 'password' | 'password_confirmation';
-  rules?: RegisterOptions<UserFormData>;
+  required?: boolean;
   options?: SelectOption<string>[];
   showValue?: (data: UserFormData) => string;
   confirmValue?: (data: UserFormData) => string;
@@ -25,7 +23,6 @@ export type UpdatePasswordRow = {
   maxLength?: number;
   minLength?: number;
   type?: 'password' | 'password_confirmation';
-  rules?: RegisterOptions<UserPasswordFormData>;
-  // options?: SelectOption<string>[];
+  required?: boolean;
   confirmValue?: (data: UserPasswordFormData) => string;
 };

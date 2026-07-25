@@ -1,6 +1,6 @@
 import { type Gender } from './gender';
 
-import type { Role } from '@/features/auth/types';
+import type { Role } from '@/features/user/types';
 
 /**
  * ユーザーレスポンスの型定義

@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { userBaseSchema } from '@/features/user/schema';
 
 /**
- * プロファイル更新リクエストのスキーマ定義
+ * プロフィール更新リクエストのスキーマ定義
  * userBaseSchemaをベースに、全てのフィールドをオプショナルにしたスキーマ
  */
 export const updateProfileSchema = z
@@ -11,7 +11,7 @@ export const updateProfileSchema = z
   .partial();
 
 /**
- * プロファイル更新リクエストの型
+ * プロフィール更新リクエストの型
  * updateProfileSchemaから推論される型定義
  */
 export type UpdateProfileRequest = z.infer<typeof updateProfileSchema>;

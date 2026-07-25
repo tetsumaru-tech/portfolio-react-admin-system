@@ -1,4 +1,4 @@
-import { type Role } from '@/features/auth/types';
+import { type Role } from '@/features/user/types';
 import { type YMD } from '@/types';
 
 export type AuthUser = {

@@ -49,7 +49,7 @@ export function ProfilePage() {
     <>
       <Paper sx={{ p: 2 }}>
         <Typography variant="h6" gutterBottom>
-          プロファイル ProfilePage
+          プロフィール
         </Typography>
         <FormSection>
           {rows.map((row, i, rows) => (

@@ -10,6 +10,7 @@ export const profileRows: Row[] = [
     key: 'lastName',
     label: '性',
     dispLabel: '氏名',
+    required: true,
     maxLength: USER_FORM_LIMITS.lastName,
     showValue: (data) => `${data.lastName} ${data.firstName}`,
     confirmValue: (data) => `${data.lastName} ${data.firstName}`,
@@ -17,6 +18,7 @@ export const profileRows: Row[] = [
   {
     key: 'firstName',
     label: '名',
+    required: true,
     maxLength: USER_FORM_LIMITS.firstName,
     showInDetail: false,
     showInConfirm: false,
@@ -24,12 +26,14 @@ export const profileRows: Row[] = [
   {
     key: 'email',
     label: 'メール',
+    required: true,
     maxLength: USER_FORM_LIMITS.email,
   },
   {
     key: 'gender',
     label: '性別',
     type: 'select',
+    required: true,
     options: genderOptions,
     showValue: (data) =>
       genderOptions.find((option) => (option.value = data.gender))?.label ?? '',
@@ -40,11 +44,13 @@ export const profileRows: Row[] = [
     key: 'birthday',
     label: '誕生日',
     type: 'date',
+    required: true,
   },
   {
     key: 'role',
     label: '権限',
     type: 'select',
+    required: true,
     options: roleOptions,
     showValue: (data) => (data.role === 'admin' ? '管理者' : '一般ユーザー'),
     showInEdit: false,

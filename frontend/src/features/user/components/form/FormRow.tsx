@@ -34,7 +34,11 @@ export function FormRow({
       >
         <Typography variant="subtitle2">
           {label}
-          {required && ' 【必須】'}
+          {required && (
+            <Typography component="span" color="error">
+              【必須】
+            </Typography>
+          )}
         </Typography>
       </Grid>
       <Grid

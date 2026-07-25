@@ -10,6 +10,7 @@ export const userPasswordRows: UpdatePasswordRow[] = [
     label: 'パスワード',
     type: 'password',
     minLength: USER_FORM_MIN_LENGTH.password,
+    required: true,
     confirmValue: (data) => `${'*'.repeat(data.password?.length ?? 0)}`,
   },
   {

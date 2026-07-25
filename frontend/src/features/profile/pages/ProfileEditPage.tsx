@@ -97,7 +97,7 @@ export function ProfileEditPage() {
                   <FormRow
                     label={row.label}
                     isLast={i === rows.length - 1}
-                    required={!!row.rules?.required}
+                    required={row.required}
                   >
                     {row.type === 'date' ? (
                       <FormDatePicker<ProfileFormData>

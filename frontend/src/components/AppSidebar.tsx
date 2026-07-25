@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-import { ROUTEPATTERNS, DRAWER_WIDTH } from '@/constants';
+import { DRAWER_WIDTH, ROUTEPATTERNS } from '@/constants';
 import { AdminOnly } from '@/features/auth/components';
 
 /**
@@ -34,7 +34,7 @@ export function AppSidebar() {
           <ListItemText primary="トップ" />
         </ListItemButton>
         <ListItemButton component={Link} to={ROUTEPATTERNS.PROFILE}>
-          <ListItemText primary="プロファイル" />
+          <ListItemText primary="プロフィール" />
         </ListItemButton>
         <ListItemButton component={Link} to={ROUTEPATTERNS.PROFILE_PASSWORD}>
           <ListItemText primary="パスワード変更" />

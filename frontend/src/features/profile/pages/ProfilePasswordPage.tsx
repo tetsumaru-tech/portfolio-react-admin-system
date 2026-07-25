@@ -4,9 +4,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-import { ButtonSection, AppButton, BackButton } from '@/components';
+import { AppButton, BackButton, ButtonSection } from '@/components';
 import { ROUTES } from '@/constants';
 import { useProfileQuery } from '@/features/profile';
 import { useUpdateProfilePasswordMutation } from '@/features/profile/api';
@@ -14,10 +14,10 @@ import { profilePasswordRows } from '@/features/profile/constants';
 import { profilePasswordSchema } from '@/features/profile/schema';
 import type { ProfilePasswordFormData } from '@/features/profile/types';
 import {
-  FormSection,
-  FormRowContainer,
-  FormRow,
   FormPasswordField,
+  FormRow,
+  FormRowContainer,
+  FormSection,
 } from '@/features/user/components';
 import { applyServerErrors } from '@/utils';
 
@@ -84,7 +84,7 @@ export function ProfilePasswordPage() {
                   <FormRow
                     label={row.label}
                     isLast={i === rows.length - 1}
-                    required={!!row.rules?.required}
+                    required={row.required}
                   >
                     <FormPasswordField<ProfilePasswordFormData>
                       name={row.key}
