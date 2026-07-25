@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 
-import { AppHeader, AppContainer, AppSidebar } from '@/components';
+import { AppContainer, AppHeader, AppSidebar } from '@/components';
 
 /**
  * アプリケーションのメインレイアウトコンポーネント

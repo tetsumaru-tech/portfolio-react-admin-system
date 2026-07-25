@@ -1,4 +1,4 @@
-import { Outlet, Navigate, useLocation } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 import { Loading } from '@/components/feedback';
 import { useAuth } from '@/features/auth/hooks';

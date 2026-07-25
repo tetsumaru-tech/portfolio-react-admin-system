@@ -1,5 +1,4 @@
 import { type UpdateUserApiRequest } from './UpdateUserApiRequest';
-// import { type Gender } from './gender';
 
 /**
  * ユーザー作成APIのリクエストデータ型

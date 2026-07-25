@@ -3,15 +3,15 @@ import type {
   UpdateUserRequest,
 } from '@/features/user/schema';
 import {
-  type User,
-  type UserFormData,
+  type CreateUserApiRequest,
   type CreateUserInput,
-  type UpdateUserInput,
   type Gender,
   GENDERS,
-  type UserResponse,
-  type CreateUserApiRequest,
   type UpdateUserApiRequest,
+  type UpdateUserInput,
+  type User,
+  type UserFormData,
+  type UserResponse,
 } from '@/features/user/types';
 import { type YMD } from '@/types';
 

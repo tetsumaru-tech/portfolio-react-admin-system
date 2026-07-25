@@ -1,6 +1,5 @@
 import type { GridSortModel } from '@mui/x-data-grid';
-import { useQuery } from '@tanstack/react-query';
-import { keepPreviousData } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import { userApi } from '@/features/user/api';
 import type { UserSearchCondition } from '@/features/user/types';

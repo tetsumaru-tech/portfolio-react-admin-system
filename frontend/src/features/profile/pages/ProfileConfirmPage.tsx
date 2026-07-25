@@ -1,7 +1,7 @@
-import { Typography, Paper, CircularProgress } from '@mui/material';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { CircularProgress, Paper, Typography } from '@mui/material';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-import { ButtonSection, AppButton, BackButton } from '@/components';
+import { AppButton, BackButton, ButtonSection } from '@/components';
 import { ROUTES } from '@/constants';
 import { useUpdateProfileMutation } from '@/features/profile/api';
 import { profileRows } from '@/features/profile/constants';
@@ -9,11 +9,11 @@ import { profileMapper } from '@/features/profile/mappers';
 import { updateProfileSchema } from '@/features/profile/schema';
 import type { ProfileFormData } from '@/features/profile/types';
 import {
-  FormSection,
-  FormRowContainer,
   FormRow,
+  FormRowContainer,
+  FormSection,
 } from '@/features/user/components';
-import { getApiError, formatFieldValue, isValidationError } from '@/utils';
+import { formatFieldValue, getApiError, isValidationError } from '@/utils';
 
 /**
  * プロフィール確認ページコンポーネント

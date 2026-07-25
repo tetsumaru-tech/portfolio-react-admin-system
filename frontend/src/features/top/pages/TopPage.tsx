@@ -1,16 +1,16 @@
 import {
   Key as KeyIcon,
-  Person as PersonIcon,
   PersonAdd as PersonAddIcon,
+  Person as PersonIcon,
 } from '@mui/icons-material';
-import { Typography, Paper, Chip } from '@mui/material';
+import { Chip, Paper, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 import { MenuCard } from '@/components';
 import { ROUTES } from '@/constants';
 import { AdminOnly } from '@/features/auth/components';
 import { useAuth } from '@/features/auth/hooks';
-import { SkillList, FeatureList } from '@/features/top/components';
+import { FeatureList, SkillList } from '@/features/top/components';
 
 /**
  * トップページコンポーネント

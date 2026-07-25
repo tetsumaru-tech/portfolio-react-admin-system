@@ -4,7 +4,7 @@ import {
   type GridValidRowModel,
 } from '@mui/x-data-grid';
 
-import { Loading, Empty } from '@/components/feedback';
+import { Empty, Loading } from '@/components/feedback';
 
 /**
  * アプリケーション用のデータグリッドコンポーネント

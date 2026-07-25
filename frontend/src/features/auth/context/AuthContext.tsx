@@ -1,5 +1,5 @@
-import { createContext, useState, useEffect, useCallback } from 'react';
 import type { ReactNode } from 'react';
+import { createContext, useCallback, useEffect, useState } from 'react';
 
 import { authApi } from '@/features/auth/api';
 import type { AuthUser } from '@/features/auth/types';

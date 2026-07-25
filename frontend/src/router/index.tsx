@@ -1,26 +1,25 @@
 import { createBrowserRouter } from 'react-router-dom';
 
-import { ROUTEPATTERNS } from '@/constants';
-import { ROUTES } from '@/constants';
+import { ROUTEPATTERNS, ROUTES } from '@/constants';
 import { LoginPage } from '@/features/auth/pages';
-import { ProtectedRoute, AdminRoute } from '@/features/auth/routes';
+import { AdminRoute, ProtectedRoute } from '@/features/auth/routes';
 import {
-  ProfilePage,
-  ProfileEditPage,
   ProfileConfirmPage,
+  ProfileEditPage,
+  ProfilePage,
   ProfilePasswordPage,
 } from '@/features/profile';
 import { TopPage } from '@/features/top/pages';
 import {
-  UserListPage,
+  UserConfirmPage,
   UserDetailPage,
   UserEditPage,
-  UserConfirmPage,
+  UserListPage,
   UserPasswordPage,
 } from '@/features/user/pages';
 import { MainLayout } from '@/layouts';
 import { setForbiddenHandler } from '@/lib';
-import { NotFoundPage, ForbiddenPage } from '@/pages';
+import { ForbiddenPage, NotFoundPage } from '@/pages';
 
 export const router = createBrowserRouter([
   { path: ROUTEPATTERNS.LOGIN, element: <LoginPage /> },

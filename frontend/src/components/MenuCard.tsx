@@ -1,10 +1,10 @@
 import {
-  Typography,
+  Box,
   Card,
   CardActionArea,
   CardContent,
   Stack,
-  Box,
+  Typography,
 } from '@mui/material';
 import type { ReactNode } from 'react';
 

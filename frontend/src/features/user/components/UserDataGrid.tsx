@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { AppDataGrid } from '@/components';
 import { ROUTES } from '@/constants';
 import {
-  userColumns,
   createUserActionColumn,
+  userColumns,
 } from '@/features/user/components';
 import type { User } from '@/features/user/types';
 

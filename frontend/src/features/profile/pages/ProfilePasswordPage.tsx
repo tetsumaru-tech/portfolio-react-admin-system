@@ -51,10 +51,6 @@ export function ProfilePasswordPage() {
       applyServerErrors(location.state?.errors, setError);
       return;
     }
-
-    // if (isSuccess && data) {
-    //   reset(profileMapper.fromApi(data));
-    // }
   }, [location.state, data, isSuccess, reset, setError]);
 
   const navigate = useNavigate();

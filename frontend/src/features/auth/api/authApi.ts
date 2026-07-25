@@ -1,8 +1,8 @@
 import { authMapper } from '@/features/auth/api';
 import type {
+  AuthUser,
   LoginRequest,
   LoginResponse,
-  AuthUser,
 } from '@/features/auth/types';
 import { apiFetch } from '@/lib/api';
 

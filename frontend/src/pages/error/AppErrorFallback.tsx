@@ -1,4 +1,4 @@
-import { Typography, Button, Stack } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 import type { FallbackProps } from 'react-error-boundary';
 import { Link } from 'react-router-dom';
 

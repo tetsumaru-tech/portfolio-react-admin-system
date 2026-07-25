@@ -1,7 +1,7 @@
 import {
+  type FieldValues,
   type Path,
   type UseFormSetError,
-  type FieldValues,
 } from 'react-hook-form';
 
 import { type ValidationErrors } from '@/types';
