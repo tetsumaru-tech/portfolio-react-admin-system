@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -48,7 +47,6 @@ class AuthController extends Controller
      *
      * 現在の認証セッションを破棄し、成功時は204 No Contentを返します。
      *
-     * @param  Request  $request  ログアウトリクエスト
      * @return JsonResponse ログアウト成功を示すJSONレスポンス
      */
     public function logout(): JsonResponse

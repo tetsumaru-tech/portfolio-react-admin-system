@@ -3,7 +3,10 @@
     "name": "laravel/portfolio-react-admin",
     "type": "project",
     "description": "Portfolio management REST API built with Laravel.",
-    "keywords": ["laravel", "framework"],
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.3",
@@ -13,6 +16,7 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^3.10",
         "laravel-lang/common": "^6.8",
         "laravel-lang/lang": "^15.29",
         "laravel/pail": "^1.2.5",
@@ -70,7 +74,12 @@
             "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
         ],
         "format": "pint",
-        "lint": "phpstan analyse"
+        "lint": "phpstan analyse --memory-limit=1G",
+        "check": [
+            "@composer format -- --test",
+            "@composer lint",
+            "@composer test"
+        ]
     },
     "extra": {
         "laravel": {
