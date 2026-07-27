@@ -45,3 +45,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.4"
+
+      - name: Install Composer dependencies
+        working-directory: backend
+        run: composer install --no-interaction --prefer-dist
