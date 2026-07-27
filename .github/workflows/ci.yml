@@ -50,6 +50,12 @@ jobs:
         working-directory: backend
         run: composer install --no-interaction --prefer-dist
 
+      - name: Prepare Laravel environment
+        working-directory: backend
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
       - name: Run PHPStan
         working-directory: backend
         run: composer lint
