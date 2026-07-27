@@ -1,5 +1,4 @@
-const VITE_API_BASE_URL_WITH_API = import.meta.env.VITE_API_BASE_URL_WITH_API;
-
+const API_BASE_URL = `${import.meta.env.VITE_API_BASE_URL}/api`;
 import { ensureCsrf, getXsrToken } from '@/features/auth/api';
 import { notifyForbidden } from '@/lib';
 import { notifyUnauthorized } from '@/lib/api';
@@ -19,7 +18,7 @@ export async function apiFetch<T>(
   if (method !== 'GET') {
     await ensureCsrf();
   }
-  const response = await fetch(`${VITE_API_BASE_URL_WITH_API}${path}`, {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
     credentials: 'include',
     ...options,
     headers: {
