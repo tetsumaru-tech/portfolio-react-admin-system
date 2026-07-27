@@ -1,5 +1,7 @@
 # Portfolio React Admin System
 
+![CI](https://github.com/create-a-fun-life/portfolio-react-admin-system/actions/workflows/ci.yml/badge.svg)
+
 React 管理画面と Laravel REST API を組み合わせた、ポートフォリオ管理システムのモノレポです。フロントエンドとバックエンドを分離しながら、認証・権限管理・ユーザー管理・データ管理を一つの構成で提供します。
 
 ## 📋 プロジェクト概要
@@ -83,6 +85,7 @@ React 管理画面と Laravel REST API を組み合わせた、ポートフォ�
 - **PHPStan**: 静的解析による型安全性チェック
 - **Laravel Pint**: コードフォーマッティング
 - **FakerPHP**: テスト用ダミーデータ生成
+- **CI/CD**: GitHub Actionsによる自動品質チェック（ESLint・型チェック・PHPStan・PHPUnit）
 
 ## 📸 スクリーンショット
 
@@ -155,6 +158,13 @@ React 管理画面と Laravel REST API を組み合わせた、ポートフォ�
 - **PHPStan** 2.1 / **Laravel Pint** 1.29 (コード品質)
 - **FakerPHP** 1.23 (テストデータ)
 
+### 開発・CI
+
+- **Docker** / **Docker Compose** (開発環境)
+- **GitHub Actions** (CI/CD)
+- **ESLint** / **Prettier** (フロントエンド コード品質)
+- **Laravel Pint** / **PHPStan** (バックエンド コード品質)
+
 ## 🏗 アーキテクチャ
 
 ```text
@@ -170,6 +180,36 @@ Laravel API Backend
       ▼
 MySQL Database
 ```
+
+## 🔄 CI/CD
+
+GitHub Actions を使用して、`main` ブランチへの push および pull request のたびにコード品質を自動検証しています。
+
+### フロントエンド
+
+- ESLint
+- 本番ビルド
+
+### バックエンド
+
+- PHPStan
+- PHPUnit
+
+### ワークフロー
+
+```text
+Push / Pull Request
+        │
+        ├── フロントエンド
+        │     ├── ESLint
+        │     └── ビルド
+        │
+        └── バックエンド
+              ├── PHPStan
+              └── PHPUnit
+```
+
+Node.js と Composer の依存関係キャッシュを有効にし、CIの実行時間を短縮しています。フロントエンドとバックエンドは別ジョブとして実行され、それぞれ独立して品質チェックが行われます。
 
 ## 📁 ディレクトリ構成
 
@@ -421,6 +461,24 @@ docker compose exec php composer run lint     # PHPStan静的解析実行
 
 - PUT /api/profile
 - PUT /api/password
+
+## 💡 工夫した点
+
+### コード品質
+
+- Zodによるバリデーションルールの一元管理
+- ESLint・Prettier・Laravel Pintによる自動フォーマット
+- PHPStanによる静的解析
+
+### CI
+
+- GitHub Actionsで以下を自動実行
+  - ESLint
+  - TypeScriptビルド
+  - PHPStan
+  - PHPUnit
+- Node.js・Composerの依存関係キャッシュによるCI実行時間の短縮
+- フロントエンドとバックエンドを別ジョブに分離し、それぞれ独立して品質チェックを実施
 
 ## 📄 ライセンス
 

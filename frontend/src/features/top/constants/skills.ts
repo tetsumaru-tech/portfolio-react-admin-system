@@ -98,7 +98,7 @@ export const skillCategories: SkillCategory[] = [
       { label: 'ESLint', icon: Rule },
       { label: 'Prettier', icon: AutoFixHigh },
       { label: 'PHPUnit', icon: Verified },
-      { label: 'Git', icon: Source },
+      { label: 'GitHub Actions', icon: Build },
     ],
     details: [
       { label: 'ESLint', icon: Rule },
@@ -107,6 +107,7 @@ export const skillCategories: SkillCategory[] = [
       { label: 'Mockery', icon: Build },
       { label: 'PHPStan', icon: Verified },
       { label: 'Laravel Pint', icon: AutoFixHigh },
+      { label: 'GitHub Actions', icon: Build },
       { label: 'Faker', icon: Build },
       { label: 'React Query Devtools', icon: QueryStats },
       { label: 'Git', icon: Source },
