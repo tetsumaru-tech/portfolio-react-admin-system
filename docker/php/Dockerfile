@@ -22,4 +22,5 @@ RUN apt-get update && apt-get install -y \
 # Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# 作業ディレクトリ
 WORKDIR /var/www/html
