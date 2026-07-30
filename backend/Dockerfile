@@ -32,17 +32,17 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # 作業ディレクトリ
 WORKDIR /var/www/html
 
-# Composer関連だけ先にコピー(変更がなければ、後続のRUNはスキップするため)
+# Composer関連だけ先にコピー
 COPY composer.json composer.lock ./
+
+# ソースコードをコピー
+COPY . .
 
 # Composer install
 RUN composer install \
     --no-dev \
     --optimize-autoloader \
     --no-interaction
-
-# ソースコードをコピー
-COPY . .
 
 EXPOSE 10000
 
