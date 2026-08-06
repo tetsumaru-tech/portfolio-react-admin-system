@@ -1,8 +1,15 @@
 # Portfolio React Admin System
 
-![CI](https://github.com/create-a-fun-life/portfolio-react-admin-system/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/tetsumaru-tech/portfolio-react-admin-system/actions/workflows/ci.yml/badge.svg)
 
 React 管理画面と Laravel REST API を組み合わせた、ポートフォリオ管理システムのモノレポです。フロントエンドとバックエンドを分離しながら、認証・権限管理・ユーザー管理・データ管理を一つの構成で提供します。
+
+## Demo
+
+本番環境:
+
+- フロントエンド: https://app.tetsumaru-tech.dev
+- バックエンド API: https://api.tetsumaru-tech.dev
 
 ## 📋 プロジェクト概要
 
@@ -270,7 +277,7 @@ portfolio-react-admin-system/
 #### 1. リポジトリをクローン
 
 ```bash
-git clone https://github.com/create-a-fun-life/portfolio-react-admin-system.git
+git clone https://github.com/tetsumaru-tech/portfolio-react-admin-system.git
 cd portfolio-react-admin-system
 ```
 
