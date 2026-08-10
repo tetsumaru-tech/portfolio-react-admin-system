@@ -11,6 +11,15 @@ React 管理画面と Laravel REST API を組み合わせた、ポートフォ�
 - フロントエンド: https://app.tetsumaru-tech.dev
 - バックエンド API: https://api.tetsumaru-tech.dev
 
+### デモアカウント
+
+| Role  | Email             | Password |
+| ----- | ----------------- | -------- |
+| Admin | admin@example.com | password |
+| User  | user@example.com  | password |
+
+管理者・一般ユーザーそれぞれでログインすることで、ロールによる画面表示・操作権限の違いを確認できます。
+
 ## 📋 プロジェクト概要
 
 このリポジトリには、次の 2 つのアプリケーションが含まれています。
@@ -87,7 +96,7 @@ React 管理画面と Laravel REST API を組み合わせた、ポートフォ�
 
 #### 品質・テスト
 
-- **PHPUnit**: 包括的なユニット・機能テスト
+- **PHPUnit**: ユニット・機能テスト
 - **Mockeryを使用したモック**: テスト用モック機能
 - **PHPStan**: 静的解析による型安全性チェック
 - **Laravel Pint**: コードフォーマッティング
@@ -158,34 +167,63 @@ React 管理画面と Laravel REST API を組み合わせた、ポートフォ�
 
 ### バックエンド
 
-- **PHP** 8.3 / **Laravel** 13
+- **PHP** 8.4 / **Laravel** 13
 - **Laravel Sanctum** 4.3 (SPA認証)
-- **MySQL** 8.0 (データベース)
+- **MySQL** 8.4 (ローカル開発)
+- **TiDB Cloud** (本番データベース)
 - **PHPUnit** 12.5 / **Mockery** 1.6 (テスト)
 - **PHPStan** 2.1 / **Laravel Pint** 1.29 (コード品質)
 - **FakerPHP** 1.23 (テストデータ)
 
-### 開発・CI
+### 開発・インフラ・CI
 
-- **Docker** / **Docker Compose** (開発環境)
-- **GitHub Actions** (CI/CD)
+- **Docker** / **Docker Compose** (ローカル開発環境)
+- **Vercel** (フロントエンド)
+- **Render** (バックエンド)
+- **TiDB Cloud** (本番データベース)
+- **Cloudflare** (DNS)
+- **GitHub Actions** (CI)
 - **ESLint** / **Prettier** (フロントエンド コード品質)
 - **Laravel Pint** / **PHPStan** (バックエンド コード品質)
 
 ## 🏗 アーキテクチャ
 
+### 本番環境
+
 ```text
-Browser / Client
-      │
-      ▼
-React Admin Frontend
-      │
-      │ HTTP / REST + Cookie Auth
-      ▼
-Laravel API Backend
-      │
-      ▼
-MySQL Database
+Browser
+   │
+   │ HTTPS
+   ▼
+React / Vercel
+   │
+   │ REST API + Cookie Authentication
+   ▼
+Laravel / Render
+   │
+   │ TLS
+   ▼
+TiDB Cloud
+
+DNS: Cloudflare
+```
+
+### ローカル環境
+
+```text
+Browser
+   │
+   ▼
+React / Vite
+   │
+   │ REST API + Cookie Authentication
+   ▼
+Laravel
+   │
+   ▼
+MySQL 8.4
+
+Runtime: Docker Compose
 ```
 
 ## 🔄 CI/CD
@@ -414,6 +452,7 @@ docker compose down
 docker compose up -d
 
 # フロントエンド開発サーバーを起動（別ターミナル）
+cd frontend
 npm run dev
 ```
 
@@ -424,7 +463,11 @@ npm run dev
 
 ### フロントエンド
 
+`frontend` ディレクトリで実行します。
+
 ```bash
+cd frontend
+
 npm run dev       # 開発サーバーを起動（HMR有効）
 npm run build     # 本番ビルド
 npm run lint      # ESLintでコード品質チェック
