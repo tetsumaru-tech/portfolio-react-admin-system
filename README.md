@@ -94,14 +94,13 @@ React 管理画面と Laravel REST API を組み合わせた、ポートフォ�
 - **ページング**: 設定可能なページベースデータ ページング
 - **包括的なエラーハンドリング**: 有意義なエラーレスポンス
 
-#### 品質・テスト
+#### コード品質
 
-- **PHPUnit**: ユニット・機能テスト
-- **Mockeryを使用したモック**: テスト用モック機能
 - **PHPStan**: 静的解析による型安全性チェック
 - **Laravel Pint**: コードフォーマッティング
 - **FakerPHP**: テスト用ダミーデータ生成
-- **CI/CD**: GitHub Actionsによる自動品質チェック（ESLint・型チェック・PHPStan・PHPUnit）
+- **PHPUnit**: CIでテストスイートを実行
+- **CI/CD**: GitHub Actionsによる自動品質チェック（ESLint・ビルド・PHPStan・PHPUnit）
 
 ## 📸 スクリーンショット
 
@@ -268,8 +267,7 @@ portfolio-react-admin-system/
 │   │   │   └── Middleware/      # カスタムミドルウェア
 │   │   ├── Models/              # Eloquentモデル
 │   │   ├── Policies/            # 権限管理ポリシー
-│   │   ├── Providers/           # サービス プロバイダ
-│   │   └── Services/            # ビジネスロジック サービス
+│   │   └── Providers/           # サービス プロバイダ
 │   ├── database/
 │   │   ├── migrations/          # データベース マイグレーション
 │   │   ├── factories/           # テスト用モデル ファクトリ
@@ -497,7 +495,7 @@ docker compose exec php composer run lint     # PHPStan静的解析実行
 
 - POST /api/login
 - POST /api/logout
-- GET /api/user
+- GET /api/me
 
 ### ユーザー管理（管理者向け）
 
@@ -506,11 +504,13 @@ docker compose exec php composer run lint     # PHPStan静的解析実行
 - GET /api/users/{id}
 - PUT /api/users/{id}
 - DELETE /api/users/{id}
+- PATCH /api/users/{id}/password
 
 ### プロフィール
 
+- GET /api/profile
 - PUT /api/profile
-- PUT /api/password
+- PATCH /api/profile/password
 
 ## 💡 工夫した点
 
