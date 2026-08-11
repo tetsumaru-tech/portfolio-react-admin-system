@@ -7,6 +7,5 @@ export * from './formatFieldValue';
 export * from './formatGender';
 export * from './isApiError';
 export * from './isValidationError';
-export * from './sleep';
 export * from './string';
 export * from './updateSearchParams';

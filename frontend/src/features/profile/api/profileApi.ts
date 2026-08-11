@@ -5,7 +5,6 @@ import type {
   UpdateProfilePasswordInput,
 } from '@/features/profile/types';
 import { apiFetch } from '@/lib/api';
-import { sleep } from '@/utils';
 
 export const profileApi = {
   get: async () => {
@@ -22,7 +21,6 @@ export const profileApi = {
       },
       body: JSON.stringify(profileMapper.toUpdateApiRequest(data)),
     });
-    await sleep(1000); // テスト用の遅延
     return res;
   },
 
@@ -35,7 +33,6 @@ export const profileApi = {
       },
       body: JSON.stringify(profileMapper.toUpdatePasswordApiRequest(data)),
     });
-    await sleep(1000); // テスト用の遅延
     return res;
   },
 };

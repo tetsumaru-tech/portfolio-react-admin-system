@@ -11,7 +11,6 @@ import type {
 } from '@/features/user/types';
 import { apiFetch } from '@/lib/api';
 import type { PaginatedResponse } from '@/types';
-import { sleep } from '@/utils';
 
 /**
  * ユーザーリスト取得のレスポンス型
@@ -95,7 +94,6 @@ export const userApi = {
       method: 'POST',
       body: JSON.stringify(userMapper.toCreateApiRequest(data)),
     });
-    await sleep(1000); // テスト用の遅延
     return res;
   },
 
@@ -114,7 +112,6 @@ export const userApi = {
       },
       body: JSON.stringify(userMapper.toUpdateApiRequest(data)),
     });
-    await sleep(1000); // テスト用の遅延
     return res;
   },
 
@@ -126,7 +123,6 @@ export const userApi = {
     await apiFetch<User>(`/users/${id}`, {
       method: 'DELETE',
     });
-    await sleep(1000); // テスト用の遅延
   },
 
   /**
