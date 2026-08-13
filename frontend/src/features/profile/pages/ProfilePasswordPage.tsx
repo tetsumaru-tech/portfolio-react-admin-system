@@ -19,7 +19,7 @@ import {
   FormRowContainer,
   FormSection,
 } from '@/features/user/components';
-import { applyServerErrors } from '@/utils';
+import { applyServerErrors, isValidationError } from '@/utils';
 
 /**
  * プロフィールパスワード変更ページコンポーネント
@@ -48,16 +48,22 @@ export function ProfilePasswordPage() {
   useEffect(() => {
     if (location.state?.formData) {
       reset(location.state.formData);
-      applyServerErrors(location.state?.errors, setError);
       return;
     }
-  }, [location.state, data, isSuccess, reset, setError]);
+  }, [location.state, data, isSuccess, reset]);
 
   const navigate = useNavigate();
 
-  const onSubmit = (data: ProfilePasswordFormData) => {
-    mutation.mutate(data);
-    navigate(ROUTES.profile());
+  const onSubmit = async (data: ProfilePasswordFormData) => {
+    try {
+      await mutation.mutateAsync(data);
+      navigate(ROUTES.profile());
+    } catch (error) {
+      if (isValidationError(error) && error.errors) {
+        applyServerErrors(error.errors, setError);
+      }
+      // 422以外は useApiMutation がトーストで通知するため、ここでは何もしない
+    }
   };
 
   const rows = profilePasswordRows;
@@ -101,13 +107,16 @@ export function ProfilePasswordPage() {
       </Paper>
       <ButtonSection>
         <BackButton
+          disabled={mutation.isPending}
           onClick={() => {
             navigate(ROUTES.profile());
           }}
         >
           キャンセル
         </BackButton>
-        <AppButton type="submit">更新</AppButton>
+        <AppButton type="submit" disabled={mutation.isPending}>
+          更新
+        </AppButton>
       </ButtonSection>
     </form>
   );

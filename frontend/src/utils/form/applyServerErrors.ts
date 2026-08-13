@@ -27,9 +27,19 @@ export function applyServerErrors<T extends FieldValues>(
   }
 
   Object.entries(errors).forEach(([key, messages]) => {
-    setError(key as Path<T>, {
+    setError(toFormFieldName(key) as Path<T>, {
       type: 'server',
       message: Array.isArray(messages) ? messages[0] : String(messages),
     });
   });
+}
+
+/**
+ * APIが返すsnake_caseのフィールド名を、フォームで使うcamelCaseのフィールド名へ変換します
+ *
+ * @param key - APIのバリデーションエラーのキー
+ * @returns フォームのフィールド名
+ */
+function toFormFieldName(key: string): string {
+  return key.replace(/_([a-z])/g, (_, char: string) => char.toUpperCase());
 }

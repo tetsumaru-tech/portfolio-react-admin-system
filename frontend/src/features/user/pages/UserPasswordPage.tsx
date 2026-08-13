@@ -8,11 +8,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { AppButton, BackButton, ButtonSection } from '@/components';
 import { ROUTES } from '@/constants';
-import {
-  userMapper,
-  useUpdateProfileMutation,
-  useUserDetailQuery,
-} from '@/features/user/api';
+import { useUpdateProfileMutation } from '@/features/user/api';
 import {
   FormPasswordField,
   FormRow,
@@ -22,7 +18,7 @@ import {
 import { userPasswordRows } from '@/features/user/constants';
 import { userPasswordSchema } from '@/features/user/schema';
 import { type UserPasswordFormData } from '@/features/user/types';
-import { applyServerErrors } from '@/utils';
+import { applyServerErrors, isValidationError } from '@/utils';
 
 /**
  * パスワード変更ページコンポーネント
@@ -47,25 +43,25 @@ export function UserPasswordPage() {
     },
   });
 
-  const { data, isSuccess } = useUserDetailQuery(userId);
-
   useEffect(() => {
     if (location.state?.formData) {
       reset(location.state.formData);
-      applyServerErrors(location.state?.errors, setError);
       return;
     }
-
-    if (isSuccess && data) {
-      reset(userMapper.fromApi(data));
-    }
-  }, [location.state, isSuccess, data, reset, setError]);
+  }, [location.state, reset]);
 
   const navigate = useNavigate();
 
-  const onSubmit = (data: UserPasswordFormData) => {
-    updatePasswordMutation.mutate(data);
-    navigate(ROUTES.userDetail(userId));
+  const onSubmit = async (data: UserPasswordFormData) => {
+    try {
+      await updatePasswordMutation.mutateAsync(data);
+      navigate(ROUTES.userDetail(userId));
+    } catch (error) {
+      if (isValidationError(error) && error.errors) {
+        applyServerErrors(error.errors, setError);
+      }
+      // 422以外は useApiMutation がトーストで通知するため、ここでは何もしない
+    }
   };
 
   const rows = userPasswordRows;
@@ -110,13 +106,16 @@ export function UserPasswordPage() {
       </Paper>
       <ButtonSection>
         <BackButton
+          disabled={updatePasswordMutation.isPending}
           onClick={() => {
             navigate(ROUTES.userDetail(userId));
           }}
         >
           キャンセル
         </BackButton>
-        <AppButton type="submit">更新</AppButton>
+        <AppButton type="submit" disabled={updatePasswordMutation.isPending}>
+          更新
+        </AppButton>
       </ButtonSection>
     </form>
   );

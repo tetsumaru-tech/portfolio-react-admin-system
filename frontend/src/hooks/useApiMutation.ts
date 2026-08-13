@@ -5,7 +5,7 @@ import {
 } from '@tanstack/react-query';
 
 import { useToast } from '@/components';
-import { getApiError, getErrorMessage } from '@/utils';
+import { getErrorMessage, isValidationError } from '@/utils';
 
 /**
  * APIミューテーション用のプロパティ型定義
@@ -21,8 +21,6 @@ type Props<TData, Tvariables> = {
   invalidateKeys?: QueryKey[];
   /** 成功時のコールバック関数 */
   onSuccess?: (data: TData, variables: Tvariables) => void;
-  /** バリデーションエラー時のコールバック関数 */
-  onValidationError?: (errors: Record<string, string[]>) => void;
 };
 
 /**
@@ -35,7 +33,6 @@ type Props<TData, Tvariables> = {
  * @param [props.successMessage] - 成功時に表示するトーストメッセージ
  * @param [props.invalidateKeys] - 成功時に無効化するクエリキー
  * @param [props.onSuccess] - 成功時のコールバック関数
- * @param [props.onValidationError] - バリデーションエラー時のコールバック関数
  * @returns React Queryのミューテーション結果オブジェクト
  */
 export function useApiMutation<TData, TVariables>({
@@ -43,7 +40,6 @@ export function useApiMutation<TData, TVariables>({
   successMessage,
   invalidateKeys,
   onSuccess,
-  onValidationError,
 }: Props<TData, TVariables>) {
   const queryClient = useQueryClient();
   const { showToast } = useToast();
@@ -65,12 +61,9 @@ export function useApiMutation<TData, TVariables>({
     },
 
     onError: (error: unknown) => {
-      const err = getApiError(error);
-      if (err) {
-        if (err.status === 422 && err.errors) {
-          onValidationError?.(err.errors);
-          return;
-        }
+      // 422はフィールド単位のエラーを持つため、表示先の判断は呼び出し側のフォームに委ねる
+      if (isValidationError(error) && error.errors) {
+        return;
       }
       showToast(getErrorMessage(error), 'error');
     },
