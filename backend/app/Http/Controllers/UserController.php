@@ -9,7 +9,6 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
@@ -162,12 +161,6 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $this->authorize('updatePassword', $user);
-
-        if (! empty($request->current_password) && ! Hash::check($request->current_password, $user->password)) {
-            return response()->json([
-                'message' => '現在のパスワードが違います',
-            ], 422);
-        }
 
         $user->update([
             'password' => $request->password,

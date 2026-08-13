@@ -50,17 +50,6 @@ class ProfileController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
-        if (! Hash::check($request->current_password, $user->password)) {
-            return response()->json([
-                'message' => '現在のパスワードが正しくありません',
-                'error' => [
-                    'current_password' => [
-                        '現在のパスワードが正しくありません',
-                    ],
-                ],
-            ], 422);
-        }
-
         $user->update([
             'password' => Hash::make($request->password),
         ]);
