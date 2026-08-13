@@ -31,6 +31,19 @@ class ApiErrorResponseTest extends TestCase
     }
 
     /**
+     * Accept ヘッダーがなくても認証必須APIは401 JSONを返す。
+     */
+    public function test_unauthenticated_api_request_without_json_accept_header_returns_401(): void
+    {
+        $response = $this->get('/api/users');
+
+        $response->assertStatus(401);
+        $response->assertHeader('content-type', 'application/json');
+        $response->assertJsonPath('message', 'Unauthenticated.');
+        $response->assertJsonMissingPath('errors');
+    }
+
+    /**
      * 管理者以外が管理者専用APIへアクセスすると403を返す。
      *
      * AdminMiddleware の abort(403) はメッセージを持たないため message は空文字になる。
