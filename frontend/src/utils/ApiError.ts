@@ -10,8 +10,9 @@ export class ApiError extends Error {
   status: number;
   /**
    * バリデーションエラー
+   * 401 / 403 などフィールド単位のエラーを持たないレスポンスでは存在しない
    */
-  errors: ValidationErrors;
+  errors?: ValidationErrors;
 
   /**
    * ApiErrorのコンストラクタ
@@ -19,7 +20,7 @@ export class ApiError extends Error {
    * @param status HTTPステータスコード
    * @param errors バリデーションエラー
    */
-  constructor(message: string, status: number, errors: ValidationErrors) {
+  constructor(message: string, status: number, errors?: ValidationErrors) {
     super(message);
     this.status = status;
     this.errors = errors;

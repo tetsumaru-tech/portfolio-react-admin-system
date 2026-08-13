@@ -1,4 +1,4 @@
-import { getApiError, isApiError } from '.';
+import { isApiError } from '.';
 
 /**
  * APIエラーメッセージを取得します。
@@ -7,8 +7,7 @@ import { getApiError, isApiError } from '.';
  */
 export function getErrorMessage(error: unknown): string {
   if (isApiError(error)) {
-    const err = getApiError(error);
-    return err ? err.message : '';
+    return error.message;
   }
   if (error instanceof Error) {
     return error.message;
