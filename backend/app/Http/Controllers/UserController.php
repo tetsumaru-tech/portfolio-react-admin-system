@@ -21,8 +21,6 @@ class UserController extends Controller
      */
     public function index(UserSearchRequest $request): JsonResponse
     {
-        $this->authorize('viewAny', User::class);
-
         $query = User::query();
         $name = $request->input('name');
         if ($name) {
@@ -62,7 +60,6 @@ class UserController extends Controller
     public function show(int $id): JsonResponse
     {
         $user = User::find($id);
-        $this->authorize('view', $user);
 
         return $user ? response()->json($user) : response()->json(['message' => 'ユーザーが見つかりません'], 404);
     }
@@ -75,8 +72,6 @@ class UserController extends Controller
      */
     public function store(UserRequest $request): JsonResponse
     {
-        $this->authorize('create', User::class);
-
         $data = $request->validated();
         unset($data['password_confirmation']);
 
@@ -99,8 +94,6 @@ class UserController extends Controller
             return response()->json(['message' => 'ユーザーが見つかりません'], 404);
         }
 
-        $this->authorize('update', $user);
-
         $data = $request->validated();
         $user->update($data);
         $updatedUser = $user->fresh();
@@ -116,8 +109,7 @@ class UserController extends Controller
      */
     public function destroy(int $id): Response
     {
-        $user = User::findOrFail($id);
-        $this->authorize('delete', $user);
+        User::findOrFail($id);
 
         User::destroy($id);
 
@@ -160,7 +152,6 @@ class UserController extends Controller
     public function updatePassword(PasswordUpdateRequest $request, int $id): JsonResponse
     {
         $user = User::findOrFail($id);
-        $this->authorize('updatePassword', $user);
 
         $user->update([
             'password' => $request->password,
