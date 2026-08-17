@@ -33,6 +33,7 @@ type UserStorage = {
  * データグリッドのソートフィールドをAPIのソートフィールドに変換するためのマッピング
  */
 const SORT_FIELD_MAP = {
+  id: 'id',
   fullName: 'full_name',
   email: 'email',
   birthday: 'birthday',
